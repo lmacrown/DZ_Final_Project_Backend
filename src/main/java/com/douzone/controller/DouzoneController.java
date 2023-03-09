@@ -41,9 +41,11 @@ public class DouzoneController {
 		DouzoneVO member = douzoneService.login(map.get("MEMBER_ID"), map.get("MEMBER_PW"));
 		if(member != null) {
 			result.put("member",member);
+			result.put("isLogOn", true);
 			session.setAttribute("isLogOn", true);
 			session.setAttribute("member", member);
 		}else {
+			result.put("isLogOn", false);
 			session.setAttribute("isLogOn", false);
 		}
 		

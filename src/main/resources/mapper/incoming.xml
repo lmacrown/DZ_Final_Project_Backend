@@ -11,6 +11,8 @@
 			코드, 소득자명, 주민번호, 소득구분코드, 소득구분명
 		from
 			earner<!--  e  left join codes c on e.div_code=c.div_code -->
+		where
+			worker_id=#{worker_id}
 	</select>
 	<select id="코드 클릭" parameterType="java.util.Map"
 		resultType="com.douzone.entity.IncomingVO">
@@ -24,9 +26,9 @@
 	<select id="소득자등록" parameterType="java.util.Map"
 		resultType="com.douzone.entity.IncomingVO">
 		insert into 
-			earner(코드, 소득자명, 주민번호(null), 소득구분) 
+			earner(worker_id, 코드, 소득자명, 주민번호(null), 소득구분, 내/외국인) 
 		values
-			(#{param1},#{param2},#{param3},#{param4})
+			(#{worker_id}, #{param1},#{param2},#{param3},#{param4}, #{param5})
 	</select>
 	<select id="소득자정보등록" parameterType="java.util.Map"
 		resultType="com.douzone.entity.IncomingVO">
@@ -66,7 +68,17 @@
 		from 
 			earner
 		where
-			accural_ym = #{param1} and worker_id=#{worker_id}
+			accural_ym = #{param1} and worker_id=#{worker_id} and earner_code = #{param2}
+	</select>
+	<select id="소득자코드도움" parameterType="java.util.Map"
+		resultType="com.douzone.entity.IncomingVO">
+		select
+			코드, 소득자명, 내/외, 주민번호, 소득구분명, 구분코드
+		from 
+			earner
+		where
+			worker_id=#{worker_id} and earner_code like #{param1} or earner_name like #{param1}
+			or div_name like #{param1}
 	</select>
 	<select id="소득자클릭" parameterType="java.util.Map"
 		resultType="com.douzone.entity.IncomingVO">
@@ -77,21 +89,21 @@
 		where
 			payment_ym = #{param1} and worker_id=#{worker_id}
 	</select>
-	<select id="소득자코드도움" parameterType="java.util.Map"
+	<select id="소득자코드도움선택" parameterType="java.util.Map"
 		resultType="com.douzone.entity.IncomingVO">
 		select
-			코드, 소득자명, 내/외, 주민번호, 소득구분명, 구분코드
+			코드, 소득자명, 주민번호, 소득구분명, 구분코드
 		from 
 			earner
 		where
 			worker_id=#{worker_id}
 	</select>
-	<select id="세금정보입력" parameterType="java.util.Map"
+	<select id="세금정보등록" parameterType="java.util.Map"
 		resultType="com.douzone.entity.IncomingVO">
 		insert into
-			earner_tax (세금아이디(auto increase?), 소득자 코드, 세율, 지급총액, 소득세, 지방소득세, 세액계, 차인지급액, 지급년월, 지급일, 귀속년월, 예술인경비, 고용보험료)
+			earner_tax (worker_id, earner_code)
 		values
-			#{param}
+			#{param1}, #{param2}
 		<!-- <selectKey keyProperty="earnerseq" resultType="String"
 			order="BEFORE">
 			SELECT earner_no_seq.NEXTVAL AS earnerseq FROM DUAL
@@ -108,24 +120,40 @@
 			tax_id=#{tax_id}
 	</select>
 <!-- 사업소득조회 -->
-	<select id="earner_list" parameterType="java.util.Map"
+	<select id="소득자별조회" parameterType="java.util.Map"
 		resultType="com.douzone.entity.IncomingVO">
 		select 
-			count(*) as count, t.tax_id, t.accrual_ym, t.payment_ym, t.payment_date, t.total_payment, 
-			t.tax_rate, t.repay_amount, t.tax_income, t.tax_local, t.artist_cost, t.ins_cost, t.real_payment,
-			e.div_code, e.earner_name, e.personal_no, e.is_native, t.total_payment, t.tax_rate, t.tax_income,
-			t.tax_local, t.artist_cost, t.ins_cost 
+			t.tax_id, e.earner_name, e.personal_no, e.div_code, t.accrual_ym, t.payment_ym, 
+			t.payment_date, t.total_payment, t.tax_rate, t.tuition_amout, t.tax_income, t.tax_local, 
+			t.artist_cost, t.ins_cost, t.real_payment
 		from 
 			earner e left join earner_tax t 
-			on e.worker_id=t.worker_id 
+			on e.earner_code=t.earner_code 
 		where 
 			e.worker_id=#{worker_id} 
-			and ${param1} between to_date(#{param2} ,'YYYYmm') and to_date(#{param3} ,'YYYYmm')
-			and e.${param4} like concat('%',#{param5},'%') 
+			and ${read_by} between#{start_date} and #{end_date}
+			and e.${code_name} like concat('%',#{code_value},'%') 
 		order by 
-			#{param6};
+			#{order_by};
 	</select>
-
+	<select id="소득구분별조회" parameterType="java.util.Map"
+		resultType="com.douzone.entity.IncomingVO">
+		select 
+			t.tax_id, e.div_code, e.earner_name, e.personal_no, e.is_native, count(*), 
+			sum(t.total_payment), t.tax_rate, sum(t.tax_income), sum(t.tax_local), sum(t.artist_cost),
+			sum(t.ins_cost), sum(t.real_payment)
+		from 
+			earner e left join earner_tax t 
+			on e.earner_code=t.earner_code
+		where 
+			e.worker_id=#{worker_id} 
+			and ${read_by} between#{start_date} and #{end_date}
+			and e.${code_name} like concat('%',#{code_value},'%') 
+		group by
+			#{tax_rate}, #{earner_code}
+		order by 
+			#{order_by};
+	</select>
 <!-- 	<insert id="regist" parameterType="java.util.Map">
 		<selectKey keyProperty="earnerseq" resultType="String"
 			order="BEFORE">

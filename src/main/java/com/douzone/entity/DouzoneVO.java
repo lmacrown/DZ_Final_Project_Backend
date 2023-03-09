@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DouzoneVO {
 	private String worker_id;
-	private String worker_passwd;
+	private String worker_pw;
 	private String corp_code;
 	private String worker_name;
 }
