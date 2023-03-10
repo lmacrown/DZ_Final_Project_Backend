@@ -64,19 +64,23 @@
 
 
 
-
-
 	<select id="earner_search" resultType="java.util.Map">
-		SELECT earner_code, earner_name, is_native, personal_no, div_name, div_code
+		SELECT earner_code, earner_name, is_native, personal_no, div_name,
+		div_code
 		FROM earner
 		WHERE worker_id = #{worker_id}
 		<if test="search_value != null and search_value != ''">
-			AND (earner_code::text ILIKE '%' || #{search_value} || '%' OR earner_name
-			ILIKE '%' || #{search_value} || '%' OR div_code ILIKE '%' ||
-			#{search_value} || '%')
+			AND (earner_code::text ILIKE '%' || #{search_value} || '%'
+			OR earner_name ILIKE '%' || #{search_value} || '%' 
+			OR div_code ILIKE '%' || #{search_value} || '%')
 		</if>
 	</select>
 
+
+	<select id="earner_" resultType="java.util.Map">
+		<foreach collection="earner_codes" item="earner_code">
+		</foreach>
+	</select>
 </mapper>
 
 

@@ -27,6 +27,8 @@ public interface DouzoneDAO {
 	
 	
 	List<Map<String, Object>> earner_search(Map<String, Object> params);
+
+	List<Map<String, Object>> get_earners(Map<String, Object> task);
 }
 
 
