@@ -1,6 +1,7 @@
 package com.douzone.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class DouzoneController {
 	
 	@Autowired
 	IncomingService incomingService;
-	//로그인
+	/*로그인*/
 	@PostMapping(value="/login")
 	public Map<String, Object> hello(Locale locale, Model model,
 			@RequestBody HashMap<String, String> map, HttpSession session) throws Exception {
@@ -51,39 +52,51 @@ public class DouzoneController {
 		
 		return result;
 	}
+	////////////////////////* 사업소득자등록 *////////////////////////
+	//초기화면
+	//코드 클릭
+	//소득자 등록
+	//소득자정보등록
+	////////////////////////*소득자료입력*////////////////////////////
+	//지급년월조회
+	//소득자클릭
+	//소득자코드도움
+	//소득자코드도움선택
+	//세금정보등록
+	//세금정보수정
+	////////////////////////* 사업소득조회 *//////////////////////////
 	//소득자별조회
-	@GetMapping(value="/earner_list")
-	public Map<String, Object> earner_list(Locale locale, Model model,
+	//소득자별조회
+	@GetMapping(value="/search_earner_code")
+	public Map<String, Object> search_earner_code(Locale locale, Model model,
 			@RequestBody HashMap<String, Object> map, HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
 		//데이터 5개를 보내야 함
 		DouzoneVO douzoneVo=(DouzoneVO) session.getAttribute("member");
-		map.put("worker_id", "W001");
-		IncomingVO incoming = incomingService.earner_list(map);
+		map.put("worker_id", "W00004");
+		List<IncomingVO> incoming = incomingService.search_earner_code(map);
 		
 		result.put("earnerInfo", incoming);
 		
 		return result;
 	}
-	//사업소득자 비가시화
-	@GetMapping(value="/reg/visible_update")
-	public Map<String, Object> visible_update(Locale locale, Model model,
+	//소득구분별조회
+	//소득자별조회
+	@GetMapping(value="/search_div_code")
+	public Map<String, Object> search_div_code(Locale locale, Model model,
 			@RequestBody HashMap<String, Object> map, HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
 		//데이터 5개를 보내야 함
 		DouzoneVO douzoneVo=(DouzoneVO) session.getAttribute("member");
-		map.put("worker_id", "W202200001");
-		HashMap<String, Object> test_map = new HashMap<String, Object>();
-		test_map.put("map",map);
-		try {
-		incomingService.visible_update(test_map);
-		result.put("visible_true", true);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+		map.put("worker_id", "W00004");
+		List<IncomingVO> incoming = incomingService.search_div_code(map);
+		
+		result.put("earnerInfo", incoming);
 		
 		return result;
 	}
+	
+
 //	//소득구분별조회
 //	@GetMapping(value="/earner_list/income_category")
 //	public Map<String, Object> income_category(Locale locale, Model model,
@@ -111,18 +124,18 @@ public class DouzoneController {
 		}
 		return result;
 	}
-	//소득자료조회
-	@PostMapping(value="/searchearner")
-	public Map<String, Object> searchearner(Locale locale, Model model,
-			@RequestBody HashMap<String, Object> map, HttpSession session) {
-		Map<String, Object> result = new HashMap<>();
-		HashMap<String, Object> test_map = new HashMap<String, Object>();
-		test_map.put("map",map);
-		
-		result.put("searchearner",incomingService.searchearner(test_map));
-		return result;
-	}
-	
+//	//소득자료조회
+//	@PostMapping(value="/searchearner")
+//	public Map<String, Object> searchearner(Locale locale, Model model,
+//			@RequestBody HashMap<String, Object> map, HttpSession session) {
+//		Map<String, Object> result = new HashMap<>();
+//		HashMap<String, Object> test_map = new HashMap<String, Object>();
+//		test_map.put("map",map);
+//		
+//		result.put("searchearner",incomingService.searchearner(test_map));
+//		return result;
+//	}
+//	
 	@GetMapping(value="/test1.do")
 	public Map<String, Object> test1(Locale locale, Model model,
 			@RequestBody HashMap<String, Object> map, HttpSession session) {

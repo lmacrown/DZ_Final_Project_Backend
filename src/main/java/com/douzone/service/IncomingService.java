@@ -34,11 +34,14 @@ public class IncomingService {
 		return incomingDAO.test1(map);
 	}
 
-	public Map<String, Object> searchearner(HashMap<String, Object> map) {
-		System.out.println(map);
-		return incomingDAO.searchearner(map);
+	public List<IncomingVO> search_earner_code(HashMap<String, Object> map) {
+		return incomingDAO.search_earner_code(map);
 	}
 
+	public List<IncomingVO> search_div_code(HashMap<String, Object> map) {
+		return incomingDAO.search_div_code(map);
+	}
+	
 	public void visible_update(HashMap<String, Object> map) {
 		incomingDAO.visible_update(map);
 	}

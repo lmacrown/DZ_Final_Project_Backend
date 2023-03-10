@@ -18,7 +18,9 @@ public interface IncomingDAO {
 
 	Map<String, Object> test1(HashMap<String, Object> map);
 
-	Map<String, Object> searchearner(HashMap<String, Object> map);
+	List<IncomingVO> search_earner_code(HashMap<String, Object> map);
 
+	List<IncomingVO> search_div_code(HashMap<String, Object> map);
+	
 	void visible_update(HashMap<String, Object> map);
 }
