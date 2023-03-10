@@ -1,10 +1,33 @@
 package com.douzone.DAO;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
+import java.util.Map;
 
-import com.douzone.entity.DouzoneVO;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
+
+import com.douzone.entity.EarnerVO;
 
 @Mapper
+@Repository("douzoneDAO")
 public interface DouzoneDAO {
-	DouzoneVO login(String MEMBER_ID, String MEMBER_PW);
+	
+	List<Map<String, Object>>list_divcode();
+
+	List<Map<String, Object>> earner_list(String worker_id);
+
+	EarnerVO get_earner(Map<String, Object> params);
+
+	void earner_insert(Map<String, Object> params);
+
+	void earner_update(Map<String, Object> params);
+
+	void earner_delete(Map<String, Object> params);
+
+	
+	
+	List<Map<String, Object>> earner_search(Map<String, Object> params);
 }
+
+
+

@@ -1,132 +1,192 @@
 package com.douzone.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.douzone.Aes;
-import com.douzone.entity.DouzoneVO;
-import com.douzone.entity.IncomingVO;
 import com.douzone.service.DouzoneService;
-import com.douzone.service.IncomingService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 @CrossOrigin("*")
 public class DouzoneController {
 
 	@Autowired
 	DouzoneService douzoneService;
-	
-	@Autowired
-	IncomingService incomingService;
-	//로그인
-	@PostMapping(value="/login")
-	public Map<String, Object> hello(Locale locale, Model model,
-			@RequestBody HashMap<String, String> map, HttpSession session) throws Exception {
-		Map<String, Object> result = new HashMap<>();
 
-		DouzoneVO member = douzoneService.login(map.get("MEMBER_ID"), map.get("MEMBER_PW"));
-		if(member != null) {
-			result.put("member",member);
-			session.setAttribute("isLogOn", true);
-			session.setAttribute("member", member);
-		}else {
-			session.setAttribute("isLogOn", false);
-		}
-		
-		return result;
-	}
-	//소득자별조회
-	@GetMapping(value="/earner_list")
-	public Map<String, Object> earner_list(Locale locale, Model model,
-			@RequestBody HashMap<String, Object> map, HttpSession session) {
+	// 사업소득자 등록
+	@GetMapping(value = "/earner_list")
+	public Map<String, Object> earner_list(String worker_id) {
 		Map<String, Object> result = new HashMap<>();
-		//데이터 5개를 보내야 함
-		DouzoneVO douzoneVo=(DouzoneVO) session.getAttribute("member");
-		map.put("worker_id", "W001");
-		IncomingVO incoming = incomingService.earner_list(map);
-		
-		result.put("earnerInfo", incoming);
-		
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		result.put("earner_list", douzoneService.earner_list(worker_id));
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+
+		result.put("status_code", false);
+		result.put("time_stamp", time_stamp);
+
 		return result;
 	}
-	//사업소득자 비가시화
-	@GetMapping(value="/reg/visible_update")
-	public Map<String, Object> visible_update(Locale locale, Model model,
-			@RequestBody HashMap<String, Object> map, HttpSession session) {
+
+	@GetMapping(value = "/get_earner")
+	public Map<String, Object> get_earner(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		//데이터 5개를 보내야 함
-		DouzoneVO douzoneVo=(DouzoneVO) session.getAttribute("member");
-		map.put("worker_id", "W202200001");
-		HashMap<String, Object> test_map = new HashMap<String, Object>();
-		test_map.put("map",map);
-		try {
-		incomingService.visible_update(test_map);
-		result.put("visible_true", true);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		
+		LocalDateTime time_stamp = LocalDateTime.now();
+		result.put("earner_info", douzoneService.get_earner(params));
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+
 		return result;
 	}
-//	//소득구분별조회
-//	@GetMapping(value="/earner_list/income_category")
-//	public Map<String, Object> income_category(Locale locale, Model model,
-//			@RequestBody HashMap<String, Object> map, HttpSession session) {
-//		Map<String, Object> result = new HashMap<>();
-//		//데이터 5개를 보내야 함
-//		DouzoneVO douzoneVo=(DouzoneVO) session.getAttribute("member");
-//		map.put("worker_id", douzoneVo.getWorker_id());
-//		IncomingVO incoming = incomingService.income_category(map);
-//		
-//		result.put("earnerInfo", incoming);
-//		
-//		return result;
-//	}
-	//소득자료등록
-	@GetMapping(value="/regist")
-	public Map<String, Object> insertinfo(Locale locale, Model model,
-			@RequestBody HashMap<String, Object> map, HttpSession session) {
+
+	@PostMapping(value = "/earner_insert")
+	public Map<String, Object> earner_insert(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		try {
-			incomingService.regist(map);
-			result.put("status", true);
-		}catch(Exception e) {
-			result.put("status", false);
-		}
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		douzoneService.earner_insert(params);
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+
 		return result;
 	}
-	//소득자료조회
-	@PostMapping(value="/searchearner")
-	public Map<String, Object> searchearner(Locale locale, Model model,
-			@RequestBody HashMap<String, Object> map, HttpSession session) {
+
+	@PatchMapping(value = "/earner_update")
+	public Map<String, Object> earner_update(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		HashMap<String, Object> test_map = new HashMap<String, Object>();
-		test_map.put("map",map);
-		
-		result.put("searchearner",incomingService.searchearner(test_map));
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		douzoneService.earner_update(params);
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+
 		return result;
 	}
+
+	@GetMapping(value = "/list_divcode")
+	public Map<String, Object> list_divcode() {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		result.put("div_list", douzoneService.list_divcode());
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+
+		return result;
+	}
+
+	@DeleteMapping(value = "/earner_delete")
+	public Map<String, Object> earner_delete(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		douzoneService.earner_delete(params);
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+
+		return result;
+	}
+
+	// 사업소득자 자료입력
 	
-	@GetMapping(value="/test1.do")
-	public Map<String, Object> test1(Locale locale, Model model,
-			@RequestBody HashMap<String, Object> map, HttpSession session) {
+	@GetMapping(value = "/earner_search")
+	public Map<String, Object> earner_search(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		result.put("earner_list", douzoneService.earner_search(params));
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
 		
-		result.put("test1",incomingService.test1(map));
 		return result;
 	}
+
+	@GetMapping(value = "/get_earners")
+	public Map<String, Object> get_earners(String worker_id, HttpSession session) {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		result.put("earner_list", douzoneService.get_earners(worker_id, session));
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+		
+		return result;
+	}
+
+	@PutMapping(value = "/put_task")
+	public Map<String, Object> put_task(@RequestBody HashMap<String, Object> params, HttpSession session) {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		douzoneService.put_task(params,session);
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+		
+		return result;
+	}
+
+	@DeleteMapping(value = "/delete_task")
+	public Map<String, Object> delete_task(@RequestBody HashMap<String, Object> params, HttpSession session) {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		douzoneService.delete_task(params,session);
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+		
+		return result;
+
+	}
+
+	@PostMapping(value = "/tax_insert")
+	public Map<String, Object> tax_insert(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		//result.put("div_list", douzoneService.list_divcode());
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+		
+		return result;
+	}
+
+	@PatchMapping(value = "/tax_update")
+	public Map<String, Object> tax_update(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		//result.put("div_list", douzoneService.list_divcode());
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+		
+		return result;
+
+	}
+
+	@GetMapping(value = "/get_tax")
+	public Map<String, Object> get_tax(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		//result.put("div_list", douzoneService.list_divcode());
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+		
+		return result;
+
+	}
+
 }

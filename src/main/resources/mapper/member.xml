@@ -4,67 +4,81 @@
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.DAO.DouzoneDAO">
-	<select id="login"
-		resultType="com.douzone.entity.DouzoneVO">
-		select *
-		from worker
-		where worker_id=#{param1} and worker_pw=#{param2}
-	</select>
-<!-- 	<select id="selectId" resultType="String">
-		select
-		Member_ID
-		from t_shopping_member
-		where EMAIL = #{param1}
-	</select>
-	<select id="findPwd" resultType="int">https://desktop.postman.com/?desktopVersion=10.10.3&userId=15018550&teamId=0
-		select
-		count(*)
-		from t_shopping_member
-		where MEMBER_ID = #{param1} and EMAIL=#{param2}
-	</select>
-	<select id="listMembers" resultType="com.myspring.DZ_shop.entity.MemberVO">
-		select
-		Member_ID, Member_PW, Member_NAME, EMAIL, DEL_YN
-		from t_shopping_member
-	</select>
-	<select id="dupUidCheck"
-		resultType="com.myspring.DZ_shop.entity.MemberVO">
-		select
-		Member_ID from t_shopping_member
-		where MEMBER_ID = #{param1}
-	</select>
-	<delete id="deleteId">
-		delete from t_shopping_member
-		where Member_id=#{param1}
 
+	<select id="list_divcode" resultType="java.util.Map">
+		SELECT
+		div_code,div_name,div_type
+		FROM codes
+	</select>
+
+	<select id="earner_list" resultType="java.util.Map">
+		SELECT
+		earner_code,earner_name,personal_no,is_native,div_code,div_name
+		FROM
+		earner
+		WHERE worker_id = #{worker_id}
+	</select>
+
+
+	<select id="get_earner" resultType="com.douzone.entity.EarnerVO">
+		SELECT *
+		FROM earner
+		WHERE
+		earner_code = #{earner_code}
+		AND worker_id = #{worker_id}
+	</select>
+
+
+	<insert id="earner_insert">
+		INSERT INTO earner (earner_code, worker_id,
+		earner_name, div_code, div_name,
+		personal_no,is_native)
+		VALUES(#{earner_code}, #{worker_id}, #{earner_name}, #{div_code},
+		#{div_name},
+		#{personal_no}, #{is_native})
+	</insert>
+
+
+	<update id="earner_update">
+		UPDATE earner
+		SET ${param_name}=#{param_value}
+		WHERE
+		earner_code = #{earner_code}
+		AND worker_id = #{worker_id}
+	</update>
+
+	<delete id="earner_delete">
+		<foreach collection="earner_codes" item="earner_code">
+			DELETE FROM earner_tax
+			WHERE earner_code = #{earner_code}
+			AND worker_id = #{worker_id};
+
+			DELETE FROM earner
+			WHERE earner_code = #{earner_code}
+			AND worker_id =
+			#{worker_id};
+		</foreach>
 	</delete>
-	<update id="update">
-		update t_shopping_member set
-		MEMBER_PW = #{param2},
-		MEMBER_NAME = #{param3},
-		EMAIL = #{param4}
-		where MEMBER_ID = #{param1}
-	</update>
-	<update id="pwdFix">
-		update t_shopping_member set
-		MEMBER_PW = #{param1}
-		where MEMBER_ID=#{param2}
-	</update>
-	<insert id="register">
-		insert into t_shopping_member (Member_ID, Member_PW,
-		Member_NAME, EMAIL)
-		values (#{param1}, #{param2}, #{param3}, #{param4})
-	</insert>
-	<insert id="QnAUpload">
-		insert into t_shopping_qna (Member_id, QnA_Title, QnA_Content, QnA_Image)
-		values (#{MEMBER_ID}, #{QnA_Title}, #{QnA_Content}, #{QnA_Image})
-	</insert>
-	<insert id="addPreSearch">
-		insert into t_shopping_search (Member_id, presearch)
-		values (#{param2},#{param1})
-	</insert>
-	<select id="searchPreSearch" resultType="String">
-		select presearch from t_shopping_search
-		where MEMBER_ID = #{param1} AND presearch != '' order by credate DESC limit 5
-	</select> -->
+
+
+
+
+
+
+
+	<select id="earner_search" resultType="java.util.Map">
+		SELECT earner_code, earner_name, is_native, personal_no, div_name, div_code
+		FROM earner
+		WHERE worker_id = #{worker_id}
+		<if test="search_value != null and search_value != ''">
+			AND (earner_code::text ILIKE '%' || #{search_value} || '%' OR earner_name
+			ILIKE '%' || #{search_value} || '%' OR div_code ILIKE '%' ||
+			#{search_value} || '%')
+		</if>
+	</select>
+
 </mapper>
+
+
+
+	
