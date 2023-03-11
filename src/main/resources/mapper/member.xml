@@ -5,6 +5,24 @@
 
 <mapper namespace="com.douzone.DAO.DouzoneDAO">
 
+	<select id="get_count" resultType="string">
+		SELECT code_count
+		FROM
+		generate_series(#{code_count}, 999999) AS code_count
+		WHERE NOT EXISTS (
+		SELECT 1
+		FROM earner
+		WHERE earner_code = lpad(code_count::text, 6, '0')
+		AND worker_id = #{worker_id})
+		LIMIT 1;
+	</select>
+
+	<select id="check_code" resultType="boolean">
+		SELECT EXISTS (SELECT 1 FROM
+		earner WHERE earner_code = #{custom_code} and worker_id =
+		#{worker_id});
+	</select>
+
 	<select id="list_divcode" resultType="java.util.Map">
 		SELECT
 		div_code,div_name,div_type
@@ -29,16 +47,20 @@
 	</select>
 
 
-	<insert id="earner_insert">
-		INSERT INTO earner (earner_code, worker_id,
-		earner_name, div_code, div_name,
-		personal_no,is_native)
-		VALUES(#{earner_code}, #{worker_id}, #{earner_name}, #{div_code},
-		#{div_name},
-		#{personal_no}, #{is_native})
+	<insert id="earner_insert" useGeneratedKeys="true" keyProperty="earner_code">
+		INSERT INTO earner (earner_code, worker_id, earner_name, div_code, div_name,
+		personal_no, is_native)
+		VALUES (#{earner_code}, #{worker_id}, #{earner_name}, #{div_code},
+		#{div_name}, #{personal_no}, #{is_native})
 	</insert>
-
-
+	<update id="update_count">
+		UPDATE worker
+		SET code_count = CAST(#{earner_code} AS INTEGER)
+		WHERE worker_id = #{worker_id}
+	</update>
+	
+	
+	
 	<update id="earner_update">
 		UPDATE earner
 		SET ${param_name}=#{param_value}
@@ -60,10 +82,6 @@
 		</foreach>
 	</delete>
 
-
-
-
-
 	<select id="earner_search" resultType="java.util.Map">
 		SELECT earner_code, earner_name, is_native, personal_no, div_name,
 		div_code
@@ -71,14 +89,20 @@
 		WHERE worker_id = #{worker_id}
 		<if test="search_value != null and search_value != ''">
 			AND (earner_code::text ILIKE '%' || #{search_value} || '%'
-			OR earner_name ILIKE '%' || #{search_value} || '%' 
-			OR div_code ILIKE '%' || #{search_value} || '%')
+			OR earner_name ILIKE '%' || #{search_value} || '%'
+			OR div_code ILIKE
+			'%' || #{search_value} || '%')
 		</if>
 	</select>
 
 
-	<select id="earner_" resultType="java.util.Map">
+	<select id="get_earners" resultType="java.util.Map">
 		<foreach collection="earner_codes" item="earner_code">
+			SELECT earner_code,
+			earner_name, is_native, personal_no, div_name, div_code
+			FROM earner
+			WHERE worker_id = #{worker_id}
+			AND earner_code = #{earner_code}
 		</foreach>
 	</select>
 </mapper>

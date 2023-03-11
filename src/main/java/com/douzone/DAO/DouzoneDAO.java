@@ -1,5 +1,6 @@
 package com.douzone.DAO;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public interface DouzoneDAO {
 	EarnerVO get_earner(Map<String, Object> params);
 
 	void earner_insert(Map<String, Object> params);
+	void update_count(Map<String, Object> params);
 
 	void earner_update(Map<String, Object> params);
 
@@ -28,7 +30,14 @@ public interface DouzoneDAO {
 	
 	List<Map<String, Object>> earner_search(Map<String, Object> params);
 
-	List<Map<String, Object>> get_earners(Map<String, Object> task);
+	List<Map<String, Object>> get_earners(Map<String, Object> params);
+
+	String get_count(HashMap<String, Object> params);
+
+	boolean check_code(HashMap<String, Object> params);
+
+	
+	//String get_count(String worker_id);
 }
 
 

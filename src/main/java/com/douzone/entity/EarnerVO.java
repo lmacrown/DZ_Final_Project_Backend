@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EarnerVO {
 	private String worker_id;
-	private int earner_code;
+	private String earner_code;
 	private String earner_name;
 	private String div_code;
 	private String div_name;

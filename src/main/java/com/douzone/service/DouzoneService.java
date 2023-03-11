@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +31,13 @@ public class DouzoneService {
 		return douzoneDAO.get_earner(params);
 	}
 
-	public void earner_insert(Map<String, Object> params) {
+	public int earner_insert(Map<String, Object> params) {
 		douzoneDAO.earner_insert(params);
+		if((boolean) params.get("is_default")){
+			douzoneDAO.update_count(params);
+			return Integer.parseInt((String) params.get("earner_code"));
+		}
+		return 0;
 
 	}
 
@@ -50,7 +53,24 @@ public class DouzoneService {
 		return douzoneDAO.earner_search(params);
 	}
 
-	@SuppressWarnings("unchecked")
+
+	public List<Map<String, Object>> get_earners(HashMap<String, Object> params) {
+		return douzoneDAO.get_earners(params); 
+	}
+
+	public String get_count(HashMap<String, Object> params) {
+		return douzoneDAO.get_count(params);
+	}
+
+	public boolean check_code(HashMap<String, Object> params) {
+		return douzoneDAO.check_code(params);
+	}
+
+	
+	
+	
+	/*
+	 * @SuppressWarnings("unchecked")
 	public void put_task(HashMap<String, Object> params, HttpSession session) {
 		Map<String,Object> task = (Map<String,Object>) session.getAttribute("task");
 		List<String> earner_codes = (List<String>) params.get("earner_codes");
@@ -79,11 +99,5 @@ public class DouzoneService {
 		}
 		System.out.println(task);
 	}
-
-	
-	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> get_earners(String worker_id, HttpSession session) {
-		return douzoneDAO.get_earners((Map<String, Object>) session.getAttribute("task")); 
-	}
-
+	 */
 }
