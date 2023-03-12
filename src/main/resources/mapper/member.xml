@@ -47,20 +47,26 @@
 	</select>
 
 
-	<insert id="earner_insert" useGeneratedKeys="true" keyProperty="earner_code">
-		INSERT INTO earner (earner_code, worker_id, earner_name, div_code, div_name,
+	<insert id="earner_insert" useGeneratedKeys="true"
+		keyProperty="earner_code">
+		INSERT INTO earner (earner_code, worker_id, earner_name,
+		div_code, div_name,
 		personal_no, is_native)
-		VALUES (#{earner_code}, #{worker_id}, #{earner_name}, #{div_code},
-		#{div_name}, #{personal_no}, #{is_native})
+		VALUES (#{earner_code},
+		#{worker_id}, #{earner_name}, #{div_code},
+		#{div_name}, #{personal_no},
+		#{is_native})
 	</insert>
+
 	<update id="update_count">
 		UPDATE worker
-		SET code_count = CAST(#{earner_code} AS INTEGER)
+		SET code_count = CAST(#{earner_code} AS
+		INTEGER)
 		WHERE worker_id = #{worker_id}
 	</update>
-	
-	
-	
+
+
+
 	<update id="earner_update">
 		UPDATE earner
 		SET ${param_name}=#{param_value}
@@ -104,6 +110,70 @@
 			WHERE worker_id = #{worker_id}
 			AND earner_code = #{earner_code}
 		</foreach>
+	</select>
+
+
+
+	<select id="get_tax" resultType="com.douzone.entity.TaxInfoVO">
+		SELECT e.worker_id,
+		e.earner_code, e.is_tuition, e.deduction_amount, e.is_artist,
+		e.ins_reduce,
+		et.tax_id, et.tax_rate, et.ins_rate, et.total_payment,
+		et.accrual_ym,
+		et.payment_ym, et.payment_date
+		FROM earner e
+		INNER JOIN
+		earner_tax et ON e.worker_id = et.worker_id AND e.earner_code =
+		et.earner_code
+		WHERE e.worker_id = #{worker_id}
+		AND e.earner_code =
+		#{earner_code}
+		AND et.payment_ym = #{payment_ym}
+	</select>
+
+
+	<update id="tax_backup">
+		UPDATE earner_tax
+		SET
+		tax_income = #{tax_income},
+		tax_local = #{tax_local},
+		tax_total = #{tax_total},
+		ins_cost = #{ins_cost},
+		artist_cost = #{artist_cost},
+		tutition_amount = #{tutition_amount},
+		real_payment = #{real_payment}
+		WHERE tax_id = #{tax_id}
+	</update>
+	
+	
+	
+	<insert id="tax_insert">
+		INSERT INTO earner_tax (${param_name})
+		VALUES (#{param_value})
+		RETURNING tax_id
+	</insert>
+	
+	
+	<update id="tax_update">
+		UPDATE earner_tax
+		SET ${param_name} = #{param_value}
+		WHERE tax_id = #{tax_id}
+	</update>
+	
+	
+	
+	<select id="get_tax_one" resultType="com.douzone.entity.TaxInfoVO">
+		SELECT e.worker_id,
+		e.earner_code, e.is_tuition, e.deduction_amount, e.is_artist,
+		e.ins_reduce,
+		et.tax_id, et.tax_rate, et.ins_rate, et.total_payment,
+		et.accrual_ym,
+		et.payment_ym, et.payment_date
+		FROM earner e
+		INNER JOIN
+		earner_tax et ON e.worker_id = et.worker_id AND e.earner_code =
+		et.earner_code
+		WHERE et.tax_id = #{tax_id}
 	</select>
 </mapper>
 

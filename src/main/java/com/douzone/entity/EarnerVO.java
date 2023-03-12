@@ -32,10 +32,11 @@ public class EarnerVO {
 	private String phone2;
 	private String phone3;
 	private String etc;
-	private String artist_type;
-	private int deduction_amount;
-	private float ins_reduce;
-	private char is_tuition;
-	private char is_artist;
 	
+	private char is_tuition;
+	private int deduction_amount;
+	
+	private char is_artist;
+	private String artist_type;
+	private float ins_reduce;
 }

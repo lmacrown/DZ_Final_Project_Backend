@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -160,25 +161,14 @@ public class DouzoneController {
 		return result;
 	}
 
-	@PatchMapping(value = "/tax_update")
-	public Map<String, Object> tax_update(@RequestBody HashMap<String, Object> params) {
-		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
-
-		//result.put("div_list", douzoneService.list_divcode());
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-		
-		return result;
-
-	}
+	
 
 	@GetMapping(value = "/get_tax")
 	public Map<String, Object> get_tax(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
 
-		//result.put("div_list", douzoneService.list_divcode());
+		result.put("tax_list", douzoneService.get_tax(params));
 		result.put("status_code", true);
 		result.put("time_stamp", time_stamp);
 		
@@ -186,7 +176,17 @@ public class DouzoneController {
 
 	}
 	
-	
+	@PutMapping(value = "/put_tax")
+	public Map<String, Object> put_tax(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+
+		result.put("tax_info", douzoneService.put_tax(params));
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+		
+		return result;
+	}
 	
 	
 	/*

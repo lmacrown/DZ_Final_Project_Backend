@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.entity.EarnerVO;
+import com.douzone.entity.TaxInfoVO;
 
 @Mapper
 @Repository("douzoneDAO")
@@ -35,6 +36,16 @@ public interface DouzoneDAO {
 	String get_count(HashMap<String, Object> params);
 
 	boolean check_code(HashMap<String, Object> params);
+
+	List<TaxInfoVO> get_tax(HashMap<String, Object> params);
+
+	void tax_backup(TaxInfoVO taxInfo);
+
+	String tax_insert(HashMap<String, Object> params);
+
+	void tax_update(HashMap<String, Object> params);
+
+	TaxInfoVO get_tax_one(String tax_id);
 
 	
 	//String get_count(String worker_id);
