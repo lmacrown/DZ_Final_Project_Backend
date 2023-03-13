@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.douzone.DAO.IncomingDAO">
+<mapper namespace="com.douzone.DAO.RegistDAO">
 <!--사업소득자 등록-->
 	<!--코드 클릭-->
 	<select id="get_count" resultType="string">

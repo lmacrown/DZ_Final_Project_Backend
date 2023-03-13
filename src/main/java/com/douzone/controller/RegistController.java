@@ -100,11 +100,11 @@ public class RegistController {
 	public Map<String, Object> list_divcode() {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
-
+		System.out.println("됨?");
 		result.put("div_list", registService.list_divcode());
 		result.put("status_code", true);
 		result.put("time_stamp", time_stamp);
-
+		System.out.println("됨!");
 		return result;
 	}
 
