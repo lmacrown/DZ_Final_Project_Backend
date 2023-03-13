@@ -21,7 +21,7 @@
 		from member
 		where id = #{id} 
 	</select> 
-<!-- 	<select id="selectId" resultType="String">
+	<select id="selectId" resultType="String">
 		select
 		Member_ID
 		from t_shopping_member
