@@ -26,7 +26,7 @@ public class RegistController {
 	RegistService registService;
 
 	//사업자 등록
-	@GetMapping(value = "/get_count")
+	@GetMapping(value = "/regist/get_count")
 	public Map<String, Object> get_count(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -38,7 +38,7 @@ public class RegistController {
 		return result;
 	}
 
-	@GetMapping(value = "/check_code")
+	@GetMapping(value = "/regist/check_code")
 	public Map<String, Object> check_code(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -49,7 +49,7 @@ public class RegistController {
 		return result;
 	}
 
-	@GetMapping(value = "/earner_list")
+	@GetMapping(value = "/regist/earner_list")
 	public Map<String, Object> earner_list(String worker_id) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -61,7 +61,7 @@ public class RegistController {
 		return result;
 	}
 
-	@GetMapping(value = "/get_earner")
+	@GetMapping(value = "/regist/get_earner")
 	public Map<String, Object> get_earner(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -72,7 +72,7 @@ public class RegistController {
 		return result;
 	}
 
-	@PostMapping(value = "/earner_insert")
+	@PostMapping(value = "/regist/earner_insert")
 	public Map<String, Object> earner_insert(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -84,7 +84,7 @@ public class RegistController {
 		return result;
 	}
 
-	@PatchMapping(value = "/earner_update")
+	@PatchMapping(value = "/regist/earner_update")
 	public Map<String, Object> earner_update(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -96,7 +96,7 @@ public class RegistController {
 		return result;
 	}
 
-	@GetMapping(value = "/list_divcode")
+	@GetMapping(value = "/regist/list_divcode")
 	public Map<String, Object> list_divcode() {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -108,7 +108,7 @@ public class RegistController {
 		return result;
 	}
 
-	@DeleteMapping(value = "/earner_delete")
+	@DeleteMapping(value = "/regist/earner_delete")
 	public Map<String, Object> earner_delete(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();

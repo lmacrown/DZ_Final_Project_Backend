@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.douzone.DAO.IncomingDAO">
+<mapper namespace="com.douzone.DAO.InputDAO">
 <!--사업소득자 정보 입력-->
 	<!--사업자 코드 도움-->
 	<select id="earner_search" resultType="java.util.Map">

@@ -29,7 +29,7 @@ public class ListController {
 	ListService listService;
 
 	// 소득자별조회
-	@GetMapping(value = "/search_earner_code")
+	@GetMapping(value = "/list/search_earner_code")
 	public Map<String, Object> search_earner_code(Locale locale, Model model, @RequestBody HashMap<String, Object> map,
 			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
@@ -44,7 +44,7 @@ public class ListController {
 	}
 
 	// 소득구분별조회
-	@GetMapping(value = "/search_div_code")
+	@GetMapping(value = "/list/search_div_code")
 	public Map<String, Object> search_div_code(Locale locale, Model model, @RequestBody HashMap<String, Object> map,
 			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();

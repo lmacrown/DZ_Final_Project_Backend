@@ -24,7 +24,7 @@ public class InputController {
 	InputService inputService;
 	// 사업소득자 자료입력
 
-	@GetMapping(value = "/earner_search")
+	@GetMapping(value = "/input/earner_search")
 	public Map<String, Object> earner_search(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -36,7 +36,7 @@ public class InputController {
 		return result;
 	}
 
-	@GetMapping(value = "/get_earners")
+	@GetMapping(value = "/input/get_earners")
 	public Map<String, Object> get_earners(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -48,7 +48,7 @@ public class InputController {
 		return result;
 	}
 
-	@GetMapping(value = "/get_tax")
+	@GetMapping(value = "/input/get_tax")
 	public Map<String, Object> get_tax(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -61,7 +61,7 @@ public class InputController {
 
 	}
 
-	@PutMapping(value = "/put_tax")
+	@PutMapping(value = "/input/put_tax")
 	public Map<String, Object> put_tax(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();

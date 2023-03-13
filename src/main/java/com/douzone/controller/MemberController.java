@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class MemberController {
 	
-	@GetMapping("/login")
+	@GetMapping("/member/login")
 	public String loginForm(Model model,
 			@RequestParam(value = "error", required = false) String error, 
 			@RequestParam(value = "exception", required = false) String exception) {
