@@ -13,7 +13,7 @@ import com.douzone.entity.TaxInfoVO;
 
 @Mapper
 @Repository("IncomingDAO")
-public interface IncomingDAO {
+public interface InputDAO {
 	
 	List<Map<String, Object>>list_divcode();
 
@@ -29,28 +29,7 @@ public interface IncomingDAO {
 
 	void earner_delete(Map<String, Object> params);
 
-	List<IncomingVO> search_earner_code(HashMap<String, Object> map);
-
-	List<IncomingVO> search_div_code(HashMap<String, Object> map);
-	
-	List<Map<String, Object>> earner_search(Map<String, Object> params);
-
-	List<Map<String, Object>> get_earners(Map<String, Object> params);
-
 	String get_count(HashMap<String, Object> params);
 
 	boolean check_code(HashMap<String, Object> params);
-
-	List<TaxInfoVO> get_tax(HashMap<String, Object> params);
-
-	void tax_backup(TaxInfoVO taxInfo);
-
-	void tax_insert(HashMap<String, Object> params);
-
-	void tax_update(HashMap<String, Object> params);
-
-	TaxInfoVO get_tax_one(int tax_id);
-
-	
-	//String get_count(String worker_id);
 }

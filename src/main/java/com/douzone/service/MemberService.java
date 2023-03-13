@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.douzone.DAO.MemberDAO;
-import com.douzone.entity.DouzoneVO;
 import com.douzone.entity.MemberVO;
 
 @Service
