@@ -7,12 +7,11 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import com.douzone.entity.EarnerVO;
-import com.douzone.entity.IncomingVO;
+
 import com.douzone.entity.TaxInfoVO;
 
 @Mapper
-@Repository("IncomingDAO")
+@Repository("listDAO")
 public interface ListDAO {
 	
 	List<Map<String, Object>> earner_search(Map<String, Object> params);

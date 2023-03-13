@@ -8,11 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.entity.EarnerVO;
-import com.douzone.entity.IncomingVO;
-import com.douzone.entity.TaxInfoVO;
 
 @Mapper
-@Repository("IncomingDAO")
+@Repository("inputDAO")
 public interface InputDAO {
 	
 	List<Map<String, Object>>list_divcode();
