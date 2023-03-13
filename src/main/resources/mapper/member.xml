@@ -128,7 +128,7 @@
 		WHERE e.worker_id = #{worker_id}
 		AND e.earner_code =
 		#{earner_code}
-		AND et.payment_ym = #{payment_ym}
+		AND et.payment_ym = #{set_date}
 	</select>
 
 
@@ -140,17 +140,15 @@
 		tax_total = #{tax_total},
 		ins_cost = #{ins_cost},
 		artist_cost = #{artist_cost},
-		tutition_amount = #{tutition_amount},
+		tuition_amount = #{tuition_amount},
 		real_payment = #{real_payment}
 		WHERE tax_id = #{tax_id}
 	</update>
 	
 	
-	
-	<insert id="tax_insert">
-		INSERT INTO earner_tax (${param_name})
-		VALUES (#{param_value})
-		RETURNING tax_id
+	<insert id="tax_insert" useGeneratedKeys="true" keyProperty="tax_id">
+		INSERT INTO earner_tax (earner_code, worker_id, payment_ym, ${param_name})
+		VALUES (#{earner_code}, #{worker_id}, #{set_date}, #{param_value})
 	</insert>
 	
 	

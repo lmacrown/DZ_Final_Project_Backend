@@ -148,21 +148,6 @@ public class DouzoneController {
 	}
 
 
-
-	@PostMapping(value = "/tax_insert")
-	public Map<String, Object> tax_insert(@RequestBody HashMap<String, Object> params) {
-		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
-
-		//result.put("div_list", douzoneService.list_divcode());
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-		
-		return result;
-	}
-
-	
-
 	@GetMapping(value = "/get_tax")
 	public Map<String, Object> get_tax(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
@@ -187,32 +172,6 @@ public class DouzoneController {
 		
 		return result;
 	}
-	
-	
-	/*
-	@PutMapping(value = "/put_task")
-	public Map<String, Object> put_task(@RequestBody HashMap<String, Object> params, HttpSession session) {
-		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
 
-		douzoneService.put_task(params,session);
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-		
-		return result;
-	}
-
-	@DeleteMapping(value = "/delete_task")
-	public Map<String, Object> delete_task(@RequestBody HashMap<String, Object> params, HttpSession session) {
-		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
-
-		douzoneService.delete_task(params,session);
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-		
-		return result;
-
-	}*/
 
 }

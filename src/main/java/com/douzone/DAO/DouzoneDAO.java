@@ -41,11 +41,11 @@ public interface DouzoneDAO {
 
 	void tax_backup(TaxInfoVO taxInfo);
 
-	String tax_insert(HashMap<String, Object> params);
+	void tax_insert(HashMap<String, Object> params);
 
 	void tax_update(HashMap<String, Object> params);
 
-	TaxInfoVO get_tax_one(String tax_id);
+	TaxInfoVO get_tax_one(int tax_id);
 
 	
 	//String get_count(String worker_id);

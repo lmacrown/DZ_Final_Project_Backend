@@ -11,6 +11,8 @@ import com.douzone.DAO.DouzoneDAO;
 import com.douzone.entity.EarnerVO;
 import com.douzone.entity.TaxInfoVO;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+
 @Service
 public class DouzoneService {
 
@@ -74,67 +76,47 @@ public class DouzoneService {
 				taxInfo.setCalculated(false);
 				continue; 
 			}
-			calculate_tax(taxInfo);
+			taxInfo.calculate_tax();
+			douzoneDAO.tax_backup(taxInfo);
 		}
 		return result;
 	}
 	
 	public TaxInfoVO put_tax(HashMap<String, Object> params) {
-		String tax_id = (String) params.get("tax_id");
+		boolean is_exist = true;
+		if(null == params.get("tax_id")) {
+			is_exist = false;
+			System.out.println(is_exist);
+		}
+		
+			
+		
 		TaxInfoVO taxInfo = new TaxInfoVO();
-		if(tax_id == null) {
-			douzoneDAO.tax_insert(params);
-			taxInfo.setTax_id((String) params.get("tax_id"));
+		if(!is_exist) {
+		    int payment_ym = (int) params.get("set_date");
+		    if(payment_ym>202207) {
+		    	params.put("ins_rate",0.7);
+		    }
+		    else {
+		    	params.put("ins_rate",0.8);
+		    }
+		    douzoneDAO.tax_insert(params);
 		}
 		else{
 			douzoneDAO.tax_update(params);
 		}
-		
+		System.out.println("doing1");
 		String paramName =(String) params.get("param_name");
 		
-		if(paramName.equals("total_payment") || (paramName.equals("tax_rate") && tax_id != null)){
-			taxInfo = douzoneDAO.get_tax_one((String) params.get("tax_id"));
+		if(paramName.equals("total_payment") || (paramName.equals("tax_rate") && is_exist)){
+			taxInfo = douzoneDAO.get_tax_one((int) params.get("tax_id"));
 			if(taxInfo.getTotal_payment() == 0) {
 				taxInfo.setCalculated(false);
 			}
-			calculate_tax(taxInfo);
-			return taxInfo;
+			taxInfo.calculate_tax();
+			douzoneDAO.tax_backup(taxInfo);
 		}
-		return null;
+		return taxInfo;
 	}
-	
-	public void calculate_tax(TaxInfoVO taxInfo) {
-		int totalPayment = taxInfo.getTotal_payment(); // 지급총액
-		float taxRate = taxInfo.getTax_rate(); // 세율
-		
-		// 고용 보험료, 예술인 경비계산
-		int artistCost = (int)(totalPayment * 0.25);
-		taxInfo.setArtist_cost(artistCost);
-		
-		int insCost = (int) ((totalPayment - artistCost) * taxInfo.getIns_rate() * taxInfo.getIns_reduce());
-		if (insCost < 220570)
-			taxInfo.setIns_cost(insCost);
-		else
-			taxInfo.setIns_cost(220570);
-		
-		// 학자금 
-		taxInfo.setTutition_amount(taxInfo.getDeduction_amount());
-		
-		// 소득세 계산
-		int taxIncome = (int)(totalPayment * taxRate);
-		taxInfo.setTax_income(taxIncome);
-		// 지방소득세 계산
-		int localIncome = (int) (taxIncome * 0.1);
-		taxInfo.setTax_local(localIncome);
-		// 세액계 계산
-		int totalTax = taxIncome+localIncome+taxInfo.getDeduction_amount();
-		taxInfo.setTax_total(totalTax);
-		// 차인지급액 계산
-		taxInfo.setReal_payment(totalPayment-(totalTax+insCost));
-		// 계산 값 백업
-		douzoneDAO.tax_backup(taxInfo);
-		taxInfo.setCalculated(true);
-	}
-
 	
 }
