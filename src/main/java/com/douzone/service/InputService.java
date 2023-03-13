@@ -37,7 +37,6 @@ public class InputService {
 			return Integer.parseInt((String) params.get("earner_code"));
 		}
 		return 0;
-
 	}
 
 	public void earner_update(Map<String, Object> params) {
