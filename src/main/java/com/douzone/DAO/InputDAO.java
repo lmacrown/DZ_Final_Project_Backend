@@ -12,24 +12,20 @@ import com.douzone.entity.IncomingVO;
 import com.douzone.entity.TaxInfoVO;
 
 @Mapper
-@Repository("IncomingDAO")
-public interface InputDAO {
+@Repository("inputDAO")
+public interface inputDAO {
 	
-	List<Map<String, Object>>list_divcode();
+	List<Map<String, Object>> earner_search(Map<String, Object> params);
 
-	List<Map<String, Object>> earner_list(String worker_id);
+	List<Map<String, Object>> get_earners(Map<String, Object> params);
 
-	EarnerVO get_earner(Map<String, Object> params);
+	List<TaxInfoVO> get_tax(HashMap<String, Object> params);
 
-	void earner_insert(Map<String, Object> params);
-	
-	void update_count(Map<String, Object> params);
+	void tax_backup(TaxInfoVO taxInfo);
 
-	void earner_update(Map<String, Object> params);
+	void tax_insert(HashMap<String, Object> params);
 
-	void earner_delete(Map<String, Object> params);
+	void tax_update(HashMap<String, Object> params);
 
-	String get_count(HashMap<String, Object> params);
-
-	boolean check_code(HashMap<String, Object> params);
+	TaxInfoVO get_tax_one(int tax_id);
 }

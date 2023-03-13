@@ -1,16 +1,21 @@
 package com.douzone.controller;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.douzone.entity.DouzoneVO;
+import com.douzone.entity.IncomingVO;
 import com.douzone.service.ListService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,57 +27,35 @@ public class ListController {
 
 	@Autowired
 	ListService listService;
-	// 사업소득자 자료입력
 
-	@GetMapping(value = "/earner_search")
-	public Map<String, Object> earner_search(@RequestBody HashMap<String, Object> params) {
+	// 소득자별조회
+	@GetMapping(value = "/search_earner_code")
+	public Map<String, Object> search_earner_code(Locale locale, Model model, @RequestBody HashMap<String, Object> map,
+			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
+		// 데이터 5개를 보내야 함
+		DouzoneVO douzoneVo = (DouzoneVO) session.getAttribute("member");
+		map.put("worker_id", "W00004");
+		List<IncomingVO> incoming = listService.search_earner_code(map);
 
-		result.put("earner_list", listService.earner_search(params));
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
+		result.put("earnerInfo", incoming);
 
 		return result;
 	}
 
-	@GetMapping(value = "/get_earners")
-	public Map<String, Object> get_earners(@RequestBody HashMap<String, Object> params) {
+	// 소득구분별조회
+	@GetMapping(value = "/search_div_code")
+	public Map<String, Object> search_div_code(Locale locale, Model model, @RequestBody HashMap<String, Object> map,
+			HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
+		// 데이터 5개를 보내야 함
+		DouzoneVO douzoneVo = (DouzoneVO) session.getAttribute("member");
+		map.put("worker_id", "W00004");
+		List<IncomingVO> incoming = listService.search_div_code(map);
 
-		result.put("earner_list", listService.get_earners(params));
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
+		result.put("earnerInfo", incoming);
 
 		return result;
 	}
-
-	@GetMapping(value = "/get_tax")
-	public Map<String, Object> get_tax(@RequestBody HashMap<String, Object> params) {
-		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
-
-		result.put("tax_list", listService.get_tax(params));
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-
-		return result;
-
-	}
-
-	@PutMapping(value = "/put_tax")
-	public Map<String, Object> put_tax(@RequestBody HashMap<String, Object> params) {
-		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
-
-		result.put("tax_info", listService.put_tax(params));
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-
-		return result;
-	}
-
-	
 
 }

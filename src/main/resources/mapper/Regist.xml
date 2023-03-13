@@ -4,42 +4,97 @@
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.DAO.IncomingDAO">
-<!--사업소득조회-->
-	<!--사업소득자별조회-->
-	<select id="search_earner_code" parameterType="java.util.Map"
-		resultType="com.douzone.entity.IncomingVO">
-		select 
-			t.tax_id, e.earner_name, e.personal_no, e.div_code, t.accrual_ym, t.payment_ym, 
-			t.payment_date, t.total_payment, t.tax_rate, t.tuition_amount, t.tax_income, t.tax_local, 
-			t.artist_cost, t.ins_cost, t.real_payment
-		from 
-			earner e left join earner_tax t 
-			on e.earner_code=t.earner_code 
-		where 
-			e.worker_id=#{worker_id} 
-			and ${read_by} between #{start_date} and #{end_date}
-			and CAST(e.${code_name} AS text) like concat('%',#{code_value},'%') 
-		order by 
-			#{order_by};
+<!--사업소득자 등록-->
+	<!--코드 클릭-->
+	<select id="get_count" resultType="string">
+		SELECT code_count
+		FROM
+		generate_series(#{code_count}, 999999) AS code_count
+		WHERE NOT EXISTS (
+		SELECT 1
+		FROM earner
+		WHERE earner_code = lpad(code_count::text, 6, '0')
+		AND worker_id = #{worker_id})
+		LIMIT 1;
 	</select>
-	<!--사업소득별조회-->
-	<select id="search_div_code" parameterType="java.util.Map"
-		resultType="com.douzone.entity.IncomingVO">
-		select 
-			e.div_code, e.earner_name, e.personal_no, e.is_native, count(*), 
-			sum(t.total_payment) as total_payment, t.tax_rate as tax_rate, sum(t.tax_income) as tax_income, 
-			sum(t.tax_local) as tax_local, sum(t.artist_cost) as artist_cost,
-			sum(t.ins_cost) as ins_cost, sum(t.real_payment) as real_payment
-		from 
-			earner e left join earner_tax t 
-			on e.earner_code=t.earner_code
-		where 
-			e.worker_id=#{worker_id}
-			and ${read_by} between #{start_date} and #{end_date}
-			and CAST(e.${code_name} AS text) like concat('%',#{code_value},'%') 
-		group by
-			t.tax_rate, e.earner_code
-		order by 
-			#{order_by};
+	<!--소득자 존재확인-->
+	<select id="check_code" resultType="int">
+		SELECT 
+			count(*) as cnt 
+		FROM earner 
+		WHERE earner_code = #{custom_code} 
+		and   worker_id = #{worker_id});
 	</select>
+	<!--업종코드-->
+	<select id="list_divcode" resultType="java.util.Map">
+		SELECT
+			 div_code
+			,div_name
+			,div_type
+		FROM codes
+	</select>
+	<!--소득자 정보 출력-->
+	<select id="earner_list" resultType="java.util.Map">
+		SELECT
+			 earner_code
+			,earner_name
+			,personal_no
+			,is_native
+			,div_code
+			,div_name
+		FROM earner
+		WHERE worker_id = #{worker_id}
+	</select>
+	<!--소득자 등록 정보 출력-->
+	<select id="get_earner" resultType="com.douzone.entity.EarnerVO">
+		SELECT *
+		FROM earner
+		WHERE earner_code = #{earner_code}
+		AND   worker_id   = #{worker_id}
+	</select>
+	<!--소득자 정보 입력-->
+	<insert id="earner_insert" useGeneratedKeys="true" keyProperty="earner_code">
+		INSERT INTO earner (
+			 earner_code
+			,worker_id
+			,earner_name
+			,div_code
+			,div_name
+			,personal_no
+			,is_native
+		) VALUES (
+			 #{earner_code}
+			,#{worker_id}
+			,#{earner_name}
+			,#{div_code}
+			,#{div_name}
+			,#{personal_no}
+			,#{is_native}
+		)
+	</insert>
+	<!--등록된 후 code_count 증가-->
+	<update id="update_count">
+		UPDATE worker SET 
+			  code_count = CAST(#{earner_code} AS INTEGER)
+		WHERE worker_id  = #{worker_id}
+	</update>
+	<!--소득자 정보 업뎃-->
+	<update id="earner_update">
+		UPDATE earner SET 
+			${param_name} = #{param_value}
+		WHERE earner_code = #{earner_code}
+		AND   worker_id   = #{worker_id}
+	</update>
+	<!--소득자 정보 삭제-->
+	<delete id="earner_delete">
+		<foreach collection="earner_codes" item="earner_code">
+			DELETE FROM earner_tax
+			WHERE earner_code = #{earner_code}
+			AND   worker_id   = #{worker_id};
+
+			DELETE FROM earner
+			WHERE earner_code = #{earner_code}
+			AND   worker_id   = #{worker_id};
+		</foreach>
+	</delete>
 </mapper>

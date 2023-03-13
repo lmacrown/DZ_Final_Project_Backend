@@ -12,9 +12,24 @@ import com.douzone.entity.IncomingVO;
 import com.douzone.entity.TaxInfoVO;
 
 @Mapper
-@Repository("IncomingDAO")
+@Repository("registDAO")
 public interface RegistDAO {
-	List<IncomingVO> search_earner_code(HashMap<String, Object> map);
+	
+	List<Map<String, Object>>list_divcode();
 
-	List<IncomingVO> search_div_code(HashMap<String, Object> map);
+	List<Map<String, Object>> earner_list(String worker_id);
+
+	EarnerVO get_earner(Map<String, Object> params);
+
+	void earner_insert(Map<String, Object> params);
+	
+	void update_count(Map<String, Object> params);
+
+	void earner_update(Map<String, Object> params);
+
+	void earner_delete(Map<String, Object> params);
+
+	String get_count(HashMap<String, Object> params);
+
+	boolean check_code(HashMap<String, Object> params);
 }
