@@ -9,7 +9,7 @@ public class test {
 	Map<String, Object> result = new HashMap();
 	@Test
 	public void AES() throws Exception {
-	   Aes aes = new Aes("1234567812345678");
+	   Aes aes = new Aes("1234567");
 	   String enc = aes.encrypt("this is plain text");
 	   String dec = aes.decrypt(enc);
 	   System.out.println(enc);
