@@ -132,7 +132,7 @@
 	</select>
 
 
-	<update id="tax_backup">
+	<update id="calculated_update">
 		UPDATE earner_tax
 		SET
 		tax_income = #{tax_income},
@@ -149,6 +149,7 @@
 	<insert id="tax_insert" useGeneratedKeys="true" keyProperty="tax_id">
 		INSERT INTO earner_tax (earner_code, worker_id, payment_ym, ${param_name})
 		VALUES (#{earner_code}, #{worker_id}, #{set_date}, #{param_value})
+		RETURNING tax_id
 	</insert>
 	
 	

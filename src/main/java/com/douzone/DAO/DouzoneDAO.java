@@ -39,7 +39,7 @@ public interface DouzoneDAO {
 
 	List<TaxInfoVO> get_tax(HashMap<String, Object> params);
 
-	void tax_backup(TaxInfoVO taxInfo);
+	void calculated_update(TaxInfoVO taxInfo);
 
 	void tax_insert(HashMap<String, Object> params);
 

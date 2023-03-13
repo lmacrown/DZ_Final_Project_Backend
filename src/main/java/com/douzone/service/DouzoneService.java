@@ -11,7 +11,6 @@ import com.douzone.DAO.DouzoneDAO;
 import com.douzone.entity.EarnerVO;
 import com.douzone.entity.TaxInfoVO;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
 @Service
 public class DouzoneService {
@@ -77,7 +76,7 @@ public class DouzoneService {
 				continue; 
 			}
 			taxInfo.calculate_tax();
-			douzoneDAO.tax_backup(taxInfo);
+			douzoneDAO.calculated_update(taxInfo);
 		}
 		return result;
 	}
@@ -86,11 +85,9 @@ public class DouzoneService {
 		boolean is_exist = true;
 		if(null == params.get("tax_id")) {
 			is_exist = false;
-			System.out.println(is_exist);
+
 		}
-		
-			
-		
+				
 		TaxInfoVO taxInfo = new TaxInfoVO();
 		if(!is_exist) {
 		    int payment_ym = (int) params.get("set_date");
@@ -101,11 +98,12 @@ public class DouzoneService {
 		    	params.put("ins_rate",0.8);
 		    }
 		    douzoneDAO.tax_insert(params);
+		    System.out.println(params.get("tax_id"));
+		    taxInfo.setTax_id((int) params.get("tax_id"));
 		}
 		else{
 			douzoneDAO.tax_update(params);
 		}
-		System.out.println("doing1");
 		String paramName =(String) params.get("param_name");
 		
 		if(paramName.equals("total_payment") || (paramName.equals("tax_rate") && is_exist)){
@@ -114,7 +112,7 @@ public class DouzoneService {
 				taxInfo.setCalculated(false);
 			}
 			taxInfo.calculate_tax();
-			douzoneDAO.tax_backup(taxInfo);
+			douzoneDAO.calculated_update(taxInfo);
 		}
 		return taxInfo;
 	}
