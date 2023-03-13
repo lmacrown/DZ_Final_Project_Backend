@@ -17,9 +17,8 @@ public class MemberService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-		System.out.println("호출");
 		MemberVO member = memberDAO.findByEmail(id);
-		System.out.println("호출 성공");
+
 		if (member == null) throw new UsernameNotFoundException("Not Found account."); 
 		
 		return member;
