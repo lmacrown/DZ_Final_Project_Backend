@@ -65,7 +65,7 @@ public class TaxInfoVO {
 	    tax_total = tax_income + tax_local + tuition_amount;
 	    // 차인지급액 계산
 	    real_payment= (total_payment - (tax_total + ins_cost));
-	    
+	    // 계산 값 백업
 	    calculated = true;
 	}
 

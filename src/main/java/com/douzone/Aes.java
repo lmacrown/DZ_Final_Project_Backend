@@ -63,7 +63,7 @@ public class Aes {
 	private void validation(final String key) {
 		Optional.ofNullable(key)
 			.filter(Predicate.not(String::isBlank))
-			.filter(Predicate.not(s -> s.length() != 16))
+			.filter(Predicate.not(s -> s.length() != 7))
 			.orElseThrow(IllegalArgumentException::new);
 	}
 }
