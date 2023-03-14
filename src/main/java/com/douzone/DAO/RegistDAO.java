@@ -1,6 +1,5 @@
 package com.douzone.DAO;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,8 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.entity.EarnerVO;
-import com.douzone.entity.IncomingVO;
-import com.douzone.entity.TaxInfoVO;
 
 @Mapper
 @Repository("registDAO")
@@ -29,7 +26,7 @@ public interface RegistDAO {
 
 	void earner_delete(Map<String, Object> params);
 
-	String get_count(HashMap<String, Object> params);
+	String get_count(Map<String, Object> params);
 
-	boolean check_code(HashMap<String, Object> params);
+	boolean check_code(Map<String, Object> params);
 }

@@ -4,7 +4,7 @@
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.DAO.MemberDAO">
-<!-- 	<select id="login"
+	<select id="login"
 		resultType="com.douzone.entity.DouzoneVO">
 		select *
 		from worker
@@ -20,7 +20,7 @@
 			*
 		from member
 		where id = #{id} 
-	</select>  -->
+	</select> 
 <!-- 	<select id="selectId" resultType="String">
 		select
 		Member_ID

@@ -41,20 +41,23 @@
 	<!--사업소득자 클릭시 소득지급내역 출력-->
 	<select id="get_tax" resultType="com.douzone.entity.TaxInfoVO">
 		SELECT 
-			 e.worker_id
-			,e.earner_code
-			,e.is_tuition
+			 e.is_tuition<!--여부 가져올 이유 있나?-->
 			,e.deduction_amount
 			,e.is_artist
 			,e.ins_reduce
 			,et.tax_id
 			,et.tax_rate
-			,et.ins_rate
+			,et.ins_rate<!--이거와 ins_reduce를 둘다 가져와야함?-->
 			,et.total_payment
 			,et.accrual_ym
 			,et.payment_ym
 			,et.payment_date
 			,case when et.total_payment = 0 then false else true end calculated
+			,et.total_payment
+			,(et.total_payment*tax_rate*0.01) as tax_income
+			,(et.total_payment*tax_rate*0.01*0.1) as tax_local
+			,tax_total_fc(tax_income, tax_local, tuition_amount) as tax_total
+			,real_payment_fc(total_payment, tax_total, ins_cost) as real_payment
 		FROM earner e INNER JOIN earner_tax et 
 			ON  e.worker_id   = et.worker_id 
 			AND e.earner_code = et.earner_code
@@ -64,6 +67,7 @@
 	</select>
 	<!--?-->
 	<update id="tax_backup">
+		<if test="total_payment != null or tax_rate != null">
 		UPDATE earner_tax SET
 			tax_income = #{tax_income},
 			tax_local = #{tax_local},
@@ -73,16 +77,29 @@
 			tuition_amount = #{tuition_amount},
 			real_payment = #{real_payment}
 		WHERE tax_id = #{tax_id}
+		</if>
 	</update>
 	<!--세금정보 입력-->
 	<insert id="tax_insert" useGeneratedKeys="true" keyProperty="tax_id">
-		INSERT INTO earner_tax (earner_code, worker_id, payment_ym, ${param_name})
-		VALUES (#{earner_code}, #{worker_id}, #{set_date}, #{param_value})
+		INSERT INTO earner_tax (
+			 earner_code
+			,worker_id
+			,payment_ym
+			,payment_date
+			,ins_rate
+		)
+		VALUES (
+			 #{earner_code}
+			,#{worker_id}
+			,#{payment_ym}
+			,#{payment_date}
+			,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.7,2) ELSE Round(0.8, 2) END
+		)
 	</insert>
 	<!--세금정보 변경-->
 	<update id="tax_update">
 		UPDATE earner_tax
-		SET ${param_name} = #{param_value}
+		SET "${param_name}" = #{param_value}
 		WHERE tax_id = #{tax_id}
 	</update>
 	<!--세금정보 출력-->

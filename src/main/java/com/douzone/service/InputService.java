@@ -7,14 +7,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.douzone.DAO.inputDAO;
+import com.douzone.DAO.InputDAO;
 import com.douzone.entity.TaxInfoVO;
 
 @Service
 public class InputService {
 
 	@Autowired
-	inputDAO inputDAO;
+	InputDAO inputDAO;
 
 	public List<Map<String, Object>> earner_search(Map<String, Object> params) {
 		return inputDAO.earner_search(params);
@@ -25,50 +25,28 @@ public class InputService {
 	}
 
 	public List<TaxInfoVO> get_tax(HashMap<String, Object> params) {
-		List<TaxInfoVO> result = inputDAO.get_tax(params);
-
-		for (TaxInfoVO taxInfo : result) {
-			if (taxInfo.getTotal_payment() == 0) {
-				taxInfo.setCalculated(false);
-				continue;
-			}
-			taxInfo.calculate_tax();
-			inputDAO.tax_backup(taxInfo);
-		}
-		return result;
+		//get_tax조회시 inner join 한 이유
+		return inputDAO.get_tax(params);
 	}
 
-	public TaxInfoVO put_tax(HashMap<String, Object> params) {
+	public  List<TaxInfoVO> put_tax(HashMap<String, Object> params) {
 		boolean is_exist = true;
-		if (null == params.get("tax_id")) {
-			is_exist = false;
-			System.out.println(is_exist);
-		}
-
-		TaxInfoVO taxInfo = new TaxInfoVO();
-		if (!is_exist) {
-			int payment_ym = (int) params.get("set_date");
-			if (payment_ym >= 202207) {
-				params.put("ins_rate", 0.7);
-			} else {
-				params.put("ins_rate", 0.8);
-			}
+		
+		if (null==params.get("tax_id")) is_exist = false;
+		
+		if (!is_exist) 
 			inputDAO.tax_insert(params);
-		} else {
-			inputDAO.tax_update(params);
+		else {
+			update_tax(params);
 		}
-		System.out.println("doing1");
-		String paramName = (String) params.get("param_name");
+		return get_tax(params);
+	}
+	
+	public  void update_tax(HashMap<String, Object> params) {
+		TaxInfoVO taxInfo = new TaxInfoVO();
 
-		if (paramName.equals("total_payment") || (paramName.equals("tax_rate") && is_exist)) {
-			taxInfo = inputDAO.get_tax_one((int) params.get("tax_id"));
-			if (taxInfo.getTotal_payment() == 0) {
-				taxInfo.setCalculated(false);
-			}
-			taxInfo.calculate_tax();
-			inputDAO.tax_backup(taxInfo);
-		}
-		return taxInfo;
+		inputDAO.tax_update(params);
+		inputDAO.tax_backup(taxInfo);
 	}
 
 }

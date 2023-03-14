@@ -13,7 +13,7 @@ import com.douzone.entity.TaxInfoVO;
 
 @Mapper
 @Repository("inputDAO")
-public interface inputDAO {
+public interface InputDAO {
 	
 	List<Map<String, Object>> earner_search(Map<String, Object> params);
 
