@@ -7,14 +7,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.douzone.DAO.inputDAO;
+import com.douzone.DAO.InputDAO;
 import com.douzone.entity.TaxInfoVO;
 
 @Service
 public class InputService {
 
 	@Autowired
-	inputDAO inputDAO;
+	InputDAO inputDAO;
 
 	public List<Map<String, Object>> earner_search(Map<String, Object> params) {
 		return inputDAO.earner_search(params);
