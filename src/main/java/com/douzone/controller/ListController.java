@@ -20,8 +20,7 @@ import com.douzone.service.ListService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@RestController
+@RestController("listController")
 @CrossOrigin("*")
 public class ListController {
 

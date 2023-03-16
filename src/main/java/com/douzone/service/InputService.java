@@ -7,10 +7,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.douzone.DAO.InputDAO;
+import com.douzone.dao.InputDAO;
 import com.douzone.entity.TaxInfoVO;
 
-@Service
+
+
+@Service("inputService")
 public class InputService {
 
 	@Autowired
@@ -25,32 +27,21 @@ public class InputService {
 	}
 
 	public List<TaxInfoVO> get_tax(HashMap<String, Object> params) {
-		//get_tax조회시 inner join 한 이유
 		return inputDAO.get_tax(params);
 	}
 
-	public  List<TaxInfoVO> put_tax(HashMap<String, Object> params) {
-		boolean is_exist = true;
-		if (null==params.get("tax_id")) is_exist = false;
-		if (!is_exist) 
-			tax_insert(params);
-		else {
-			update_tax(params);
-		}
-		return get_tax_one(params);
+	public int put_tax(HashMap<String, Object> params) {
+		if (null == params.get("tax_id"))
+			inputDAO.tax_insert(params);
+		else
+			inputDAO.tax_update(params);
+		
+		return (int) params.get("tax_id");
 	}
-	
-	public List<TaxInfoVO> get_tax_one(HashMap<String, Object> params) {
-		return inputDAO.get_tax_one(params);
-	}
-	
-	public  void tax_insert(HashMap<String, Object> params) {
-		inputDAO.tax_insert(params);
-	}
-	
-	public  void update_tax(HashMap<String, Object> params) {
-		//inputDAO.tax_update(params);
-		inputDAO.tax_backup(params);//정보 넣고 백업
+
+	public TaxInfoVO get_tax_one(HashMap<String, Object> params) {
+		
+		return (TaxInfoVO) inputDAO.get_tax_one(params);
 	}
 
 }

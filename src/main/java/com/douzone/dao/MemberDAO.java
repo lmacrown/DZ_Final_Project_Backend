@@ -1,8 +1,7 @@
-package com.douzone.DAO;
+package com.douzone.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-
 import com.douzone.entity.MemberVO;
 
 @Mapper

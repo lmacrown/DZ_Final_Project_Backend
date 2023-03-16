@@ -1,7 +1,5 @@
 package com.douzone.controller;
 
-
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.douzone.service.InputService;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@RestController
+@RestController("inputController")
 @CrossOrigin("*")
 public class InputController {
 
@@ -39,7 +34,7 @@ public class InputController {
 		return result;
 	}
 
-	@GetMapping(value = "/get_earners")
+	@GetMapping(value = "/input/get_earners")
 	public Map<String, Object> get_earners(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -51,7 +46,7 @@ public class InputController {
 		return result;
 	}
 
-	@GetMapping(value = "/get_tax")
+	@GetMapping(value = "/input/get_tax")
 	public Map<String, Object> get_tax(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
@@ -63,16 +58,32 @@ public class InputController {
 		return result;
 
 	}
+	@GetMapping(value = "/input/get_tax_one")
+	public Map<String, Object> get_tax_one(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		LocalDateTime time_stamp = LocalDateTime.now();
+	
+		
+		result.put("earner_tax", inputService.get_tax_one(params));
+		result.put("status_code", true);
+		result.put("time_stamp", time_stamp);
+		
+		
+		return result;
 
-	@PutMapping(value = "/put_tax")
+	}
+
+	@PutMapping(value = "/input/put_tax")
 	public Map<String, Object> put_tax(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
-
-		result.put("tax_info", inputService.put_tax(params));
+	
+		
+		result.put("tax_id", inputService.put_tax(params));
 		result.put("status_code", true);
 		result.put("time_stamp", time_stamp);
-
+		
+		
 		return result;
 	}
 
