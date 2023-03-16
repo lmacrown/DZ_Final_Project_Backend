@@ -33,18 +33,24 @@ public class InputService {
 		boolean is_exist = true;
 		if (null==params.get("tax_id")) is_exist = false;
 		if (!is_exist) 
-			inputDAO.tax_insert(params);
+			tax_insert(params);
 		else {
 			update_tax(params);
 		}
-		return get_tax(params);
+		return get_tax_one(params);
+	}
+	
+	public List<TaxInfoVO> get_tax_one(HashMap<String, Object> params) {
+		return inputDAO.get_tax_one(params);
+	}
+	
+	public  void tax_insert(HashMap<String, Object> params) {
+		inputDAO.tax_insert(params);
 	}
 	
 	public  void update_tax(HashMap<String, Object> params) {
-		TaxInfoVO taxInfo = new TaxInfoVO();
-
-		inputDAO.tax_update(params);
-		inputDAO.tax_backup(taxInfo);
+		//inputDAO.tax_update(params);
+		inputDAO.tax_backup(params);//정보 넣고 백업
 	}
 
 }

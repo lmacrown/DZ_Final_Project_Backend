@@ -18,7 +18,7 @@ public interface RegistDAO {
 
 	EarnerVO get_earner(Map<String, Object> params);
 
-	void earner_insert(Map<String, Object> params);
+	void earner_form_insert(Map<String, Object> params);
 	
 	void update_count(Map<String, Object> params);
 

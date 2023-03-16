@@ -19,13 +19,15 @@ public interface InputDAO {
 
 	List<Map<String, Object>> get_earners(Map<String, Object> params);
 
-	List<TaxInfoVO> get_tax(HashMap<String, Object> params);
+	List<TaxInfoVO> get_tax(Map<String, Object> params);
+	
+	List<TaxInfoVO> get_tax_one(Map<String, Object> params);
 
-	void tax_backup(TaxInfoVO taxInfo);
+	void tax_backup(Map<String, Object> params);
 
-	void tax_insert(HashMap<String, Object> params);
+	void tax_insert(Map<String, Object> params);
 
-	void tax_update(HashMap<String, Object> params);
+	void tax_update(Map<String, Object> params);
 
 	TaxInfoVO get_tax_one(int tax_id);
 }

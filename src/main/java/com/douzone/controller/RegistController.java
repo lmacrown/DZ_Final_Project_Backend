@@ -105,7 +105,11 @@ public class RegistController {
 	public Map<String, Object> list_divcode() {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> youzan5
 		result.put("div_list", registService.list_divcode());
 		result.put("status_code", true);
 		result.put("time_stamp", time_stamp);
@@ -117,7 +121,7 @@ public class RegistController {
 	public Map<String, Object> earner_delete(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
-
+		
 		registService.earner_delete(params);
 		result.put("status_code", true);
 		result.put("time_stamp", time_stamp);

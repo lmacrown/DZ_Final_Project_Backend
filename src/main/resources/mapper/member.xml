@@ -6,9 +6,10 @@
 <mapper namespace="com.douzone.DAO.MemberDAO">
 	<select id="login"
 		resultType="com.douzone.entity.DouzoneVO">
-		select *
-		from worker
-		where worker_id=#{param1} and worker_pw=#{param2}
+		SELECT *
+		FROM worker
+		WHERE worker_id = #{param1} 
+		and worker_pw   = #{param2}
 	</select>
 	<update id="updateMemberLastLogin">
 		update member set 

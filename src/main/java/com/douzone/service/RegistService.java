@@ -29,12 +29,20 @@ public class RegistService {
 	}
 
 	public int earner_insert(Map<String, Object> params) {
-		registDAO.earner_insert(params);
+		earner_form_insert(params);
 		if ((boolean) params.get("is_default")) {
-			registDAO.update_count(params);
+			update_count(params);
 			return Integer.parseInt((String) params.get("earner_code"));
 		}
 		return 0;
+	}
+	
+	private void update_count(Map<String, Object> params) {
+		registDAO.update_count(params);
+	}
+	
+	public void earner_form_insert(Map<String, Object> params) {
+		registDAO.earner_form_insert(params);
 	}
 
 	public void earner_update(Map<String, Object> params) {
