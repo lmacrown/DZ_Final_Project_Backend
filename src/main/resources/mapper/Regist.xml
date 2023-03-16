@@ -4,8 +4,8 @@
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.DAO.RegistDAO">
-<!--사업소득자 등록-->
-	<!--코드 클릭-->
+	<!--사업소득자 등록 -->
+	<!--코드 클릭 -->
 	<select id="get_count" resultType="string">
 		SELECT code_count
 		FROM
@@ -17,84 +17,97 @@
 		AND worker_id = #{worker_id})
 		LIMIT 1;
 	</select>
-	<!--소득자 존재확인-->
+	<!--소득자 존재확인 -->
 	<select id="check_code" resultType="int">
-		SELECT 
-			count(*) as cnt 
-		FROM earner 
-		WHERE earner_code = #{custom_code} 
-		and   worker_id = #{worker_id});
+		SELECT
+		count(*) as cnt
+		FROM earner
+		WHERE earner_code = #{custom_code}
+		and worker_id = #{worker_id});
 	</select>
-	<!--업종코드-->
+	<!--업종코드 -->
 	<select id="list_divcode" resultType="java.util.Map">
 		SELECT
-			 div_code
-			,div_name
-			,div_type
+		div_code
+		,div_name
+		,div_type
 		FROM codes
 	</select>
-	<!--소득자 정보 출력-->
+	<!--소득자 정보 출력 -->
 	<select id="earner_list" resultType="java.util.Map">
 		SELECT
-			 earner_code
-			,earner_name
-			,personal_no
-			,is_native
-			,div_code
-			,div_name
+		earner_code
+		,earner_name
+		,personal_no
+		,is_native
+		,div_code
+		,div_name
 		FROM earner
 		WHERE worker_id = #{worker_id}
 	</select>
-	<!--소득자 등록 정보 출력-->
+	<!--소득자 등록 정보 출력 -->
 	<select id="get_earner" resultType="com.douzone.entity.EarnerVO">
 		SELECT *
 		FROM earner
-		WHERE earner_code = #{earner_code}
-		AND   worker_id   = #{worker_id}
+		WHERE
+		earner_code = #{earner_code}
+		AND worker_id = #{worker_id}
 	</select>
-	<!--소득자 정보 입력-->
-	<insert id="earner_insert" useGeneratedKeys="true" keyProperty="earner_code">
+	<!--소득자 정보 입력 -->
+	<insert id="earner_insert" useGeneratedKeys="true"
+		keyProperty="earner_code">
 		INSERT INTO earner (
-			 earner_code
-			,worker_id
-			,earner_name
-			,div_code
-			,div_name
-			,personal_no
-			,is_native
+		earner_code
+		,worker_id
+		,earner_name
+		,div_code
+		,div_name
+		,personal_no
+		,is_native
 		) VALUES (
-			 #{earner_code}
-			,#{worker_id}
-			,#{earner_name}
-			,#{div_code}
-			,#{div_name}
-			,#{personal_no}
-			,#{is_native}
+		#{earner_code}
+		,#{worker_id}
+		,#{earner_name}
+		,#{div_code}
+		,#{div_name}
+		,#{personal_no}
+		,#{is_native}
 		)
 	</insert>
-	<!--등록된 후 code_count 증가-->
+	<!--등록된 후 code_count 증가 -->
 	<update id="update_count">
-		UPDATE worker SET 
-			  code_count = CAST(#{earner_code} AS INTEGER)
-		WHERE worker_id  = #{worker_id}
+		UPDATE worker SET
+		code_count = CAST(#{earner_code} AS INTEGER)
+		WHERE worker_id = #{worker_id}
 	</update>
-	<!--소득자 정보 업뎃-->
+	<!--소득자 정보 업뎃 -->
 	<update id="earner_update">
-		UPDATE earner SET 
-			${param_name} = #{param_value}
+		UPDATE earner SET
+		<choose>
+			<when test="param_name=='deduction_amount'">
+				${param_name} = CAST(#{param_value} AS INTEGER)
+			</when>
+			<when test="param_name=='ins_reduce'">
+				${param_name} = CAST(#{param_value} AS DOUBLE PRECISION)
+			</when>
+			<otherwise>
+				${param_name} = #{param_value}
+			</otherwise>
+		</choose>
 		WHERE earner_code = #{earner_code}
-		AND   worker_id   = #{worker_id}
+		AND worker_id = #{worker_id}
 	</update>
-	<!--소득자 정보 삭제-->
+	<!--소득자 정보 삭제 -->
 	<delete id="earner_delete">
 		<foreach collection="earner_codes" item="earner_code">
 			DELETE FROM earner_tax
 			WHERE earner_code = #{earner_code}
-			AND   worker_id   = #{worker_id};
+			AND worker_id = #{worker_id};
 
 			DELETE FROM earner
 			WHERE earner_code = #{earner_code}
-			AND   worker_id   = #{worker_id};
+			AND worker_id =
+			#{worker_id};
 		</foreach>
 	</delete>
 </mapper>

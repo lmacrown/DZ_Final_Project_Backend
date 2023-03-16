@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +32,8 @@ public class RegistController {
 	public Map<String, Object> get_count(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
-
+		
+		log.info("Received a request to get user with ID: {}", params);
 		result.put("code_count", registService.get_count(params));
 		result.put("status_code", true);
 		result.put("time_stamp", time_stamp);
@@ -49,11 +52,13 @@ public class RegistController {
 		return result;
 	}
 
-	@GetMapping(value = "/earner_list")
-	public Map<String, Object> earner_list(String worker_id) {
+	@GetMapping(value = "/regist/earner_list/{worker_id}")
+	public Map<String, Object> earner_list(Model model,@PathVariable String worker_id) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
-
+        
+       
+        log.info("hi");
 		result.put("earner_list", registService.earner_list(worker_id));
 		result.put("status_code", true);
 		result.put("time_stamp", time_stamp);
@@ -100,11 +105,11 @@ public class RegistController {
 	public Map<String, Object> list_divcode() {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
-		System.out.println("됨?");
+	
 		result.put("div_list", registService.list_divcode());
 		result.put("status_code", true);
 		result.put("time_stamp", time_stamp);
-		System.out.println("됨!");
+
 		return result;
 	}
 

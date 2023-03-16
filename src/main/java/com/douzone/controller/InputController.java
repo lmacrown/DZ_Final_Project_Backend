@@ -1,5 +1,7 @@
 package com.douzone.controller;
 
+
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +29,7 @@ public class InputController {
 	@GetMapping(value = "/input/earner_search")
 	public Map<String, Object> earner_search(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
+		
 		LocalDateTime time_stamp = LocalDateTime.now();
 
 		result.put("earner_list", inputService.earner_search(params));
@@ -40,7 +43,7 @@ public class InputController {
 	public Map<String, Object> get_earners(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		LocalDateTime time_stamp = LocalDateTime.now();
-
+	
 		result.put("earner_list", inputService.get_earners(params));
 		result.put("status_code", true);
 		result.put("time_stamp", time_stamp);

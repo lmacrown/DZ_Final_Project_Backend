@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.douzone.DAO.RegistDAO;
 import com.douzone.entity.EarnerVO;
-import com.douzone.entity.IncomingVO;
-import com.douzone.entity.TaxInfoVO;
 
 @Service
 public class RegistService {

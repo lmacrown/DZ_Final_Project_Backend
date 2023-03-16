@@ -31,9 +31,7 @@ public class InputService {
 
 	public  List<TaxInfoVO> put_tax(HashMap<String, Object> params) {
 		boolean is_exist = true;
-		
 		if (null==params.get("tax_id")) is_exist = false;
-		
 		if (!is_exist) 
 			inputDAO.tax_insert(params);
 		else {
