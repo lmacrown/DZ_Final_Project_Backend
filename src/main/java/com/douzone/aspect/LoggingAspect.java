@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -34,37 +35,45 @@ public class LoggingAspect {
 	}
 
 	@Around("loggerPointCut()")
-	public Object methodLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-		try {
-			Object result = proceedingJoinPoint.proceed();
-			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-					.getRequest();
-			String layerName = proceedingJoinPoint.getSignature().getDeclaringType().getSimpleName();
-			String methodName = proceedingJoinPoint.getSignature().getName();
+	public Object methodLogger(ProceedingJoinPoint joinPoint) throws Throwable {
+		// 메서드 실행 전 로깅 처리
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		long startTime = System.currentTimeMillis();
+		log.info("\nrequest: {}", setMethod(joinPoint,request));
+		log.info("\nparams: {{}", getParams(request) + "}");
 
-			Map<String, Object> params = new LinkedHashMap<>();
-
-			try {
-				params.put("Controller", color(PURPLE, layerName));
-				params.put("http_method", color(GREEN, request.getMethod()));
-				params.put("method", color(RED, methodName));
-				params.put("request_uri", color(YELLOW, request.getRequestURI()));
-
-			} catch (Exception e) {
-				log.error("LoggerAspect error", e);
-			}
-			log.info("\nrequest: {}", params);
-			log.info("\nparams: {{}", color(CYAN, getParams(request)) + "}");
-			return result;
-
-		} catch (Throwable throwable) {
-			throw throwable;
-		}
+		// 메서드 실행
+		Object result = joinPoint.proceed();
+		long endTime = System.currentTimeMillis();
+		long processingTime = endTime - startTime;
+		String responseParam = color(CYAN,new ObjectMapper().writeValueAsString(result));
+		
+		log.info("\nresponse: {}", setMethod(joinPoint,request));
+		log.info("Processing time : {} ms", processingTime);
+		log.info("\nparams: {{}", responseParam + "}");
+		return result;
 	}
+	
+	private static Map<String, Object> setMethod(ProceedingJoinPoint joinPoint, HttpServletRequest request) {
+		String layerName = joinPoint.getSignature().getDeclaringType().getSimpleName();
+		String methodName = joinPoint.getSignature().getName();
+		Map<String, Object> params = new LinkedHashMap<>();
 
+		try {
+			params.put("Controller", color(PURPLE, layerName));
+			params.put("http_method", color(GREEN, request.getMethod()));
+			params.put("method", color(RED, methodName));
+			params.put("uri", color(YELLOW, request.getRequestURI()));
+
+		} catch (Exception e) {
+			log.error("LoggerAspect error", e);
+		}
+		return params;
+	}
+	
 	private static String getParams(HttpServletRequest request) {
 		StringBuilder result = new StringBuilder();
-		Enumeration<String> params = request.getParameterNames();
+		Enumeration<String> params =  request.getParameterNames();
 		while (params.hasMoreElements()) {
 			String param = params.nextElement();
 			String replaceParam = param.replaceAll("\\.", "-");
@@ -74,10 +83,10 @@ public class LoggingAspect {
 				result.append(",\n\t ");
 			}
 		}
-		return result.toString();
+		return color(CYAN,result.toString());
 	}
 
 	private static String color(String colorCode, String text) {
-		return colorCode + text + RESET;
-	}
+        return colorCode + text + RESET;
+    }
 }

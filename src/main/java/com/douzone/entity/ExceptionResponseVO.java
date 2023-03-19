@@ -16,5 +16,4 @@ public class ExceptionResponseVO {
 	private LocalDateTime timestamp;
 	private int status;
 	private String message;
-	private String details;
 }

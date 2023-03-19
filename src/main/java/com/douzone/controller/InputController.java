@@ -1,17 +1,18 @@
 package com.douzone.controller;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.douzone.service.InputService;
 
+import com.douzone.handler.GlobalResponseHandler;
+import com.douzone.service.InputService;
 
 @RestController("inputController")
 @CrossOrigin("*")
@@ -20,73 +21,41 @@ public class InputController {
 	@Autowired
 	InputService inputService;
 	// 사업소득자 자료입력
+	@Autowired
+	GlobalResponseHandler gloabalResponseHandler;
 
-	@GetMapping(value = "/input/earner_search")
+	@PostMapping(value = "/input/earner_search")
 	public Map<String, Object> earner_search(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		
-		LocalDateTime time_stamp = LocalDateTime.now();
-
 		result.put("earner_list", inputService.earner_search(params));
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-
-		return result;
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/input/get_earners")
+	@PostMapping(value = "/input/get_earners")
 	public Map<String, Object> get_earners(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
-	
 		result.put("earner_list", inputService.get_earners(params));
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-
-		return result;
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/input/get_tax")
+	@PostMapping(value = "/input/get_tax")
 	public Map<String, Object> get_tax(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
-
 		result.put("tax_list", inputService.get_tax(params));
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-
-		return result;
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 
 	}
-	@GetMapping(value = "/input/get_tax_one")
+	@PostMapping(value = "/input/get_tax_one")
 	public Map<String, Object> get_tax_one(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
-	
-		
 		result.put("earner_tax", inputService.get_tax_one(params));
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-		
-		
-		return result;
-
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/input/put_tax")
 	public Map<String, Object> put_tax(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		LocalDateTime time_stamp = LocalDateTime.now();
-	
-		
 		result.put("tax_id", inputService.put_tax(params));
-		result.put("status_code", true);
-		result.put("time_stamp", time_stamp);
-		
-		
-		return result;
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-
-	
-
 }

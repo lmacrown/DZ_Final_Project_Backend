@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.douzone.entity.DouzoneVO;
 import com.douzone.entity.IncomingVO;
+import com.douzone.handler.GlobalResponseHandler;
 import com.douzone.service.ListService;
 
-import lombok.extern.slf4j.Slf4j;
 
 @RestController("listController")
 @CrossOrigin("*")
@@ -26,7 +27,8 @@ public class ListController {
 
 	@Autowired
 	ListService listService;
-
+	@Autowired
+	GlobalResponseHandler gloabalResponseHandler;
 	// 소득자별조회
 	@GetMapping(value = "/search_earner_code")
 	public Map<String, Object> search_earner_code(Locale locale, Model model, @RequestBody HashMap<String, Object> map,
@@ -39,7 +41,7 @@ public class ListController {
 
 		result.put("earnerInfo", incoming);
 
-		return result;
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
 	// 소득구분별조회
@@ -54,7 +56,7 @@ public class ListController {
 
 		result.put("earnerInfo", incoming);
 
-		return result;
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
 }
