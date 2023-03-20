@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExceptionResponseVO {
-	private boolean status_code;
+	private int status_code;
 	private LocalDateTime timestamp;
-	private int status;
+	private boolean status;
 	private String message;
 }

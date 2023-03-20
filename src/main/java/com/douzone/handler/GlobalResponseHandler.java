@@ -71,7 +71,7 @@ public class GlobalResponseHandler {
 	// 예외의 공통된 작업을 처리하는 메서드
 	private ResponseEntity<ExceptionResponseVO> buildExceptionResponseVO(HttpStatus status, String message,
 			Exception e) {
-		ExceptionResponseVO errorResponse = new ExceptionResponseVO(false, LocalDateTime.now(), status.value(), message);
+		ExceptionResponseVO errorResponse = new ExceptionResponseVO(status.value(),LocalDateTime.now(),false,message);
 		
 		log.error("Server Error: Status - {}, Message - {}, Details - {}", status.value(), message, e.getMessage());
 		log.error("StackTrace:{}", ExceptionUtils.getStackTrace(e));
@@ -84,8 +84,8 @@ public class GlobalResponseHandler {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String formattedDateTime = LocalDateTime.now().format(formatter);
 		result.put("time_stamp", formattedDateTime);
-		result.put("status",status.value());
-		result.put("status_code",true);
+		result.put("status_code",status.value());
+		result.put("status",true);
 		return result;
 	}
 
