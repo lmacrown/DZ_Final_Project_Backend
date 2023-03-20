@@ -67,21 +67,27 @@
 		AND   e.earner_code = #{earner_code}
 		AND   et.payment_ym = #{set_date}
 	</select>
-	<!--?-->
-	<update id="tax_backup">
+	<select id="tax_backup" statementType="CALLABLE" resultType="java.util.Map"
+		parameterType="java.util.Map">
 		<if test="total_payment != null">
-		UPDATE earner_tax SET
-			total_payment=#{total_payment}
-			,tax_rate =#{tax_rate}
-			,tax_income = #{tax_income}
-			,tax_local = #{tax_local}
-			,tax_total = #{tax_total}
-			,ins_cost = #{ins_cost}
-			,artist_cost = #{artist_cost}
-			,tuition_amount = #{tuition_amount}
-			,real_payment = #{real_payment}
-		WHERE tax_id = #{tax_id}
+			call get_employee_info(
+				#{total_payment},
+				#{payment_date},
+				#{tuition_amount},
+				#{tax_id},
+				#{result, mode=OUT, jdbcType=OTHER}
+			)
 		</if>
+	</select>
+	<update id="update_info">
+		update earner_tax set 1=1
+		<if test="payment_date != null">
+			,payment_date=#{payment_date}
+		</if>
+		<if test="accrual_ym != null">
+			,accrual_ym=#{accrual_ym}
+		</if>
+		where tax_id=#{tax_id}
 	</update>
 	<!--세금정보 입력-->
 	<insert id="tax_insert" useGeneratedKeys="true" keyProperty="tax_id">

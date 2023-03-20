@@ -1,14 +1,11 @@
 package com.douzone.DAO;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import com.douzone.entity.EarnerVO;
-import com.douzone.entity.IncomingVO;
 import com.douzone.entity.TaxInfoVO;
 
 @Mapper
@@ -30,4 +27,6 @@ public interface InputDAO {
 	void tax_update(Map<String, Object> params);
 
 	TaxInfoVO get_tax_one(int tax_id);
+
+	void update_info(Map<String, Object> params);
 }
