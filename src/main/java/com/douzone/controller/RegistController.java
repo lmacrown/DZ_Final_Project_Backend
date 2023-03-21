@@ -40,6 +40,7 @@ public class RegistController {
 	@PostMapping(value = "/regist/check_code")
 	public Map<String, Object> check_code(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
+		result.put("code_count", registService.check_code(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
@@ -50,7 +51,7 @@ public class RegistController {
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/resgist/get_earner")
+	@PostMapping(value = "/regist/get_earner")
 	public Map<String, Object> get_earner(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		result.put("earner_info", registService.get_earner(params));

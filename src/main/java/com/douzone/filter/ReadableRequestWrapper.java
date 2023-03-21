@@ -56,6 +56,7 @@ public class ReadableRequestWrapper extends HttpServletRequestWrapper { // ÏÉÅÏÜ
 				setParameter("requestBody", jsonArray.toJSONString());
 			} else {
 				JSONObject jsonObject = (JSONObject)jsonParser.parse(collect);
+				@SuppressWarnings("rawtypes")
 				Iterator iterator = jsonObject.keySet().iterator();
 				while (iterator.hasNext()) {
 					String key = (String)iterator.next();

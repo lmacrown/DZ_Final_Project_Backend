@@ -26,5 +26,5 @@ public interface RegistDAO {
 
 	String get_count(Map<String, Object> params);
 
-	boolean check_code(Map<String, Object> params);
+	int check_code(Map<String, Object> params);
 }

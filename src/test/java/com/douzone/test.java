@@ -6,7 +6,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 public class test {
-	Map<String, Object> result = new HashMap();
+	Map<String, Object> result = new HashMap<String, Object>();
 	@Test
 	public void AES() throws Exception {
 	   Aes aes = new Aes("1234567");

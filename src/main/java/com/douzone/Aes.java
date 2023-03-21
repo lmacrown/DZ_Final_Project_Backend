@@ -29,7 +29,7 @@ public class Aes {
 	   public Aes(final String key) throws Exception{
 	        validation(key);
 	        
-	        byte[] keyBytes = key.getBytes("UTF-8");
+	        //byte[] keyBytes = key.getBytes("UTF-8");
 	        secretKeySpec = new SecretKeySpec(ENCODING_TYPE.getBytes(), "AES");
 	        cipher = Cipher.getInstance(INSTANCE_TYPE);
 	        ivParameterSpec = new IvParameterSpec(UTF_8.getBytes());

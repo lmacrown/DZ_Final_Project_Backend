@@ -22,7 +22,7 @@
       SELECT count(*) as cnt 
       FROM earner 
       WHERE earner_code = #{custom_code} 
-      AND     worker_id = #{worker_id});
+      AND     worker_id = #{worker_id}
    </select>
    <!--업종코드-->
    <select id="list_divcode" resultType="java.util.Map">

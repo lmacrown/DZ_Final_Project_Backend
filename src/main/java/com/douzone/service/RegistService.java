@@ -57,7 +57,7 @@ public class RegistService {
 		return registDAO.get_count(params);
 	}
 
-	public boolean check_code(HashMap<String, Object> params) {
+	public int check_code(HashMap<String, Object> params) {
 		return registDAO.check_code(params);
 	}
 }
