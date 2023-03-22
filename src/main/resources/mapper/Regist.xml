@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.douzone.DAO.RegistDAO">
+<mapper namespace="com.douzone.dao.RegistDAO">
 <!--사업소득자 등록-->
 	<!--코드 클릭-->
 	<select id="get_count" resultType="string">
@@ -22,7 +22,7 @@
 		SELECT count(*) as cnt 
 		FROM earner 
 		WHERE earner_code = #{custom_code} 
-		AND     worker_id = #{worker_id});
+		AND     worker_id = #{worker_id}
 	</select>
 	<!--업종코드-->
 	<select id="list_divcode" resultType="java.util.Map">

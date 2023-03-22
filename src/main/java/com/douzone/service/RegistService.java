@@ -7,12 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.douzone.DAO.RegistDAO;
+import com.douzone.dao.RegistDAO;
 import com.douzone.entity.EarnerVO;
-import com.douzone.entity.IncomingVO;
-import com.douzone.entity.TaxInfoVO;
 
-@Service
+@Service("registService")
 public class RegistService {
 
 	@Autowired
@@ -59,7 +57,7 @@ public class RegistService {
 		return registDAO.get_count(params);
 	}
 
-	public boolean check_code(HashMap<String, Object> params) {
+	public int check_code(HashMap<String, Object> params) {
 		return registDAO.check_code(params);
 	}
 }

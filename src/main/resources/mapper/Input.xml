@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.douzone.DAO.InputDAO">
+<mapper namespace="com.douzone.dao.InputDAO">
 <!--사업소득자 정보 입력-->
 	<!--사업자 코드 도움-->
 	<select id="earner_search" resultType="java.util.Map">
@@ -67,26 +67,20 @@
 		AND   e.earner_code = #{earner_code}
 		AND   et.payment_ym = #{set_date}
 	</select>
-	<select id="tax_backup" statementType="CALLABLE" resultType="java.util.Map"
+	<select id="update_taxinfo" statementType="CALLABLE" resultType="java.util.Map"
 		parameterType="java.util.Map">
 		<if test="total_payment != null">
 			call get_employee_info(
 				#{total_payment},
-				#{payment_date},
-				#{tuition_amount},
+				#{tax_rate},
 				#{tax_id},
 				#{result, mode=OUT, jdbcType=OTHER}
 			)
 		</if>
 	</select>
-	<update id="update_info">
-		update earner_tax set 1=1
-		<if test="payment_date != null">
-			,payment_date=#{payment_date}
-		</if>
-		<if test="accrual_ym != null">
-			,accrual_ym=#{accrual_ym}
-		</if>
+	<update id="update_taxdate">
+		update earner_tax set 
+		${patch_param} = #{patch_value}
 		where tax_id=#{tax_id}
 	</update>
 	<!--세금정보 입력-->
@@ -106,37 +100,4 @@
 			,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.7,2) ELSE Round(0.8, 2) END
 		)
 	</insert>
-	<!--세금정보 변경. 사용 X-->
-<!-- 	<update id="tax_update">
-		UPDATE earner_tax SET 
-		${param_name} = #{param_value}
-		WHERE tax_id = #{tax_id}
-	</update> -->
-	<!--세금정보 출력-->
-	<select id="get_tax_one" resultType="com.douzone.entity.TaxInfoVO">
-		SELECT 
-			 e.is_tuition
-			,e.deduction_amount
-			,e.is_artist
-			,e.ins_reduce
-			,et.tax_id
-			,et.tax_rate
-			,et.ins_rate
-			,et.total_payment
-			,et.accrual_ym
-			,et.payment_ym
-			,et.payment_date
-			,case when et.total_payment = 0 then false else true end calculated
-			,et.total_payment<!--지급총액-->
-			,tax_income_fc(et.total_payment, et.tax_rate) as tax_income<!--소득세-->
-			,tax_local_fc(et.total_payment, et.tax_rate) as tax_local<!--지방소득세-->
-			,artist_cost_fc(et.total_payment) as artist_cost<!--예술인 경비-->
-			,ins_cost_fc(total_payment, artist_cost, CAST(ins_rate as  numeric), CAST(ins_reduce as numeric)) as ins_cost <!--고용보험료-->
-			,tax_total_fc(tax_income, tax_local, tuition_amount) as tax_total<!-- 세액계-->
-			,real_payment_fc(total_payment, tax_total, ins_cost) as real_payment<!--차인지급액-->
-		FROM earner e left JOIN earner_tax et
-		  	ON  et.worker_id = e.worker_id 
-		  	AND et.earner_code = e.earner_code
-		WHERE et.tax_id = #{tax_id}
-	</select>
 </mapper>

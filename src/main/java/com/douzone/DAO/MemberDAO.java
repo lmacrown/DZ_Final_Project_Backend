@@ -1,4 +1,4 @@
-package com.douzone.DAO;
+package com.douzone.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;

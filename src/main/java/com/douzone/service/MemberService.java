@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.douzone.DAO.MemberDAO;
+import com.douzone.dao.MemberDAO;
 import com.douzone.entity.MemberVO;
 
-@Service
+@Service("memberService")
 public class MemberService implements UserDetailsService {
 
 	@Autowired
