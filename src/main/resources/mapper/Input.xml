@@ -80,7 +80,8 @@
 	</select>
 	<update id="update_taxdate">
 		update earner_tax set 
-		${patch_param} = #{patch_value}
+			 payment_date = #{payment_date}
+			,accrual_ym   = #{accrual_ym}
 		where tax_id=#{tax_id}
 	</update>
 	<!--세금정보 입력-->
@@ -99,5 +100,6 @@
 			,#{payment_date}
 			,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.7,2) ELSE Round(0.8, 2) END
 		)
+		RETURNING tax_id
 	</insert>
 </mapper>
