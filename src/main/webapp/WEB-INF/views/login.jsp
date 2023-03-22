@@ -18,11 +18,11 @@
 			<TBODY>
 				<TR class="dot_line">
 					<TD class="fixed_join">아이디</TD>
-					<TD><input name="username" type="text" size="20" /></TD>
+					<TD><input name="worker_id" type="text" size="20" /></TD>
 				</TR>
 				<TR class="solid_line">
 					<TD class="fixed_join">비밀번호</TD>
-					<TD><input name="password" type="password" size="20" /></TD>
+					<TD><input name="worker_pw" type="password" size="20" /></TD>
 				</TR>
 			</TBODY>
 		</TABLE>

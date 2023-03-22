@@ -25,7 +25,7 @@ public class AuthSucessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		memberDAO.updateMemberLastLogin(authentication.getName());
 		System.out.println("authentication ->" + authentication);
 		
-        setDefaultTargetUrl("/board/list.do");
+        setDefaultTargetUrl("localhost:3000/");
         
         super.onAuthenticationSuccess(request, response, authentication);
     }
