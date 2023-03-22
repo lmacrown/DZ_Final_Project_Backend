@@ -20,9 +20,7 @@ public interface InputDAO {
 
 	void tax_insert(Map<String, Object> params);
 
-	void tax_update(Map<String, Object> params);
-	
-	TaxInfoVO get_tax_one(Map<String, Object> params);
+	void update_taxdate(Map<String, Object> params);
 
-	
+	void update_taxinfo(Map<String, Object> params);
 }

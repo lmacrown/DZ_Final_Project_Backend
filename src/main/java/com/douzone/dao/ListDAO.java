@@ -5,8 +5,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+<<<<<<< HEAD:src/main/java/com/douzone/dao/ListDAO.java
 import com.douzone.entity.IncomingVO;
 
+=======
+
+import com.douzone.entity.IncomingVO;
+>>>>>>> main:src/main/java/com/douzone/DAO/ListDAO.java
 
 @Mapper
 @Repository("listDAO")
