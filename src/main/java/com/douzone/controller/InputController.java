@@ -48,7 +48,7 @@ public class InputController {
 	@PostMapping(value = "/input/get_tax_one")
 	public Map<String, Object> get_tax_one(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		result.put("earner_tax", inputService.get_tax_one(params));
+		//result.put("earner_tax", inputService.get_tax_one(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 

@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalResponseHandler {
+public class GlobalResponseHandlerTest {
 
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<ExceptionResponseVO> handleNullPointerException(NullPointerException e) {

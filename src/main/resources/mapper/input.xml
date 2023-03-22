@@ -90,16 +90,14 @@
 	<insert id="tax_insert" useGeneratedKeys="true"
 		keyProperty="tax_id">
 		INSERT INTO earner_tax (
-		earner_code
+		  earner_code
 		, worker_id
 		, payment_ym
-		, ${param_name}
-		,ins_rate)
+		, ins_rate)
 		VALUES (
-		#{earner_code}
+		  #{earner_code}
 		, #{worker_id}
 		, #{payment_ym}
-		, #{param_value}
 		, CASE WHEN #{payment_ym} >= 202207 THEN
 		Round(0.7,2) ELSE Round(0.8, 2) END)
 		RETURNING tax_id
