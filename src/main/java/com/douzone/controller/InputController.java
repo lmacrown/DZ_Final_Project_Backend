@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,10 +53,24 @@ public class InputController {
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/input/put_tax")
-	public Map<String, Object> put_tax(@RequestBody HashMap<String, Object> params) {
+	@PostMapping(value = "/input/tax_insert")
+	public Map<String, Object> tax_insert(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		result.put("tax_id", inputService.put_tax(params));
+		result.put("tax_id", inputService.tax_insert(params));
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+	}
+	
+	@PatchMapping(value = "/input/update_taxdate")
+	public Map<String, Object> update_taxdate(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		inputService.update_taxdate(params);
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+	}
+	
+	@PatchMapping(value = "/input/update_taxinfo")
+	public Map<String, Object> update_taxinfo(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		result.put("tax_id", inputService.update_taxinfo(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 }
