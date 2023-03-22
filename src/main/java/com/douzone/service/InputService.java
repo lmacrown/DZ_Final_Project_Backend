@@ -35,18 +35,16 @@ public class InputService {
 		return inputDAO.get_tax(params);
 	}
 
-	public Map<String, Object> update_taxinfo(Map<String, Object> params) {
+	public EarnerTaxVO update_taxinfo(Map<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		params.put("result", null);
-			
-		int i=1;
+		EarnerTaxVO earnerTax = null;
+		
 		inputDAO.update_taxinfo(params);
 		ResultSet rs = (ResultSet) params.get("result");// 뒤부터 값 확인 코드 => 결과 확인 후 삭제
-		List<Map<String, Object>> earner_taxs  = new ArrayList<>();
 		try {
 			while (rs.next()) {
-				Map<String, Object> earner_tax = new HashMap<String, Object>();
-				EarnerTaxVO earnerTax = new EarnerTaxVO(
+				earnerTax = new EarnerTaxVO(
 					rs.getString("is_tuition"),
 					rs.getString("deduction_amount"),
 					rs.getString("is_artist"),
@@ -65,15 +63,15 @@ public class InputService {
 					rs.getString("ins_cost"),
 					rs.getString("tax_total"),
 					rs.getString("real_payment")
+					
 				);
-				earner_tax.put("earner_tax"+ (i++), earnerTax);
-				earner_taxs.add(earner_tax);
+				result.put("?", earnerTax);
 			}
-		result.put("earner_tax", earner_taxs);
+		
 		} catch (Exception e) {
 			System.out.println(e.getMessage());// 로그로 고칠 것
 		}
-		return result;
+		return earnerTax;
 	}
 
 	public void update_taxdate(Map<String, Object> params) {

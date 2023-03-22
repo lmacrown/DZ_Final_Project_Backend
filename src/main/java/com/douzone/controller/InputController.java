@@ -70,7 +70,7 @@ public class InputController {
 	@PatchMapping(value = "/input/update_taxinfo")
 	public Map<String, Object> update_taxinfo(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		result.put("tax_id", inputService.update_taxinfo(params));
+		result.put("earner_tax", inputService.update_taxinfo(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 }

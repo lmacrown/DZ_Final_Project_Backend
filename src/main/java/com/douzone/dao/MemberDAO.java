@@ -9,7 +9,7 @@ import com.douzone.entity.MemberVO;
 public interface MemberDAO {
 
 	public int updateMemberLastLogin(String id);
-	public MemberVO findByEmail(String id);
+	public MemberVO login(String id);
 	
 }
 
