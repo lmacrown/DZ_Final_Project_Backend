@@ -6,9 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,25 +32,33 @@ public class InputController {
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/input/get_earners")
-	public Map<String, Object> get_earners(@RequestBody HashMap<String, Object> params) {
+	@PostMapping(value = "/input/get_task")
+	public Map<String, Object> get_task(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		result.put("earner_list", inputService.get_earners(params));
+		result.put("task_list", inputService.get_task(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-
+	
+	@PostMapping(value = "/input/task_insert")
+	public Map<String, Object> task_insert(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		inputService.task_insert(params);
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value = "/input/task_delete")
+	public Map<String, Object> task_delete(@RequestBody HashMap<String, Object> params) {
+		Map<String, Object> result = new HashMap<>();
+		inputService.task_delete(params);
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/input/get_tax")
 	public Map<String, Object> get_tax(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
 		result.put("tax_list", inputService.get_tax(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 
-	}
-	@PostMapping(value = "/input/get_tax_one")
-	public Map<String, Object> get_tax_one(@RequestBody HashMap<String, Object> params) {
-		Map<String, Object> result = new HashMap<>();
-		//result.put("earner_tax", inputService.get_tax_one(params));
-		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/input/tax_insert")

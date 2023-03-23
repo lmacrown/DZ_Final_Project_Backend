@@ -18,27 +18,63 @@
 		WHERE worker_id = #{worker_id}
 		<if test="search_value != null and search_value != ''">
 			AND earner_code ILIKE concat('%', #{search_value}, '%')
-			OR earner_name ILIKE concat('%', #{search_value}, '%')
-			OR div_code ILIKE concat('%', #{search_value}, '%')
+			OR
+			earner_name ILIKE concat('%', #{search_value}, '%')
+			OR div_code ILIKE
+			concat('%', #{search_value}, '%')
 		</if>
 	</select>
 	<!--사업자 정보 출력 -->
-	<select id="get_earners" resultType="java.util.Map">
-		SELECT
+	<select id="get_task" resultType="java.util.Map">
+		SELECT 
+		it.earner_code
+		, it.worker_id
+		, it.payment_ym
+		, e.earner_name
+		, e.div_code
+		, e.div_name
+		, e.is_native
+		, e.personal_no
+		, e.is_tuition
+		, e.is_artist
+		FROM input_task AS it INNER JOIN earner AS e 
+		ON it.earner_code = e.earner_code 
+		AND it.worker_id =	e.worker_id
+		WHERE it.worker_id = #{worker_id}
+		AND it.payment_ym = #{payment_ym}
+	</select>
+
+	<insert id="task_insert">
+		INSERT INTO input_task (
 		earner_code
-		,earner_name
-		,is_native
-		,personal_no
-		,div_name
-		,div_code
-		FROM earner
-		WHERE worker_id = #{worker_id}
-		AND earner_code in
+		,worker_id
+		,payment_ym)
+		VALUES (
+		#{earner_code}
+		,#{worker_id}
+		,#{payment_ym}
+		)
+	</insert>
+
+	<delete id="task_delete">
+		DELETE FROM earner_tax
+		WHERE earner_code in
 		<foreach collection="earner_codes" item="earner_code" open="("
-			separator="," close=")">
+			close=")" separator=",">
 			#{earner_code}
 		</foreach>
-	</select>
+		AND worker_id = #{worker_id}
+		AND payment_ym = #{payment_ym};
+
+		DELETE FROM input_task
+		WHERE earner_code in
+		<foreach collection="earner_codes" item="earner_code" open="("
+			close=")" separator=",">
+			#{earner_code}
+		</foreach>
+		AND worker_id = #{worker_id}
+		AND payment_ym = #{payment_ym};
+	</delete>
 	<!--사업소득자 클릭시 소득지급내역 출력 -->
 	<select id="get_tax" resultType="com.douzone.entity.TaxInfoVO">
 		SELECT
@@ -53,7 +89,8 @@
 		,et.accrual_ym
 		,et.payment_ym
 		,et.payment_date
-		,case when et.total_payment = 0 then false else true end calculated
+		,case when et.total_payment = 0 then
+		false else true end calculated
 		,et.total_payment<!--지급총액 -->
 		,tax_income_fc(et.total_payment, et.tax_rate) as tax_income<!--소득세 -->
 		,tax_local_fc(et.total_payment, et.tax_rate) as tax_local<!--지방소득세 -->
@@ -64,26 +101,30 @@
 		,real_payment_fc(total_payment, tax_total, ins_cost) as real_payment<!--차인지급액 -->
 		FROM earner e LEFT JOIN earner_tax et
 		ON e.worker_id = et.worker_id
-		AND e.earner_code = et.earner_code
+		AND
+		e.earner_code = et.earner_code
 		WHERE e.worker_id = #{worker_id}
-		AND e.earner_code = #{earner_code}
+		AND
+		e.earner_code = #{earner_code}
 		AND et.payment_ym = #{payment_ym}
 	</select>
-	<select id="update_taxinfo" statementType="CALLABLE" resultType="java.util.Map"
-		parameterType="java.util.Map">
+
+	<select id="update_taxinfo" statementType="CALLABLE"
+		resultType="java.util.Map" parameterType="java.util.Map">
 		<if test="total_payment != null">
 			call get_employee_info(
-				#{total_payment},
-				#{tax_rate},
-				#{tax_id},
-				#{result, mode=OUT, jdbcType=OTHER}
+			#{total_payment},
+			#{tax_rate},
+			#{tax_id},
+			#{result, mode=OUT, jdbcType=OTHER}
 			)
 		</if>
 	</select>
+
 	<update id="update_taxdate">
-		update earner_tax set 
-			 payment_date = #{payment_date}
-			,accrual_ym   = #{accrual_ym}
+		update earner_tax set
+		payment_date = #{payment_date}
+		,accrual_ym = #{accrual_ym}
 		where tax_id=#{tax_id}
 	</update>
 	<!--세금정보 입력 -->
@@ -91,16 +132,15 @@
 	<insert id="tax_insert" useGeneratedKeys="true"
 		keyProperty="tax_id">
 		INSERT INTO earner_tax (
-		  earner_code
+		earner_code
 		, worker_id
 		, payment_ym
 		, ins_rate)
 		VALUES (
-			 #{earner_code}
-			,#{worker_id}
-			,#{payment_ym}
-			,#{payment_date}
-			,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.7,2) ELSE Round(0.8, 2) END
+		#{earner_code}
+		,#{worker_id}
+		,#{payment_ym}
+		,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.7,2) ELSE Round(0.8, 2) END
 		)
 		RETURNING tax_id
 	</insert>

@@ -1,7 +1,6 @@
 package com.douzone.service;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +13,8 @@ import com.douzone.dao.InputDAO;
 import com.douzone.entity.EarnerTaxVO;
 import com.douzone.entity.TaxInfoVO;
 
-import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Service("inputService")
-@Slf4j
 public class InputService {
 
 	@Autowired
@@ -27,8 +24,8 @@ public class InputService {
 		return inputDAO.earner_search(params);
 	}
 
-	public List<Map<String, Object>> get_earners(Map<String, Object> params) {
-		return inputDAO.get_earners(params);
+	public List<Map<String, Object>> get_task(Map<String, Object> params) {
+		return inputDAO.get_task(params);
 	}
 
 	public List<TaxInfoVO> get_tax(Map<String, Object> params) {
@@ -83,22 +80,14 @@ public class InputService {
 		return (int)params.get("tax_id");
 	}
 
-//	public void update_taxinfo(Map<String, Object> params) {
-		// inputDAO.tax_update(params);
-//		inputDAO.update_taxinfo(params);// 정보 넣고 백업
-//		System.out.println(params);
-//		 ResultSet rs = (ResultSet)params.get("result");
-//		 System.out.println(rs);
-//		  try{
-//	            while (rs.next()){
-//	                String empNo = rs.getString("is_tuition");
-//	                String tax_id = rs.getString("tax_id");
-//	                System.out.println(empNo);
-//	                System.out.println(tax_id);
-//	            }
-//	        }catch (Exception e ){
-//	            System.out.println(e.getMessage());
-//	        }
-//	}
+	public void task_insert(Map<String, Object> params) {
+		inputDAO.task_insert(params);
+	}
+
+	public void task_delete(Map<String, Object> params) {
+		inputDAO.task_delete(params);
+	}
+
+
 
 }

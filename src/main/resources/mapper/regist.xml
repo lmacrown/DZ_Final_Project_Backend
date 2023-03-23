@@ -102,6 +102,13 @@
             #{earner_code}
          </foreach>
          AND   worker_id   = #{worker_id};
+         
+         DELETE FROM input_task
+         WHERE earner_code in 
+         <foreach collection="earner_codes" item="earner_code" open="(" close=")" separator="," >
+            #{earner_code}
+         </foreach>
+         AND   worker_id   = #{worker_id};
 
          DELETE FROM earner
          WHERE earner_code in

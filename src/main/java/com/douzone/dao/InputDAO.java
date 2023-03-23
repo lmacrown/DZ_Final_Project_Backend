@@ -1,5 +1,4 @@
 package com.douzone.dao;
-
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ public interface InputDAO {
 	
 	List<Map<String, Object>> earner_search(Map<String, Object> params);
 
-	List<Map<String, Object>> get_earners(Map<String, Object> params);
+	List<Map<String, Object>> get_task(Map<String, Object> params);
 
 	List<TaxInfoVO> get_tax(Map<String, Object> params);
 
@@ -23,4 +22,8 @@ public interface InputDAO {
 	void update_taxdate(Map<String, Object> params);
 
 	void update_taxinfo(Map<String, Object> params);
+
+	void task_insert(Map<String, Object> params);
+
+	void task_delete(Map<String, Object> params);
 }
