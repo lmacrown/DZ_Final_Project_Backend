@@ -7,7 +7,7 @@
 <!--사업소득조회-->
 	<!--사업소득자별조회-->
 	<select id="search_earner_code"
-		resultType="com.douzone.entity.IncomingVO">
+		resultType="java.util.Map">
 		SELECT 
 			 t.tax_id
 			,e.earner_name
@@ -29,36 +29,40 @@
 		WHERE 
 			e.worker_id = #{worker_id} 
 			AND ${read_by} BETWEEN #{start_date} AND #{end_date}
-			AND CAST(e.${code_name} AS text) LIKE concat('%',#{code_value},'%') 
+			AND e.earner_code LIKE concat('%',#{code_value},'%') 
 		ORDER BY
 			#{order_by};
 	</select>
 	<!--사업소득별조회-->
 	<select id="search_div_code"
-		resultType="com.douzone.entity.IncomingVO">
+		resultType="java.util.Map">
 		SELECT 
 			 e.div_code
 			,e.earner_name
 			,e.personal_no
 			,e.is_native
 			,count(*)
-			,sum(t.total_payment) as total_payment
-			,t.tax_rate as tax_rate
-			,sum(t.tax_income) as tax_income
-			,sum(t.tax_local) as tax_local
-			,sum(t.artist_cost) as artist_cost
-			,sum(t.ins_cost) as ins_cost
-			,sum(t.real_payment) as real_payment
+			,sum(et.total_payment) as total_payment
+			,et.tax_rate as tax_rate
+			,sum(et.tax_income) as tax_income
+			,sum(et.tax_local) as tax_local
+			,sum(et.artist_cost) as artist_cost
+			,sum(et.ins_cost) as ins_cost
+			,sum(et.real_payment) as real_payment
 		FROM 
-			earner e left join earner_tax t 
-			ON e.earner_code = t.earner_code
+			earner e left join earner_tax et 
+			ON e.earner_code = et.earner_code
 		WHERE 
 			e.worker_id=#{worker_id}
 			AND ${read_by} BETWEEN #{start_date} AND #{end_date}
-			AND CAST(e.${code_name} AS text) LIKE concat('%',#{code_value},'%') 
+			AND e.div_code LIKE concat('%',#{code_value},'%') 
 		GROUP BY
-			 t.tax_rate
+			 et.tax_rate
 			,e.earner_code
+			,e.div_code
+			,e.earner_name
+			,e.personal_no
+			,e.is_native
 		ORDER BY 
 			#{order_by};
 	</select>

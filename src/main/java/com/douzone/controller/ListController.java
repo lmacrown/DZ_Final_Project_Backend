@@ -30,7 +30,7 @@ public class ListController {
 	@GetMapping(value = "/search_earner_code")
 	public Map<String, Object> search_earner_code( @RequestBody HashMap<String, Object> map) {
 		Map<String, Object> result = new HashMap<>();
-		List<IncomingVO> incoming = listService.search_earner_code(map);
+		List<Map<String, Object>> incoming = listService.search_earner_code(map);
 		result.put("earnerInfo", incoming);
 
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
@@ -40,7 +40,7 @@ public class ListController {
 	@GetMapping(value = "/search_div_code")
 	public Map<String, Object> search_div_code(@RequestBody HashMap<String, Object> map) {
 		Map<String, Object> result = new HashMap<>();
-		List<IncomingVO> incoming = listService.search_div_code(map);
+		List<Map<String, Object>> incoming = listService.search_div_code(map);
 		result.put("earnerInfo", incoming);
 
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
