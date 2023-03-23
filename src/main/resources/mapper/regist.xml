@@ -52,7 +52,7 @@
       AND   worker_id   = #{worker_id}
    </select>
    <!--소득자 정보 입력-->
-   <insert id="earner_form_insert" useGeneratedKeys="true" keyProperty="earner_code">
+   <insert id="earner_insert" useGeneratedKeys="true" keyProperty="earner_code">
       INSERT INTO earner (
           earner_code
          ,worker_id
@@ -70,6 +70,7 @@
          ,#{personal_no}
          ,#{is_native}
       )
+      RETURNING earner_code
    </insert>
    <!--등록된 후 code_count 증가-->
    <update id="update_count">

@@ -5,12 +5,14 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,6 +64,22 @@ public class GlobalResponseHandler {
 		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "Missing request parameter.", e);
 	}
 
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ExceptionResponseVO> handleHttpMessageNotReadableException(
+			HttpMessageNotReadableException e) {
+		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "Invalid request format", e);
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ExceptionResponseVO> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "Missing required parameter", e);
+	}
+	
+	 @ExceptionHandler(NoSuchElementException.class)
+	    public ResponseEntity<ExceptionResponseVO> handleNoSuchElementException(NoSuchElementException e) {
+		 return buildExceptionResponseVO(HttpStatus.NOT_FOUND, e.getMessage(), e);
+	    }
+	 
 	// 나머지 예외들을 처리하기 위한 메서드
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponseVO> handleAllExceptions(Exception e) {
@@ -71,21 +89,22 @@ public class GlobalResponseHandler {
 	// 예외의 공통된 작업을 처리하는 메서드
 	private ResponseEntity<ExceptionResponseVO> buildExceptionResponseVO(HttpStatus status, String message,
 			Exception e) {
-		ExceptionResponseVO errorResponse = new ExceptionResponseVO(status.value(),LocalDateTime.now(),false,message);
-		
+		ExceptionResponseVO errorResponse = new ExceptionResponseVO(status.value(), LocalDateTime.now(), false,
+				message);
+
 		log.error("Server Error: Status - {}, Message - {}, Details - {}", status.value(), message, e.getMessage());
-		log.error("StackTrace:{}", ExceptionUtils.getStackTrace(e));
+		//log.error("StackTrace:{}", ExceptionUtils.getStackTrace(e));
 		return new ResponseEntity<>(errorResponse, status);
 	}
-	
+
 	// response 전 필요한 작업을 수행하는 메소드
 	@ResponseBody
 	public Map<String, Object> handleResponse(Map<String, Object> result, HttpStatus status) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String formattedDateTime = LocalDateTime.now().format(formatter);
 		result.put("time_stamp", formattedDateTime);
-		result.put("status_code",status.value());
-		result.put("status",true);
+		result.put("status_code", status.value());
+		result.put("status", true);
 		return result;
 	}
 

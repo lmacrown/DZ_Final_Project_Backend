@@ -2,9 +2,16 @@ package com.douzone.dao;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import com.douzone.entity.EarnerVO;
+import com.douzone.entity.regist.CheckCodeVO;
+import com.douzone.entity.regist.EarnerDeleteVO;
+import com.douzone.entity.regist.EarnerInsertVO;
+import com.douzone.entity.regist.EarnerUpdateVO;
+import com.douzone.entity.regist.GetCountVO;
+import com.douzone.entity.regist.GetEarnerVO;
 
 @Mapper
 @Repository("registDAO")
@@ -14,17 +21,17 @@ public interface RegistDAO {
 
 	List<Map<String, Object>> earner_list(String worker_id);
 
-	EarnerVO get_earner(Map<String, Object> params);
+	EarnerVO get_earner(GetEarnerVO get_earner);
 
-	void earner_form_insert(Map<String, Object> params);
+	void earner_insert(EarnerInsertVO earnerInsertVO);
 	
-	void update_count(Map<String, Object> params);
+	void update_count(EarnerInsertVO earnerInsertVO);
 
-	void earner_update(Map<String, Object> params);
+	void earner_update(EarnerUpdateVO earnerUpdateVO);
 
-	void earner_delete(Map<String, Object> params);
+	void earner_delete(EarnerDeleteVO earnerDeleteVO);
 
-	String get_count(Map<String, Object> params);
+	String get_count(GetCountVO getCountVO);
 
-	int check_code(Map<String, Object> params);
+	int check_code(CheckCodeVO checkCodeVO);
 }
