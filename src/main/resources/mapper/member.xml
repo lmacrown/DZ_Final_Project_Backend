@@ -4,24 +4,45 @@
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.dao.MemberDAO">
+	<select id="get_salt"
+		resultType="String">
+		SELECT 
+			salt
+		FROM salt
+		WHERE worker_id = #{worker_id}
+	</select>
 	<select id="login"
 		resultType="com.douzone.entity.MemberVO">
-		select 
+		SELECT
 			*
-		from worker
-		where worker_id = #{id}
+		FROM worker
+		WHERE worker_id = #{param1} 
+		AND worker_pw   = #{param2}
 	</select>
-	<update id="updateMemberLastLogin">
-		update member set 
-			last_login_time = now()
-		where id = #{id}  
+<!-- 	<select id="update_last_login" statementType="CALLABLE" resultType="java.util.Map"
+		parameterType="String">
+		call update_last_login(
+			#{param1},
+			#{result, mode=OUT, jdbcType=OTHER}
+		)
+	</select> -->
+	<update id="update_last_login" keyProperty="last_login" useGeneratedKeys="true">
+		update worker set 
+			last_login = now()
+		where worker_id=#{worker_id}
+		RETURNING last_login
 	</update>
-	<select id="findByEmail" resultType="com.douzone.entity.MemberVO">
-		select 
-			*
-		from member
-		where id = #{id}
-	</select> 
+	<update id="update_check_active" keyProperty="check_active" useGeneratedKeys="true">
+		update worker set 
+			check_active = now()
+		where worker_id=#{worker_id}
+		RETURNING check_active
+	</update>
+<!-- 	<select id="update_check_active">
+		UPDATE worker SET
+			check_active = now()
+		WHERE worker_id  = #{param2}
+	</select> -->
 <!-- 	<select id="selectId" resultType="String">
 		select
 		Member_ID

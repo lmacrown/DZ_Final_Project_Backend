@@ -38,14 +38,13 @@ public class InputService {
 
 	public EarnerTaxVO update_taxinfo(Map<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		params.put("result", null);
-		EarnerTaxVO earnerTax = null;
 		
+		params.put("result", null);
 		inputDAO.update_taxinfo(params);
-		ResultSet rs = (ResultSet) params.get("result");// 뒤부터 값 확인 코드 => 결과 확인 후 삭제
+		ResultSet rs = (ResultSet) params.get("result");
 		try {
 			while (rs.next()) {
-				earnerTax = new EarnerTaxVO(
+				EarnerTaxVO earnerTax = new EarnerTaxVO(
 					rs.getString("is_tuition"),
 					rs.getString("deduction_amount"),
 					rs.getString("is_artist"),
@@ -66,13 +65,12 @@ public class InputService {
 					rs.getString("real_payment")
 					
 				);
-				result.put("?", earnerTax);
+				return earnerTax;
 			}
-		
 		} catch (Exception e) {
 			System.out.println(e.getMessage());// 로그로 고칠 것
 		}
-		return earnerTax;
+		return null;
 	}
 
 	public void update_taxdate(Map<String, Object> params) {

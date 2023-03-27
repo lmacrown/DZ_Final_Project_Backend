@@ -63,7 +63,5 @@
 			,e.earner_name
 			,e.personal_no
 			,e.is_native
-		ORDER BY 
-			#{order_by};
 	</select>
 </mapper>
