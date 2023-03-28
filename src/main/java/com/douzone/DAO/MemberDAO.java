@@ -11,14 +11,10 @@ import com.douzone.entity.MemberVO;
 @Repository("memberDAO")
 public interface MemberDAO {
 
-
 	public String get_salt(String worker_id);
 
 	public MemberVO login(String worker_id, String res);
 
 	void update_last_login(Map<String, Object> params);
-
-	void update_check_active(Map<String, Object> params);
-	
 }
 

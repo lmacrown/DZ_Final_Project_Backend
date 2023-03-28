@@ -6,8 +6,7 @@
 <mapper namespace="com.douzone.dao.ListDAO">
 <!--사업소득조회-->
 	<!--사업소득자별조회-->
-	<select id="search_earner_code"
-		resultType="java.util.Map">
+	<select id="search_earner_code" resultType="java.util.Map">
 		SELECT 
 			 t.tax_id
 			,e.earner_name
@@ -25,17 +24,14 @@
 			,t.ins_cost
 			,t.real_payment
 		FROM earner e left join earner_tax t 
-			ON e.earner_code = t.earner_code 
-		WHERE 
-			e.worker_id = #{worker_id} 
-			AND ${read_by} BETWEEN #{start_date} AND #{end_date}
-			AND e.earner_code LIKE concat('%',#{code_value},'%') 
-		ORDER BY
-			#{order_by};
+		ON e.earner_code = t.earner_code 
+		WHERE e.worker_id = #{worker_id} 
+		AND ${read_by} BETWEEN #{start_date} AND #{end_date}<!--read_by 부분 나눠서 쿼리문 작성-->
+		AND e.earner_code LIKE concat('%',#{code_value},'%') <!--$ 없애건가요? like or Ilike -->
+		ORDER BY #{order_by};
 	</select>
 	<!--사업소득별조회-->
-	<select id="search_div_code"
-		resultType="java.util.Map">
+	<select id="search_div_code" resultType="java.util.Map">
 		SELECT 
 			 e.div_code
 			,e.earner_name
@@ -49,19 +45,11 @@
 			,sum(et.artist_cost) as artist_cost
 			,sum(et.ins_cost) as ins_cost
 			,sum(et.real_payment) as real_payment
-		FROM 
-			earner e left join earner_tax et 
-			ON e.earner_code = et.earner_code
-		WHERE 
-			e.worker_id=#{worker_id}
-			AND ${read_by} BETWEEN #{start_date} AND #{end_date}
-			AND e.div_code LIKE concat('%',#{code_value},'%') 
-		GROUP BY
-			 et.tax_rate
-			,e.earner_code
-			,e.div_code
-			,e.earner_name
-			,e.personal_no
-			,e.is_native
+		FROM earner e left join earner_tax et 
+		ON e.earner_code = et.earner_code
+		WHERE e.worker_id=#{worker_id}
+		AND ${read_by} BETWEEN #{start_date} AND #{end_date}
+		AND e.div_code LIKE concat('%',#{code_value},'%') 
+		GROUP BY et.tax_rate ,e.earner_code ,e.div_code ,e.earner_name ,e.personal_no ,e.is_native
 	</select>
 </mapper>

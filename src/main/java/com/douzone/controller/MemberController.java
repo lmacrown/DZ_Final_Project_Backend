@@ -32,13 +32,11 @@ public class MemberController {
 	@PostMapping(value ="/login.do")
 	public Map<String, Object> login(@RequestBody Map<String, Object> params, HttpSession session) {
 		Map<String, Object> result = new HashMap<>();
-		Map<String, Object> memberVO = new HashMap<>();
-		memberVO = memberService.login(params);
+		MemberVO memberVO = memberService.login(params);
 		try {
 			if(memberVO != null) {
 				session.setAttribute("isLogon", true);
-				session.setAttribute("check_active", memberVO.get("check_active"));
-				result.put("member", memberService.login(params));
+				result.put("MemberVO", memberService.login(params));
 				result.put("isLogon", true);
 			}
 			else result.put("status", false);
@@ -48,14 +46,8 @@ public class MemberController {
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 	
-//	@PostMapping(value ="/logout.do")
-//	public Map<String, Object> logout(@RequestBody Map<String, Object> params, HttpSession session) {
-//		Map<String, Object> result = new HashMap<>();
-//		session.invalidate();
-//		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+//	public static void main(String [] args) {
+//		String uuid = UUID.randomUUID().toString();
+//		System.out.println(uuid);
 //	}
-	public static void main(String [] args) {
-		String uuid = UUID.randomUUID().toString();
-		System.out.println(uuid);
-	}
 }

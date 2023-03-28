@@ -4,100 +4,23 @@
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.dao.MemberDAO">
-	<select id="get_salt"
-		resultType="String">
+	<select id="get_salt" resultType="String">
 		SELECT 
 			salt
 		FROM salt
 		WHERE worker_id = #{worker_id}
 	</select>
-	<select id="login"
-		resultType="com.douzone.entity.MemberVO">
+	<select id="login" resultType="com.douzone.entity.MemberVO">
 		SELECT
 			*
 		FROM worker
 		WHERE worker_id = #{param1} 
 		AND worker_pw   = #{param2}
 	</select>
-<!-- 	<select id="update_last_login" statementType="CALLABLE" resultType="java.util.Map"
-		parameterType="String">
-		call update_last_login(
-			#{param1},
-			#{result, mode=OUT, jdbcType=OTHER}
-		)
-	</select> -->
 	<update id="update_last_login" keyProperty="last_login" useGeneratedKeys="true">
-		update worker set 
-			last_login = now()
-		where worker_id=#{worker_id}
-		RETURNING last_login
+    UPDATE worker 
+    SET last_login  = now()
+    WHERE worker_id = #{worker_id}
+    RETURNING to_char(last_login, 'YYYY-MM-DD HH24:MI:SS')
 	</update>
-	<update id="update_check_active" keyProperty="check_active" useGeneratedKeys="true">
-		update worker set 
-			check_active = now()
-		where worker_id=#{worker_id}
-		RETURNING check_active
-	</update>
-<!-- 	<select id="update_check_active">
-		UPDATE worker SET
-			check_active = now()
-		WHERE worker_id  = #{param2}
-	</select> -->
-<!-- 	<select id="selectId" resultType="String">
-		select
-		Member_ID
-		from t_shopping_member
-		where EMAIL = #{param1}
-	</select>
-	<select id="findPwd" resultType="int">https://desktop.postman.com/?desktopVersion=10.10.3&userId=15018550&teamId=0
-		select
-		count(*)
-		from t_shopping_member
-		where MEMBER_ID = #{param1} and EMAIL=#{param2}
-	</select>
-	<select id="listMembers" resultType="com.myspring.DZ_shop.entity.MemberVO">
-		select
-		Member_ID, Member_PW, Member_NAME, EMAIL, DEL_YN
-		from t_shopping_member
-	</select>
-	<select id="dupUidCheck"
-		resultType="com.myspring.DZ_shop.entity.MemberVO">
-		select
-		Member_ID from t_shopping_member
-		where MEMBER_ID = #{param1}
-	</select>
-	<delete id="deleteId">
-		delete from t_shopping_member
-		where Member_id=#{param1}
-
-	</delete>
-	<update id="update">
-		update t_shopping_member set
-		MEMBER_PW = #{param2},
-		MEMBER_NAME = #{param3},
-		EMAIL = #{param4}
-		where MEMBER_ID = #{param1}
-	</update>
-	<update id="pwdFix">
-		update t_shopping_member set
-		MEMBER_PW = #{param1}
-		where MEMBER_ID=#{param2}
-	</update>
-	<insert id="register">
-		insert into t_shopping_member (Member_ID, Member_PW,
-		Member_NAME, EMAIL)
-		values (#{param1}, #{param2}, #{param3}, #{param4})
-	</insert>
-	<insert id="QnAUpload">
-		insert into t_shopping_qna (Member_id, QnA_Title, QnA_Content, QnA_Image)
-		values (#{MEMBER_ID}, #{QnA_Title}, #{QnA_Content}, #{QnA_Image})
-	</insert>
-	<insert id="addPreSearch">
-		insert into t_shopping_search (Member_id, presearch)
-		values (#{param2},#{param1})
-	</insert>
-	<select id="searchPreSearch" resultType="String">
-		select presearch from t_shopping_search
-		where MEMBER_ID = #{param1} AND presearch != '' order by credate DESC limit 5
-	</select> -->
 </mapper>
