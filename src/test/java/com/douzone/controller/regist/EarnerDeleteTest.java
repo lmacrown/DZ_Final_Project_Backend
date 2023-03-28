@@ -30,14 +30,27 @@ public class EarnerDeleteTest {
     public void testEarnerDeleteNormal() throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("worker_id", "yuchan2");
-        params.put("earner_codes", Arrays.asList("000009", "000010"));
+        params.put("earner_codes", Arrays.asList("000009","000010"));
         log.info("start Nomal----------------------------------------------");
         mockMvc.perform(delete("/regist/earner_delete")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(params)))
                 .andExpect(status().isOk());
     }
-
+    
+    
+//    @Test
+//    public void testEarnerDeleteWrongParameter() throws Exception {
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("worker_id", "yuchan2");
+//        params.put("earner_codes", Arrays.asList(-12312312, "반갑습니다"));
+//        log.info("WrongParam------------------------------------------------");
+//        mockMvc.perform(delete("/regist/earner_delete")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(new ObjectMapper().writeValueAsString(params)))
+//                .andExpect(status().isBadRequest());
+//    }
+    
     @Test
     public void testEarnerDeleteMissingParameter() throws Exception {
         Map<String, Object> params = new HashMap<>();

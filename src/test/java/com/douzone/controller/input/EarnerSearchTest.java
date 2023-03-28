@@ -1,6 +1,7 @@
-package com.douzone.controller.regist;
+package com.douzone.controller.input;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
@@ -20,60 +21,64 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EarnerUpdateTest {
+public class EarnerSearchTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void testEarnerUpdateNormal() throws Exception {
+    public void testSearchEarnerNormal() throws Exception {
         Map<String, Object> params = new HashMap<>();
-        params.put("param_name", "tel3");
-        params.put("param_value", "2028");
         params.put("worker_id", "yuchan2");
-        params.put("earner_code", "099999");
-        log.info("start Nomal-----------------------------------");
-        mockMvc.perform(patch("/regist/earner_update")
+        params.put("search_value", "testValue");
+        log.info("start Normal");
+        mockMvc.perform(post("/input/earner_search")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(params)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.earner_list").exists());
     }
     @Test
-    public void testEarnerUpdateMissingParameter() throws Exception {
+    public void testSearchEarnerEmptySearchValue() throws Exception {
         Map<String, Object> params = new HashMap<>();
-        // param_name
-        params.put("param_value", "Updated Earner");
         params.put("worker_id", "yuchan2");
-        params.put("earner_code", "099999");
-        log.info("Missing Param-----------------------------------");
-        mockMvc.perform(patch("/regist/earner_update")
+        params.put("search_value", "");
+        log.info("start EmptySearchValue");
+        mockMvc.perform(post("/input/earner_search")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(params)))
+        		.andExpect(status().isOk())
+        		.andExpect(jsonPath("$.earner_list").exists());
+    }
+
+    @Test
+    public void testSearchEarnerMissingWorkerId() throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("search_value", "testValue");
+        log.info("start MissingWorkerId");
+        mockMvc.perform(post("/input/earner_search")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(params)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testEarnerUpdateInvalidParam_name() throws Exception {
+    public void testSearchEarnerMissingSearchValue() throws Exception {
         Map<String, Object> params = new HashMap<>();
-        params.put("param_name", "tel5");
-        params.put("param_value", "1234");
         params.put("worker_id", "yuchan2");
-        params.put("earner_code", "099999");
-        log.info("Invalid---------------------------------------------------");
-        mockMvc.perform(patch("/regist/earner_update")
+        log.info("start MissingSearchValue");
+        mockMvc.perform(post("/input/earner_search")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(params)))
                 .andExpect(status().isBadRequest());
     }
-    
+
     @Test
-    public void testEarnerUpdateInvalidEmail() throws Exception {
+    public void testSearchEarnerEmptyWorkerId() throws Exception {
         Map<String, Object> params = new HashMap<>();
-        params.put("param_name", "email2");
-        params.put("param_value", "가나다");
-        params.put("worker_id", "yuchan2");
-        params.put("earner_code", "099999");
-        log.info("Invalid Email---------------------------------------------------");
-        mockMvc.perform(patch("/regist/earner_update")
+        params.put("worker_id", "");
+        params.put("search_value", "testValue");
+        log.info("start EmptyWorkerId");
+        mockMvc.perform(post("/input/earner_search")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(params)))
                 .andExpect(status().isBadRequest());

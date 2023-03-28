@@ -6,24 +6,37 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.entity.TaxInfoVO;
+import com.douzone.entity.input.EarnerSearchVO;
+import com.douzone.entity.input.GetTaskVO;
+import com.douzone.entity.input.GetTaxVO;
+import com.douzone.entity.input.SumTaskVO;
+import com.douzone.entity.input.SumTaxVO;
+import com.douzone.entity.input.TaskDeleteVO;
+import com.douzone.entity.input.TaskInsertVO;
+import com.douzone.entity.input.TaxInsertVO;
+import com.douzone.entity.input.UpdateTaxDateVO;
 
 @Mapper
 @Repository("inputDAO")
 public interface InputDAO {
 	
-	List<Map<String, Object>> earner_search(Map<String, Object> params);
+	List<Map<String, Object>> earner_search( EarnerSearchVO earnerSearchVO);
 
-	List<Map<String, Object>> get_task(Map<String, Object> params);
+	List<Map<String, Object>> get_task( GetTaskVO getTaskVO);
 
-	List<TaxInfoVO> get_tax(Map<String, Object> params);
+	List<TaxInfoVO> get_tax( GetTaxVO getTaxVO);
 
-	void tax_insert(Map<String, Object> params);
+	void tax_insert(TaxInsertVO taxInsertVO);
 
-	void update_taxdate(Map<String, Object> params);
+	void update_taxdate( UpdateTaxDateVO updateTaxDateVO);
 
-	void update_taxinfo(Map<String, Object> params);
+	void update_taxinfo( Map<String, Object> params);
 
-	void task_insert(Map<String, Object> params);
+	void task_insert( TaskInsertVO taskInsertVO);
 
-	void task_delete(Map<String, Object> params);
+	void task_delete( TaskDeleteVO taskDeleteVO);
+
+	Map<String, Object> sum_task(SumTaskVO sumTaskVO);
+
+	Map<String, Object> sum_tax(SumTaxVO sumTaxVO);
 }

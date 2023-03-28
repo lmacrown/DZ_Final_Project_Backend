@@ -6,6 +6,7 @@
 <mapper namespace="com.douzone.dao.InputDAO">
 	<!--사업소득자 정보 입력 -->
 	<!--사업자 코드 도움 -->
+
 	<select id="earner_search" resultType="java.util.Map">
 		SELECT
 		earner_code
@@ -26,23 +27,68 @@
 	</select>
 	<!--사업자 정보 출력 -->
 	<select id="get_task" resultType="java.util.Map">
-		SELECT 
+		SELECT
 		it.earner_code
-		, it.worker_id
+		,
+		it.worker_id
 		, it.payment_ym
 		, e.earner_name
 		, e.div_code
 		, e.div_name
-		, e.is_native
+		,
+		e.is_native
 		, e.personal_no
 		, e.is_tuition
 		, e.is_artist
-		FROM input_task AS it INNER JOIN earner AS e 
-		ON it.earner_code = e.earner_code 
-		AND it.worker_id =	e.worker_id
+		FROM input_task
+		AS it INNER JOIN earner AS e
+		ON it.earner_code = e.earner_code
+		AND
+		it.worker_id = e.worker_id
 		WHERE it.worker_id = #{worker_id}
-		AND it.payment_ym = #{payment_ym}
+		AND
+		it.payment_ym = #{payment_ym}
 	</select>
+	
+	
+	
+	<select id="sum_task" resultType="java.util.Map">
+		select
+			worker_id,
+			SUM(total_payment) as total_payment,
+			SUM(tax_income) as tax_income,
+			SUM(tax_local) as tax_local,
+			SUM(tuition_amount) as tuition_amount,
+			SUM(ins_cost) as ins_cost,
+			SUM(real_payment) as real_payment
+		from
+			earner_tax as main
+		where
+			worker_id = #{worker_id}
+			and payment_ym = #{payment_ym}
+		group by
+			worker_id
+	</select>
+	
+	<select id="sum_tax" resultType="java.util.Map">
+		select
+			earner_code,
+			SUM(total_payment) as total_payment,
+			SUM(tax_income) as tax_income,
+			SUM(tax_local) as tax_local,
+			SUM(tuition_amount) as tuition_amount,
+			SUM(ins_cost) as ins_cost,
+			SUM(real_payment) as real_payment
+		from
+			earner_tax
+		where
+			worker_id = #{worker_id}
+			and payment_ym = #{payment_ym}
+			and earner_code = #{earner_code}
+		group by
+			earner_code 
+	</select>
+
 
 	<insert id="task_insert">
 		INSERT INTO input_task (
@@ -66,7 +112,8 @@
 		AND worker_id = #{worker_id}
 		AND payment_ym = #{payment_ym};
 
-		DELETE FROM input_task
+		DELETE FROM
+		input_task
 		WHERE earner_code in
 		<foreach collection="earner_codes" item="earner_code" open="("
 			close=")" separator=",">
@@ -107,6 +154,8 @@
 		AND
 		e.earner_code = #{earner_code}
 		AND et.payment_ym = #{payment_ym}
+		ORDER
+		BY tax_id
 	</select>
 
 	<select id="update_taxinfo" statementType="CALLABLE"
@@ -140,7 +189,8 @@
 		#{earner_code}
 		,#{worker_id}
 		,#{payment_ym}
-		,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.7,2) ELSE Round(0.8, 2) END
+		,CASE WHEN
+		#{payment_ym} >= 202207 THEN Round(0.7,2) ELSE Round(0.8, 2) END
 		)
 		RETURNING tax_id
 	</insert>

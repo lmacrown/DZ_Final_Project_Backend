@@ -1,13 +1,27 @@
 package com.douzone.handler;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DeadlockLoserDataAccessException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.dao.PermissionDeniedDataAccessException;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.dao.UncategorizedDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -31,10 +45,29 @@ public class GlobalResponseHandler {
 	public ResponseEntity<ExceptionResponseVO> handleNullPointerException(NullPointerException e) {
 		return buildExceptionResponseVO(HttpStatus.INTERNAL_SERVER_ERROR, "NullPointerException occurred.", e);
 	}
+// handle sql exception
+	@ExceptionHandler({ DeadlockLoserDataAccessException.class, DuplicateKeyException.class,
+			EmptyResultDataAccessException.class, IncorrectResultSizeDataAccessException.class,
+			InvalidDataAccessApiUsageException.class, InvalidDataAccessResourceUsageException.class,
+			OptimisticLockingFailureException.class, PessimisticLockingFailureException.class,
+			PermissionDeniedDataAccessException.class, UncategorizedDataAccessException.class })
+	public ResponseEntity<ExceptionResponseVO> handleFrequentDataAccessExceptions(Exception e) {
+		return buildExceptionResponseVO(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+	}
+
+	@ExceptionHandler(DataAccessException.class)
+	public ResponseEntity<ExceptionResponseVO> handleOtherDataAccessExceptions(DataAccessException e) {
+		return buildExceptionResponseVO(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+	}
 
 	@ExceptionHandler(SQLException.class)
 	public ResponseEntity<ExceptionResponseVO> handleSQLException(SQLException e) {
 		return buildExceptionResponseVO(HttpStatus.INTERNAL_SERVER_ERROR, "SQLException occurred.", e);
+	}
+	// handle io exception
+	@ExceptionHandler({ FileNotFoundException.class, MalformedURLException.class })
+	public ResponseEntity<ExceptionResponseVO> handleFrequentIOExceptions(Exception e) {
+		return buildExceptionResponseVO(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 	}
 
 	@ExceptionHandler(IOException.class)
@@ -69,17 +102,22 @@ public class GlobalResponseHandler {
 			HttpMessageNotReadableException e) {
 		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "Invalid request format", e);
 	}
-
+	
+	@ExceptionHandler(NotReadablePropertyException.class)
+	public ResponseEntity<ExceptionResponseVO> handleNotReadableProperty(NotReadablePropertyException e) {
+	    return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "Invalid request", e);
+	}
+	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ExceptionResponseVO> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
 		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "Missing required parameter", e);
 	}
-	
-	 @ExceptionHandler(NoSuchElementException.class)
-	    public ResponseEntity<ExceptionResponseVO> handleNoSuchElementException(NoSuchElementException e) {
-		 return buildExceptionResponseVO(HttpStatus.NOT_FOUND, e.getMessage(), e);
-	    }
-	 
+
+	@ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity<ExceptionResponseVO> handleNoSuchElementException(NoSuchElementException e) {
+		return buildExceptionResponseVO(HttpStatus.NOT_FOUND, e.getMessage(), e);
+	}
+
 	// 나머지 예외들을 처리하기 위한 메서드
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponseVO> handleAllExceptions(Exception e) {
@@ -93,7 +131,7 @@ public class GlobalResponseHandler {
 				message);
 
 		log.error("Server Error: Status - {}, Message - {}, Details - {}", status.value(), message, e.getMessage());
-		//log.error("StackTrace:{}", ExceptionUtils.getStackTrace(e));
+		// log.error("StackTrace:{}", ExceptionUtils.getStackTrace(e));
 		return new ResponseEntity<>(errorResponse, status);
 	}
 

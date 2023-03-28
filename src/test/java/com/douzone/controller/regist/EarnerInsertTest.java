@@ -73,14 +73,34 @@ public class EarnerInsertTest {
         params.put("div_name", "학원강사");
         params.put("personal_no", "1234567890");
         params.put("is_native", "내");
-        params.put("is_default", true);
+        params.put("is_default", 1);
         log.info("Missing Param-----------------------------------------------------");
         mockMvc.perform(post("/regist/earner_insert")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(params)))
                 .andExpect(status().isBadRequest());
     }
+    
+    
+    @Test
+    public void testEarnerInsertIsExist() throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("worker_id", "yuchan2");
+        params.put("earner_code", "000001");
+        params.put("earner_name", "마성일");
+        params.put("div_code", "940903");
+        params.put("div_name", "학원강사");
+        params.put("personal_no", "1234567890");
+        params.put("is_native", "내");
+        params.put("is_default", 1);
+        log.info("Is Exist-----------------------------------------------------");
+        mockMvc.perform(post("/regist/earner_insert")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(params)))
+                .andExpect(status().isInternalServerError());
+    }
 
+    
     @Test
     public void testEarnerInsertInvalidEarnerCode() throws Exception {
         Map<String, Object> params = new HashMap<>();
@@ -91,7 +111,7 @@ public class EarnerInsertTest {
         params.put("div_name", "학원강사");
         params.put("personal_no", "1234567890");
         params.put("is_native", "내");
-        params.put("is_default", true);
+        params.put("is_default", 1);
         log.info("invald data-----------------------------------------------------");
         mockMvc.perform(post("/regist/earner_insert")
                 .contentType(MediaType.APPLICATION_JSON)
