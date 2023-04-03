@@ -100,8 +100,8 @@ public class RequestValidator implements Validator {
 
             case "ins_reduce":
                 try {
-                    float insReduce = Float.parseFloat(param_value);
-                    if (!(insReduce == 0 || insReduce == 0.8)) {
+                    String insReduce = param_value;
+                    if (!(insReduce.equals("0") || insReduce.equals("0.8"))) {
                         errors.rejectValue("param_value", "param_value.invalid", "ParamValue should be either 0 or 0.8.");
                     }
                 } catch (NumberFormatException e) {

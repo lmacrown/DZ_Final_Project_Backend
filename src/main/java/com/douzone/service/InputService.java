@@ -1,8 +1,10 @@
 package com.douzone.service;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,5 +101,28 @@ public class InputService {
 	public Map<String, Object> sum_tax(SumTaxVO sumTaxVO) {
 		return inputDAO.sum_tax(sumTaxVO);
 	}
+	
+	public List<String> get_calendar(GetTaxVO getTaxVO) {
+		return inputDAO.get_calendar(getTaxVO);
+	}
 
+	public void calendar_insert(GetTaxVO getTaxVO) {
+		String[] accrual_ym_list = getTaxVO.getSelect_dates();
+		int accrual_ym = Integer.parseInt((accrual_ym_list[0].replaceAll("-", "")).substring(0,6));
+
+		getTaxVO.setAccrual_ym(accrual_ym);
+		delete_calendar(getTaxVO);
+		for(String i : accrual_ym_list) {
+			getTaxVO.setSelect_date(i);
+			calendar_update(getTaxVO);
+		}
+	}
+
+	public void delete_calendar(GetTaxVO getTaxVO) {
+		inputDAO.delete_calendar(getTaxVO);
+	}
+
+	public void calendar_update(GetTaxVO getTaxVO) {
+		 inputDAO.calendar_update(getTaxVO);
+	}
 }

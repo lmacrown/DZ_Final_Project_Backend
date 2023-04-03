@@ -51,6 +51,7 @@ public class RegistService {
 	}
 	
 	public void earner_update(EarnerUpdateVO earnerUpdateVO) {
+		System.out.println("earner_update 실행");
 		registDAO.earner_update(earnerUpdateVO);
 	}
 

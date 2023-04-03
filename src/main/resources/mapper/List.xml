@@ -26,8 +26,17 @@
 		FROM earner e left join earner_tax t 
 		ON e.earner_code = t.earner_code 
 		WHERE e.worker_id = #{worker_id} 
-		AND ${read_by} BETWEEN #{start_date} AND #{end_date}<!--read_by 부분 나눠서 쿼리문 작성-->
-		AND e.earner_code LIKE concat('%',#{code_value},'%') <!--$ 없애건가요? like or Ilike -->
+		AND 
+		<choose>
+            <when test="read_by =='accrual_ym'">
+            	accrual_ym BETWEEN #{start_date} AND #{end_date}
+            </when>
+            <when test="read_by =='payment_ym'">
+            	payment_ym BETWEEN #{start_date} AND #{end_date}
+            </when>
+         </choose>   
+        <!--read_by 부분 나눠서 쿼리문 작성-->
+		AND e.earner_code LIKE concat('%',#{code_value},'%')
 		ORDER BY #{order_by};
 	</select>
 	<!--사업소득별조회-->
@@ -48,7 +57,15 @@
 		FROM earner e left join earner_tax et 
 		ON e.earner_code = et.earner_code
 		WHERE e.worker_id=#{worker_id}
-		AND ${read_by} BETWEEN #{start_date} AND #{end_date}
+		AND 
+		<choose>
+            <when test="read_by =='accrual_ym'">
+            	accrual_ym BETWEEN #{start_date} AND #{end_date}
+            </when>
+            <when test="read_by =='payment_ym'">
+            	payment_ym BETWEEN #{start_date} AND #{end_date}
+            </when>
+         </choose>   
 		AND e.div_code LIKE concat('%',#{code_value},'%') 
 		GROUP BY et.tax_rate ,e.earner_code ,e.div_code ,e.earner_name ,e.personal_no ,e.is_native
 	</select>

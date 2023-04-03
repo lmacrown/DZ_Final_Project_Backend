@@ -26,6 +26,13 @@ public class GetTaxVO {
     @Min(value = 200000, message = "payment_ym must be a 6-digit positive number")
     @Max(value = 299999, message = "payment_ym must be a 6-digit positive number")
     private int payment_ym;
-
+    
+    @NotBlank(message = "earner_code is required")
+    private String[] select_dates;
+    
+    private String select_date;
+    
+    @Pattern(regexp = "^\\d{6}$", message = "earner_code must be a 6-digit number")
+    private int accrual_ym;
     // Getters and setters
 }

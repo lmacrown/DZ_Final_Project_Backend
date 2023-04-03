@@ -172,4 +172,38 @@
 		)
 		RETURNING tax_id
 	</insert>
+	<select id="get_calendar" resultType="String">
+		SELECT
+			select_date
+		FROM work_calendar
+		WHERE worker_id = #{worker_id} 
+		AND earner_code = #{earner_code}
+		AND payment_ym  = #{payment_ym}
+		AND (accrual_ym  = #{payment_ym} or accrual_ym = #{payment_ym}-1)
+	</select>
+
+	
+	<delete id="delete_calendar">
+		DELETE FROM work_calendar
+		WHERE earner_code = #{earner_code}
+		AND accrual_ym    = #{accrual_ym}
+	</delete>
+
+	<insert id="calendar_update" >
+		INSERT INTO work_calendar ( 
+ 			 earner_code
+ 			,worker_id
+ 			,accrual_ym
+ 			,payment_ym
+ 			,select_date
+ 		)
+ 		VALUES (
+ 			 #{earner_code}
+ 			,#{worker_id}
+ 			,#{accrual_ym} 
+ 			,#{payment_ym}
+ 			,#{select_date}
+ 		);
+	</insert>
+	
 </mapper>

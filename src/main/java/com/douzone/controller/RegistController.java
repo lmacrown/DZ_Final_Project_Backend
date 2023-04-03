@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.Valid;
+
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +30,6 @@ import com.douzone.handler.GlobalResponseHandler;
 import com.douzone.handler.RequestValidator;
 import com.douzone.service.RegistService;
 
-import lombok.extern.slf4j.Slf4j;
-@Slf4j
 @RestController("registController")
 @CrossOrigin("*")
 public class RegistController {
@@ -42,7 +39,6 @@ public class RegistController {
 
 	@Autowired
 	GlobalResponseHandler gloabalResponseHandler;
-
 
 	@PostMapping(value = "/regist/get_count")
 	public Map<String, Object> get_count(@Valid @RequestBody GetCountVO getCountVO) {
@@ -82,7 +78,6 @@ public class RegistController {
 	@PatchMapping(value = "/regist/earner_update")
 	public Map<String, Object> earner_update(@Valid @RequestBody EarnerUpdateVO earnerUpdateVO) {
 		Map<String, Object> result = new HashMap<>();
-		
 		RequestValidator validator = new RequestValidator();
         Errors errors = new BeanPropertyBindingResult(earnerUpdateVO, "earnerUpdateVO");
         validator.validate(earnerUpdateVO, errors);

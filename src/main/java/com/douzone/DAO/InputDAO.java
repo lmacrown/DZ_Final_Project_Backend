@@ -39,4 +39,10 @@ public interface InputDAO {
 	Map<String, Object> sum_task(SumTaskVO sumTaskVO);
 
 	Map<String, Object> sum_tax(SumTaxVO sumTaxVO);
+
+	List<String> get_calendar(GetTaxVO getTaxVO);
+
+	void calendar_update(GetTaxVO getTaxVO);
+
+	void delete_calendar(GetTaxVO getTaxVO);
 }
