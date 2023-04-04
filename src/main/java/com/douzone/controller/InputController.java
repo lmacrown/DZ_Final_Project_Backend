@@ -37,7 +37,7 @@ public class InputController {
 
 	@Autowired
 	GlobalResponseHandler gloabalResponseHandler;
-	//
+
 	@PostMapping(value = "/input/earner_search")
 	public Map<String, Object> earner_search(@Valid @RequestBody EarnerSearchVO earnerSearchVO) {
 		Map<String, Object> result = new HashMap<>();
@@ -53,13 +53,14 @@ public class InputController {
 		result.put("task_count", task_list.size());
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = "/input/sum_task")
 	public Map<String, Object> sum_task(@Valid @RequestBody SumTaskVO sumTaskVO) {
 		Map<String, Object> result = new HashMap<>();
 		result.put("sum_task", inputService.sum_task(sumTaskVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
+
 	@PostMapping(value = "/input/task_insert")
 	public Map<String, Object> task_insert(@Valid @RequestBody TaskInsertVO taskInsertVO) {
 		Map<String, Object> result = new HashMap<>();
@@ -73,41 +74,39 @@ public class InputController {
 		inputService.task_delete(taskDeleteVO);
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-	//
+
 	@PostMapping(value = "/input/sum_tax")
 	public Map<String, Object> sum_tax(@Valid @RequestBody SumTaxVO sumTaxVO) {
 		Map<String, Object> result = new HashMap<>();
 		result.put("sum_tax", inputService.sum_tax(sumTaxVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-	//
+
 	@PostMapping(value = "/input/get_tax")
 	public Map<String, Object> get_tax(@Valid @RequestBody GetTaxVO getTaxVO) {
 		Map<String, Object> result = new HashMap<>();
 		result.put("tax_list", inputService.get_tax(getTaxVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-	//
+
 	@PostMapping(value = "/input/tax_insert")
 	public Map<String, Object> tax_insert(@Valid @RequestBody TaxInsertVO taxInsertVO) {
 		Map<String, Object> result = new HashMap<>();
 		result.put("tax_id", inputService.tax_insert(taxInsertVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-	//
+
 	@PatchMapping(value = "/input/update_taxdate")
 	public Map<String, Object> update_taxdate(@Valid @RequestBody UpdateTaxDateVO updateTaxDateVO) {
 		Map<String, Object> result = new HashMap<>();
 		inputService.update_taxdate(updateTaxDateVO);
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-	//
+
 	@PatchMapping(value = "/input/update_taxinfo")
 	public Map<String, Object> update_taxinfo(@RequestBody Map<String, Object> params) throws SQLException {
 		Map<String, Object> result = new HashMap<>();
-		System.out.println(params);
 		validateInput(params);
-		System.out.println(params);
 		result.put("earner_tax", inputService.update_taxinfo(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
@@ -118,12 +117,11 @@ public class InputController {
 		}
 
 		int totalPayment = (int) params.get("total_payment");
-		double taxRate = (double) params.get("tax_rate");
+		double taxRate = (double) Double.parseDouble(params.get("tax_rate").toString());
 		int taxId = (int) params.get("tax_id");
 
 		if (totalPayment <= 0 || taxRate <= 0 || taxRate >= 10 || taxId <= 0) {
 			throw new IllegalArgumentException("Invalid input: Check your total_payment, tax_rate, and tax_id values");
 		}
 	}
-
 }

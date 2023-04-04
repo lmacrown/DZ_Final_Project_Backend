@@ -80,13 +80,6 @@ public class RequestValidator implements Validator {
                     errors.rejectValue("param_value", "param_value.invalid", "ParamValue should be a 3-4 digit number.");
                 }
                 break;
-
-            case "personal_no":
-                if (!(Pattern.matches("^\\d{13}$", param_value))) {
-                    errors.rejectValue("param_value", "param_value.invalid", "ParamValue should be a 13-digit number.");
-                }
-                break;
-
             case "deduction_amount":
                 try {
                     int deductionAmount = Integer.parseInt(param_value);
@@ -97,25 +90,14 @@ public class RequestValidator implements Validator {
                     errors.rejectValue("param_value", "param_value.invalid", "ParamValue should be an integer.");
                 }
                 break;
-
-            case "ins_reduce":
-                try {
-                    float insReduce = Float.parseFloat(param_value);
-                    if (!(insReduce == 0 || insReduce == 0.8)) {
-                        errors.rejectValue("param_value", "param_value.invalid", "ParamValue should be either 0 or 0.8.");
-                    }
-                } catch (NumberFormatException e) {
-                    errors.rejectValue("param_value", "param_value.invalid", "ParamValue should be a float.");
-                }
-                break;
-
             case "email1":
             case "email2":
                 if (!param_value.matches("^[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*$")) {
                     errors.rejectValue("param_value", "param_value.invalid", "ParamValue should be a valid email address.");
                 }
                 break;
-
+            case "ins_reduce":
+            case "personal_no":
             case "earner_name":
             case "zipcode":
             case "address":

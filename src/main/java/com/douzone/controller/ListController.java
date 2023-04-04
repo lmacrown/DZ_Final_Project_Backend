@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.douzone.entity.IncomingVO;
 import com.douzone.handler.GlobalResponseHandler;
 import com.douzone.service.ListService;
 

@@ -31,8 +31,7 @@ import com.douzone.handler.GlobalResponseHandler;
 import com.douzone.handler.RequestValidator;
 import com.douzone.service.RegistService;
 
-import lombok.extern.slf4j.Slf4j;
-@Slf4j
+
 @RestController("registController")
 @CrossOrigin("*")
 public class RegistController {

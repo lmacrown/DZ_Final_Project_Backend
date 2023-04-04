@@ -79,6 +79,11 @@ public class GlobalResponseHandler {
 	public ResponseEntity<ExceptionResponseVO> handleMissingPathVariableException(MissingPathVariableException e) {
 		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "Missing path variable.", e);
 	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ExceptionResponseVO> handleIllegalArgumentException(IllegalArgumentException e) {
+		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "IllegalArgument", e);
+	}
 
 	@ExceptionHandler(TypeMismatchException.class)
 	public ResponseEntity<ExceptionResponseVO> handleTypeMismatchException(TypeMismatchException e) {
@@ -110,7 +115,7 @@ public class GlobalResponseHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ExceptionResponseVO> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
-		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "Missing required parameter", e);
+		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "ArgumentNotValid", e);
 	}
 
 	@ExceptionHandler(NoSuchElementException.class)

@@ -2,8 +2,6 @@ package com.douzone.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +15,8 @@ import com.douzone.entity.MemberVO;
 import com.douzone.handler.GlobalResponseHandler;
 import com.douzone.service.MemberService;
 
-import lombok.extern.slf4j.Slf4j;
-
 @RestController("MemberController")
 @CrossOrigin("*")
-@Slf4j
 public class MemberController {
 	
 	@Autowired

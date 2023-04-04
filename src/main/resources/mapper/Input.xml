@@ -36,7 +36,7 @@
 			,e.personal_no
 			,e.is_tuition
 			,e.is_artist
-		FROM input_task AS it INNER JOIN earner AS e<!--left join으로 바꿀것  -->
+		FROM input_task AS it LEFT JOIN earner AS e
 		ON it.earner_code  = e.earner_code
 		AND it.worker_id   = e.worker_id
 		WHERE it.worker_id = #{worker_id}
@@ -53,7 +53,7 @@
 			,SUM(tuition_amount) as tuition_amount
 			,SUM(ins_cost) as ins_cost
 			,SUM(real_payment) as real_payment
-		FROM earner_tax as main<!--main인 이유와 별명을 줘야 하는 이유  -->
+		FROM earner_tax
 		WHERE worker_id = #{worker_id}
 		AND payment_ym = #{payment_ym}
 		GROUP BY worker_id
@@ -107,33 +107,11 @@
 	</delete>
 	
 	<select id="get_tax" resultType="com.douzone.entity.TaxInfoVO">
-		SELECT
-			e.is_tuition
-			,e.deduction_amount
-			,e.is_artist
-			,e.ins_reduce
-			,et.tax_id
-			,et.tax_rate
-			,et.ins_rate
-			,et.total_payment
-			,et.accrual_ym
-			,et.payment_ym
-			,et.payment_date
-			,case when et.total_payment = 0 then false else true end calculated
-			,et.total_payment<!--지급총액 -->
-			,tax_income_fc(et.total_payment, et.tax_rate) as tax_income<!--소득세 -->
-			,tax_local_fc(et.total_payment, et.tax_rate) as tax_local<!--지방소득세 -->
-			,artist_cost_fc(et.total_payment) as artist_cost<!--예술인 경비 -->
-			,ins_cost_fc(total_payment, artist_cost, CAST(ins_rate as numeric),CAST(ins_reduce as numeric)) as ins_cost <!--고용보험료 -->
-			,tax_total_fc(tax_income, tax_local, tuition_amount) as tax_total<!-- 세액계 -->
-			,real_payment_fc(total_payment, tax_total, ins_cost) as real_payment<!--차인지급액 -->
-		FROM earner e LEFT JOIN earner_tax et
-		ON e.worker_id = et.worker_id
-		AND e.earner_code = et.earner_code
-		WHERE e.worker_id = #{worker_id}
-		AND e.earner_code = #{earner_code}
-		AND et.payment_ym = #{payment_ym}
-		ORDER BY tax_id
+		SELECT * FROM update_and_get_tax(
+				#{worker_id},
+				#{earner_code},
+				#{payment_ym}
+			)
 	</select>
 
 	<select id="update_taxinfo" statementType="CALLABLE"
