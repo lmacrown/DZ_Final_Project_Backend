@@ -39,14 +39,14 @@ public class InputController {
 	GlobalResponseHandler gloabalResponseHandler;
 
 	@PostMapping(value = "/input/earner_search")
-	public Map<String, Object> earner_search(@Valid @RequestBody EarnerSearchVO earnerSearchVO) {
+	public Map<String, Object> earner_search(@Valid @RequestBody EarnerSearchVO earnerSearchVO) throws Exception{
 		Map<String, Object> result = new HashMap<>();
 		result.put("earner_list", inputService.earner_search(earnerSearchVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/input/get_task")
-	public Map<String, Object> get_task(@Valid @RequestBody GetTaskVO getTaskVO) {
+	public Map<String, Object> get_task(@Valid @RequestBody GetTaskVO getTaskVO) throws Exception  {
 		Map<String, Object> result = new HashMap<>();
 		List<Map<String, Object>> task_list = inputService.get_task(getTaskVO);
 		result.put("task_list", task_list);
@@ -86,6 +86,7 @@ public class InputController {
 	public Map<String, Object> get_tax(@Valid @RequestBody GetTaxVO getTaxVO) {
 		Map<String, Object> result = new HashMap<>();
 		result.put("tax_list", inputService.get_tax(getTaxVO));
+		result.put("select_date", inputService.get_calendar(getTaxVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
@@ -103,6 +104,13 @@ public class InputController {
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
+	@PostMapping(value="/input/calendar_insert")
+	public Map<String, Object> calendar_insert(@Valid @RequestBody  GetTaxVO getTaxVO) {
+		Map<String, Object> result = new HashMap<>();
+		inputService.calendar_insert(getTaxVO);
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+	}
+
 	@PatchMapping(value = "/input/update_taxinfo")
 	public Map<String, Object> update_taxinfo(@RequestBody Map<String, Object> params) throws SQLException {
 		Map<String, Object> result = new HashMap<>();
@@ -110,7 +118,7 @@ public class InputController {
 		result.put("earner_tax", inputService.update_taxinfo(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-
+	
 	private void validateInput(Map<String, Object> params) {
 		if (!params.containsKey("total_payment") || !params.containsKey("tax_rate") || !params.containsKey("tax_id")) {
 			throw new IllegalArgumentException("Missing required fields: total_payment, tax_rate, or tax_id");

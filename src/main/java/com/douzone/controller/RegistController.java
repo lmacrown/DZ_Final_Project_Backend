@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.Valid;
+
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +41,6 @@ public class RegistController {
 	@Autowired
 	GlobalResponseHandler gloabalResponseHandler;
 
-
 	@PostMapping(value = "/regist/get_count")
 	public Map<String, Object> get_count(@Valid @RequestBody GetCountVO getCountVO) {
 		Map<String, Object> result = new HashMap<>();
@@ -58,7 +56,7 @@ public class RegistController {
 	}
 
 	@GetMapping(value = "/regist/earner_list/{worker_id}")
-	public Map<String, Object> earner_list(Model model, @PathVariable String worker_id) {
+	public Map<String, Object> earner_list(Model model, @PathVariable String worker_id) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		result.put("earner_list", registService.earner_list(worker_id));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
@@ -79,9 +77,8 @@ public class RegistController {
 	}
 	//공부해야될 것
 	@PatchMapping(value = "/regist/earner_update")
-	public Map<String, Object> earner_update(@Valid @RequestBody EarnerUpdateVO earnerUpdateVO) {
+	public Map<String, Object> earner_update(@Valid @RequestBody EarnerUpdateVO earnerUpdateVO) throws Exception {
 		Map<String, Object> result = new HashMap<>();
-		
 		RequestValidator validator = new RequestValidator();
         Errors errors = new BeanPropertyBindingResult(earnerUpdateVO, "earnerUpdateVO");
         validator.validate(earnerUpdateVO, errors);

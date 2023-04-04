@@ -27,7 +27,7 @@ public class Aes {
 	private IvParameterSpec ivParameterSpec;
 	//암호화
 	   public Aes(final String key) throws Exception{
-	        validation(key);
+	        //validation(key);
 	        
 	        //byte[] keyBytes = key.getBytes("UTF-8");
 	        secretKeySpec = new SecretKeySpec(ENCODING_TYPE.getBytes(), "AES");
@@ -59,11 +59,11 @@ public class Aes {
 //		byte[] decoded = Base64.getDecoder().decode(str.getBytes(ENCODING_TYPE));
 //		return new String(cipher.doFinal(decoded), ENCODING_TYPE);
 //	}
-
-	private void validation(final String key) {
-		Optional.ofNullable(key)
-			.filter(Predicate.not(String::isBlank))
-			.filter(Predicate.not(s -> s.length() != 7))
-			.orElseThrow(IllegalArgumentException::new);
-	}
+//	자릿수 제한
+//	private void validation(final String key) {
+//		Optional.ofNullable(key)
+//			.filter(Predicate.not(String::isBlank))
+//			.filter(Predicate.not(s -> s.length() != 7))
+//			.orElseThrow(IllegalArgumentException::new);
+//	}
 }

@@ -61,6 +61,7 @@
          ,div_name
          ,personal_no
          ,is_native
+         ,create_date
       ) VALUES (
           #{earner_code}
          ,#{worker_id}
@@ -69,6 +70,7 @@
          ,#{div_name}
          ,#{personal_no}
          ,#{is_native}
+         ,now()<!--현재 날짜 추가-->
       )
       RETURNING earner_code
    </insert>
@@ -84,10 +86,10 @@
       SET 
          <choose>
             <when test="param_name =='deduction_amount'">
-            	${param_name} = CAST(#{param_value} AS INTEGER)
+            	deduction_amount = CAST(#{param_value} AS INTEGER)
             </when>
             <when test="param_name =='ins_reduce'">
-            	${param_name} = CAST(#{param_value} AS DOUBLE PRECISION)
+            	ins_reduce = CAST(#{param_value} AS DOUBLE PRECISION)
             </when>
             <otherwise>
                ${param_name} = #{param_value}
@@ -118,5 +120,9 @@
             #{earner_code}
          </foreach>
       AND worker_id = #{worker_id};
+      
+      DELETE FROM work_calendar
+      WHERE earner_code = #{earner_code}
+      AND worker_id     = #{worker_id}
    </delete>
 </mapper>

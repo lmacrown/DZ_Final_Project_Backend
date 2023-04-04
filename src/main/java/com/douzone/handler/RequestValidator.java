@@ -103,6 +103,7 @@ public class RequestValidator implements Validator {
             case "address":
             case "address_detail":
             case "etc":
+            case "personal_no":
                 break;
         }
         if (param_value.isEmpty()) {
