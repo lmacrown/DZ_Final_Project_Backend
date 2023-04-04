@@ -13,15 +13,6 @@ public class TaxInfoVO {
 	private int tax_id;
 	private String worker_id;
 	private String earner_code;
-	
-	private boolean calculated;
-	
-	private String is_tuition;
-	private int deduction_amount;
-
-	private String is_artist;
-	private float ins_reduce;
-	private float ins_rate;
 
 	private float tax_rate;
 	private int accrual_ym;
@@ -32,9 +23,15 @@ public class TaxInfoVO {
 	private int tax_income;
 	private int tax_local;
 	private int tax_total;
-	private int ins_cost;
-	private int artist_cost;
+	
 	private int tuition_amount;
+	
+	private int artist_cost;
+	private int ins_cost;
+	
+	private int sworker_cost;
+	private int sworker_ins;
+	private int workinjury_ins;
+	
 	private int real_payment;
-
 }

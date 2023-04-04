@@ -97,7 +97,6 @@ public class RequestValidator implements Validator {
                 }
                 break;
             case "ins_reduce":
-            case "personal_no":
             case "earner_name":
             case "zipcode":
             case "address":

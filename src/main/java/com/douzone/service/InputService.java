@@ -63,40 +63,9 @@ public class InputService {
 		return inputDAO.get_tax(getTaxVO);
 	}
 	
-	public EarnerTaxVO update_taxinfo(Map<String, Object> params) {
-	      params.put("result", null);
-	      inputDAO.update_taxinfo(params);
-	      ResultSet rs = (ResultSet) params.get("result");
-	      try {
-	         while (rs.next()) {
-	            EarnerTaxVO earnerTax = new EarnerTaxVO(
-	               rs.getString("is_tuition"),
-	               rs.getString("deduction_amount"),
-	               rs.getString("is_artist"),
-	               rs.getString("ins_reduce"),
-	               rs.getString("tax_id"),
-	               rs.getString("tax_rate"),
-	               rs.getString("ins_rate"),
-	               rs.getString("total_payment"),
-	               rs.getString("accrual_ym"),
-	               rs.getString("payment_ym"),
-	               rs.getString("payment_date"),
-	               rs.getString("calculated"),
-	               rs.getString("tax_income"),
-	               rs.getString("tax_local"),
-	               rs.getString("artist_cost"),
-	               rs.getString("ins_cost"),
-	               rs.getString("tax_total"),
-	               rs.getString("real_payment")
-	               
-	            );
-	            return earnerTax;
-	         }
-	      } catch (Exception e) {
-	         System.out.println(e.getMessage());// 로그로 고칠 것
-	      }
-	      return null;
-	   }
+	public Map<String,Object> update_taxinfo(Map<String, Object> params) {
+		return inputDAO.update_taxinfo(params);
+	}
 
 
 	public void update_taxdate(UpdateTaxDateVO updateTaxDateVO) {

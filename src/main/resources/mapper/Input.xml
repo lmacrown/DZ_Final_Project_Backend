@@ -36,6 +36,8 @@
 			,e.personal_no
 			,e.is_tuition
 			,e.is_artist
+			,e.is_sworker
+			,e.earner_type
 		FROM input_task AS it LEFT JOIN earner AS e
 		ON it.earner_code  = e.earner_code
 		AND it.worker_id   = e.worker_id
@@ -52,6 +54,8 @@
 			,SUM(tax_local) as tax_local
 			,SUM(tuition_amount) as tuition_amount
 			,SUM(ins_cost) as ins_cost
+			,SUM(sworker_ins) as sworker_ins
+			,SUM(workinjury_ins) as workinjury_ins
 			,SUM(real_payment) as real_payment
 		FROM earner_tax
 		WHERE worker_id = #{worker_id}
@@ -66,7 +70,11 @@
 			,SUM(tax_income) as tax_income
 			,SUM(tax_local) as tax_local
 			,SUM(tuition_amount) as tuition_amount
+			,SUM(artist_cost) as artist_cost
+			,SUM(artist_cost) as sworker_cost
 			,SUM(ins_cost) as ins_cost
+			,SUM(sworker_ins) as sworker_ins
+			,SUM(workinjury_ins) as workinjury_ins
 			,SUM(real_payment) as real_payment
 		FROM earner_tax
 		WHERE worker_id = #{worker_id}
@@ -114,16 +122,11 @@
 			)
 	</select>
 
-	<select id="update_taxinfo" statementType="CALLABLE"
-		resultType="java.util.Map" parameterType="java.util.Map">
-		<if test="total_payment != null">
-			CALL get_employee_info(
+	<select id="update_taxinfo" resultType="java.util.Map">
+			SELECT * FROM update_and_get_tax_one(
 				#{total_payment},
 				#{tax_rate},
-				#{tax_id},
-				#{result, mode=OUT, jdbcType=OTHER}
-			)
-		</if>
+				#{tax_id} )
 	</select>
 
 	<update id="update_taxdate">
