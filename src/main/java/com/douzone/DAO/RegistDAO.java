@@ -1,5 +1,6 @@
 package com.douzone.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,9 @@ import com.douzone.entity.regist.GetEarnerVO;
 public interface RegistDAO {
 	
 	List<Map<String, Object>>list_divcode();
-
+	
+	List<Map<String, Object>> list_occupation();
+	
 	List<Map<String, Object>> earner_list(String worker_id);
 
 	EarnerVO get_earner(GetEarnerVO get_earner);//VO가 없어요
@@ -34,4 +37,8 @@ public interface RegistDAO {
 	String get_count(GetCountVO getCountVO);
 
 	int check_code(CheckCodeVO checkCodeVO);
+
+	Map<String, Object> get_occupation(HashMap<String, Object> params);
+
+	
 }

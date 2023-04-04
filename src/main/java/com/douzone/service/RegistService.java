@@ -1,5 +1,6 @@
 package com.douzone.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -85,5 +86,13 @@ public class RegistService {
 
 	public int check_code(CheckCodeVO checkCodeVO) {
 		return registDAO.check_code(checkCodeVO);
+	}
+
+	public List<Map<String, Object>> list_occupation() {
+		return registDAO.list_occupation();
+	}
+
+	public Map<String, Object> get_occupation(HashMap<String, Object> params) {
+		return registDAO.get_occupation(params);
 	}
 }

@@ -61,7 +61,7 @@ public class RegistController {
 		result.put("earner_list", registService.earner_list(worker_id));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-
+	
 	@PostMapping(value = "/regist/get_earner")
 	public Map<String, Object> get_earner(@Valid @RequestBody GetEarnerVO getEarnerVO) {
 		Map<String, Object> result = new HashMap<>();
@@ -79,15 +79,15 @@ public class RegistController {
 	@PatchMapping(value = "/regist/earner_update")
 	public Map<String, Object> earner_update(@Valid @RequestBody EarnerUpdateVO earnerUpdateVO) throws Exception {
 		Map<String, Object> result = new HashMap<>();
-		RequestValidator validator = new RequestValidator();
-        Errors errors = new BeanPropertyBindingResult(earnerUpdateVO, "earnerUpdateVO");
-        validator.validate(earnerUpdateVO, errors);
+		//RequestValidator validator = new RequestValidator();
+        //Errors errors = new BeanPropertyBindingResult(earnerUpdateVO, "earnerUpdateVO");
+        //validator.validate(earnerUpdateVO, errors);
 
-        if (errors.hasErrors()) {
-        	throw new NotReadablePropertyException(RegistController.class, "earnerUpdateVO", "Invalid Update Parameter");
-        } else {
+        //if (errors.hasErrors()) {
+        //	throw new NotReadablePropertyException(RegistController.class, "earnerUpdateVO", "Invalid Update Parameter");
+        //} else {
         	registService.earner_update(earnerUpdateVO);
-        }
+        //}
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
@@ -97,7 +97,22 @@ public class RegistController {
 		result.put("div_list", registService.list_divcode());
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-
+	
+	@GetMapping(value = "/regist/list_occupation")
+	public Map<String, Object> list_occupation() {
+		Map<String, Object> result = new HashMap<>();
+		result.put("occupation_list", registService.list_occupation());
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/regist/get_occupation")
+	public Map<String, Object> get_occupation(@RequestBody HashMap<String, Object> params) throws Exception {
+		Map<String, Object> result = new HashMap<>();
+		result.put("occupation", registService.get_occupation(params));
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+	}
+	
+	
 	@DeleteMapping(value = "/regist/earner_delete")
 	public Map<String, Object> earner_delete(@Valid @RequestBody EarnerDeleteVO earnerDeleteVO) {
 		Map<String, Object> result = new HashMap<>();
