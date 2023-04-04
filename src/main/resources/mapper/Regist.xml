@@ -41,6 +41,7 @@
          ,is_native
          ,div_code
          ,div_name
+         ,div_type
       FROM earner
       WHERE worker_id = #{worker_id}
    </select>
