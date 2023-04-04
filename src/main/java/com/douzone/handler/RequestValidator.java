@@ -81,11 +81,7 @@ public class RequestValidator implements Validator {
                 }
                 break;
 
-            case "personal_no":
-                if (!(Pattern.matches("^\\d{13}$", param_value))) {
-                    errors.rejectValue("param_value", "param_value.invalid", "ParamValue should be a 13-digit number.");
-                }
-                break;
+            
 
             case "deduction_amount":
                 try {
@@ -121,6 +117,7 @@ public class RequestValidator implements Validator {
             case "address":
             case "address_detail":
             case "etc":
+            case "personal_no":
                 break;
         }
         if (param_value.isEmpty()) {

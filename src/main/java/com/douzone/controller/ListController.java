@@ -26,7 +26,7 @@ public class ListController {
 	
 	// 소득자별조회
 	@PostMapping(value = "/list/search_earner_code")
-	public Map<String, Object> search_earner_code( @RequestBody HashMap<String, Object> map) {
+	public Map<String, Object> search_earner_code( @RequestBody HashMap<String, Object> map) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		List<Map<String, Object>> incoming = listService.search_earner_code(map);//VO->Map으로 리턴
 		result.put("earnerInfo", incoming);
@@ -36,7 +36,7 @@ public class ListController {
 
 	// 소득구분별조회
 	@PostMapping(value = "/list/search_div_code")
-	public Map<String, Object> search_div_code(@RequestBody HashMap<String, Object> map) {
+	public Map<String, Object> search_div_code(@RequestBody HashMap<String, Object> map) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		List<Map<String, Object>> incoming = listService.search_div_code(map);
 		result.put("earnerInfo", incoming);

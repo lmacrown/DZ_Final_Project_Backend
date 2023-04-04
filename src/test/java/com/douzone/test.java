@@ -10,7 +10,7 @@ public class test {
 	@Test
 	public void AES() throws Exception {
 	   Aes aes = new Aes("1234567");
-	   String enc = aes.encrypt("this is plain text");
+	   String enc = aes.encrypt("1");
 	   String dec = aes.decrypt(enc);
 	   System.out.println(enc);
 	   System.out.println(dec);

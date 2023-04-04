@@ -39,14 +39,14 @@ public class InputController {
 	GlobalResponseHandler gloabalResponseHandler;
 
 	@PostMapping(value = "/input/earner_search")
-	public Map<String, Object> earner_search(@Valid @RequestBody EarnerSearchVO earnerSearchVO) {
+	public Map<String, Object> earner_search(@Valid @RequestBody EarnerSearchVO earnerSearchVO) throws Exception{
 		Map<String, Object> result = new HashMap<>();
 		result.put("earner_list", inputService.earner_search(earnerSearchVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/input/get_task")
-	public Map<String, Object> get_task(@Valid @RequestBody GetTaskVO getTaskVO) {
+	public Map<String, Object> get_task(@Valid @RequestBody GetTaskVO getTaskVO) throws Exception  {
 		Map<String, Object> result = new HashMap<>();
 		List<Map<String, Object>> task_list = inputService.get_task(getTaskVO);
 		result.put("task_list", task_list);

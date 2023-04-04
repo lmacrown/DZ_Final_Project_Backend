@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.douzone.Aes;
 import com.douzone.dao.RegistDAO;
 import com.douzone.entity.EarnerVO;
 import com.douzone.entity.regist.CheckCodeVO;
@@ -26,8 +27,19 @@ public class RegistService {
 		return registDAO.list_divcode();
 	}
 
-	public List<Map<String, Object>> earner_list(String worker_id) {
-		return registDAO.earner_list(worker_id);
+	public List<Map<String, Object>> earner_list(String worker_id) throws Exception {
+		List<Map<String, Object>> earner_list = registDAO.earner_list(worker_id);
+		for(Map<String, Object> i : earner_list) {
+			System.out.println("이거"+i.get("personal_no"));
+			Aes aes = new Aes("1234567");
+			if(i.get("personal_no") != null) {
+				String dec = aes.decrypt((String) i.get("personal_no"));
+				System.out.println("복호화 :" +dec);
+				i.put("personal_no", dec);
+			}
+		}
+		return earner_list;
+//		return registDAO.earner_list(worker_id);
 	}
 
 	public EarnerVO get_earner(GetEarnerVO get_earner) {
@@ -50,8 +62,16 @@ public class RegistService {
 		registDAO.update_count(earnerInsertVO);
 	}
 	
-	public void earner_update(EarnerUpdateVO earnerUpdateVO) {
-		System.out.println("earner_update 실행");
+	public void earner_update(EarnerUpdateVO earnerUpdateVO) throws Exception {
+		//System.out.println("earner_update 실행");
+		String param_name = earnerUpdateVO.getParam_name();
+		if(param_name.equals("personal_no")) {
+			String enc_target = earnerUpdateVO.getParam_value();
+			//System.out.println(enc_target);
+			Aes aes = new Aes("1234567");
+			String enc = aes.encrypt(enc_target);
+			earnerUpdateVO.setParam_value(enc);
+		}
 		registDAO.earner_update(earnerUpdateVO);
 	}
 

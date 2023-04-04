@@ -55,7 +55,7 @@ public class RegistController {
 	}
 
 	@GetMapping(value = "/regist/earner_list/{worker_id}")
-	public Map<String, Object> earner_list(Model model, @PathVariable String worker_id) {
+	public Map<String, Object> earner_list(Model model, @PathVariable String worker_id) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		result.put("earner_list", registService.earner_list(worker_id));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
@@ -76,7 +76,7 @@ public class RegistController {
 	}
 	//공부해야될 것
 	@PatchMapping(value = "/regist/earner_update")
-	public Map<String, Object> earner_update(@Valid @RequestBody EarnerUpdateVO earnerUpdateVO) {
+	public Map<String, Object> earner_update(@Valid @RequestBody EarnerUpdateVO earnerUpdateVO) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		RequestValidator validator = new RequestValidator();
         Errors errors = new BeanPropertyBindingResult(earnerUpdateVO, "earnerUpdateVO");
