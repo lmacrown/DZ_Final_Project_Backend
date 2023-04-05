@@ -43,13 +43,23 @@ public class RegistService {
 //		return registDAO.earner_list(worker_id);
 	}
 
-	public EarnerVO get_earner(GetEarnerVO get_earner) {
-		EarnerVO result = registDAO.get_earner(get_earner);
-	    if (null == result) 
-	        throw new NoSuchElementException("No earner found with the given parameters");
-	    return result;
-	}
-
+	public EarnerVO get_earner(GetEarnerVO get_earner) throws Exception {
+	      EarnerVO result = registDAO.get_earner(get_earner);
+	       if (null == result) 
+	           throw new NoSuchElementException("No earner found with the given parameters");
+	       String personal_no = result.getPersonal_no();
+	      if(personal_no != null) {
+	         Aes aes = new Aes("1234567");
+	         String dec = aes.decrypt(personal_no);
+	         System.out.println("복호화 "+dec);
+	         result.setPersonal_no(dec);
+	         System.out.println(result);
+	      }
+	      return result;
+	   }
+	public List<Map<String, Object>> list_occupation(String earner_type) {
+	      return registDAO.list_occupation(earner_type);
+	   }
 	public int earner_insert(EarnerInsertVO earnerInsertVO) {
 		registDAO.earner_insert(earnerInsertVO);//SRP 지킬것
 		if ((int)earnerInsertVO.getIs_default()==1) {
@@ -88,9 +98,7 @@ public class RegistService {
 		return registDAO.check_code(checkCodeVO);
 	}
 
-	public List<Map<String, Object>> list_occupation() {
-		return registDAO.list_occupation();
-	}
+	
 
 	public Map<String, Object> get_occupation(HashMap<String, Object> params) {
 		return registDAO.get_occupation(params);

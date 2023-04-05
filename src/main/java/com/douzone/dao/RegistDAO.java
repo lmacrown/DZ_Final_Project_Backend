@@ -20,13 +20,14 @@ public interface RegistDAO {
 	
 	List<Map<String, Object>>list_divcode();
 	
-	List<Map<String, Object>> list_occupation();
 	
 	List<Map<String, Object>> earner_list(String worker_id);
 
 	EarnerVO get_earner(GetEarnerVO get_earner);//VO가 없어요
 
 	void earner_insert(EarnerInsertVO earnerInsertVO);
+	
+	List<Map<String, Object>> list_occupation(String earner_type);
 	
 	void update_count(EarnerInsertVO earnerInsertVO);
 

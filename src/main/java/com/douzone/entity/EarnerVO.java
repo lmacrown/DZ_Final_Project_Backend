@@ -38,5 +38,11 @@ public class EarnerVO {
 	
 	private String is_artist;
 	private String artist_type;
-	private float ins_reduce;
+	private int ins_reduce;
+	private int rate_coefficient;
+	private String earner_type;
+	private int sworker_reduce;
+	private int workinjury_reduce;
+	private String occupation_code;
+	private String is_sworker;
 }

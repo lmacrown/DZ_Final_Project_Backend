@@ -30,7 +30,7 @@ public class ListService {
 	}
 
 	public List<Map<String, Object>> search_div_code(Map<String, Object> map) throws Exception {
-		List<Map<String, Object>> search_div_code = listDAO.search_earner_code(map);
+		List<Map<String, Object>> search_div_code = listDAO.search_div_code(map);
 		for(Map<String, Object> i : search_div_code) {
 			System.out.println("이거"+i.get("personal_no"));
 			Aes aes = new Aes("1234567");

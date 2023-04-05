@@ -63,7 +63,7 @@ public class RegistController {
 	}
 	
 	@PostMapping(value = "/regist/get_earner")
-	public Map<String, Object> get_earner(@Valid @RequestBody GetEarnerVO getEarnerVO) {
+	public Map<String, Object> get_earner(@Valid @RequestBody GetEarnerVO getEarnerVO) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		result.put("earner_info", registService.get_earner(getEarnerVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
@@ -98,13 +98,12 @@ public class RegistController {
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/regist/list_occupation")
-	public Map<String, Object> list_occupation() {
-		Map<String, Object> result = new HashMap<>();
-		result.put("occupation_list", registService.list_occupation());
-		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
-	}
-	
+	@GetMapping(value = "/regist/list_occupation/{earner_type}")
+	   public Map<String, Object> list_occupation(@PathVariable String earner_type) {
+	      Map<String, Object> result = new HashMap<>();
+	      result.put("occupation_list", registService.list_occupation(earner_type));
+	      return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+	   }
 	@PostMapping(value = "/regist/get_occupation")
 	public Map<String, Object> get_occupation(@RequestBody HashMap<String, Object> params) throws Exception {
 		Map<String, Object> result = new HashMap<>();
