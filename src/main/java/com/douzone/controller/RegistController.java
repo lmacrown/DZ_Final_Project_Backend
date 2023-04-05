@@ -5,12 +5,9 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +24,6 @@ import com.douzone.entity.regist.EarnerUpdateVO;
 import com.douzone.entity.regist.GetCountVO;
 import com.douzone.entity.regist.GetEarnerVO;
 import com.douzone.handler.GlobalResponseHandler;
-import com.douzone.handler.RequestValidator;
 import com.douzone.service.RegistService;
 
 
@@ -99,11 +95,12 @@ public class RegistController {
 	}
 	
 	@GetMapping(value = "/regist/list_occupation/{earner_type}")
-	   public Map<String, Object> list_occupation(@PathVariable String earner_type) {
-	      Map<String, Object> result = new HashMap<>();
-	      result.put("occupation_list", registService.list_occupation(earner_type));
-	      return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
-	   }
+	public Map<String, Object> list_occupation(@PathVariable String earner_type) {
+		Map<String, Object> result = new HashMap<>();
+		result.put("occupation_list", registService.list_occupation(earner_type));
+		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/regist/get_occupation")
 	public Map<String, Object> get_occupation(@RequestBody HashMap<String, Object> params) throws Exception {
 		Map<String, Object> result = new HashMap<>();

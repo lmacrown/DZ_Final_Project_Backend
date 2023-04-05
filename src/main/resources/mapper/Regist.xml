@@ -33,7 +33,11 @@
       FROM codes
    </select>
    
-  
+   <select id="list_occupation" resultType="java.util.Map">
+      SELECT *
+      FROM occupation
+      WHERE occupation_type = #{earner_type}
+   </select>
    
    <select id="get_occupation" resultType="java.util.Map">
       SELECT *

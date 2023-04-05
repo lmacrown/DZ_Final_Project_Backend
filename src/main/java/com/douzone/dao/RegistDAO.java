@@ -20,6 +20,7 @@ public interface RegistDAO {
 	
 	List<Map<String, Object>>list_divcode();
 	
+	List<Map<String, Object>> list_occupation(String earner_type);
 	
 	List<Map<String, Object>> earner_list(String worker_id);
 

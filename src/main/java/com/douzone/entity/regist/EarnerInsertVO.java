@@ -31,7 +31,10 @@ public class EarnerInsertVO {
     
     @NotBlank(message = "div_name is required")
     private String div_name;
-   
+    
+    @NotBlank(message = "div_type is required")
+    private String div_type;
+    
     private String personal_no;
     
     private String is_native;
