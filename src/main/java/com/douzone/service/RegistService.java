@@ -57,7 +57,9 @@ public class RegistService {
 	      }
 	      return result;
 	   }
-
+	public List<Map<String, Object>> list_occupation(String earner_type) {
+	      return registDAO.list_occupation(earner_type);
+	   }
 	public int earner_insert(EarnerInsertVO earnerInsertVO) {
 		registDAO.earner_insert(earnerInsertVO);//SRP 지킬것
 		if ((int)earnerInsertVO.getIs_default()==1) {
@@ -96,9 +98,7 @@ public class RegistService {
 		return registDAO.check_code(checkCodeVO);
 	}
 
-	public List<Map<String, Object>> list_occupation() {
-		return registDAO.list_occupation();
-	}
+	
 
 	public Map<String, Object> get_occupation(HashMap<String, Object> params) {
 		return registDAO.get_occupation(params);

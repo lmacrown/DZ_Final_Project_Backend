@@ -33,10 +33,7 @@
       FROM codes
    </select>
    
-   <select id="list_occupation" resultType="java.util.Map">
-      SELECT *
-      FROM occupation
-   </select>
+  
    
    <select id="get_occupation" resultType="java.util.Map">
       SELECT *
@@ -62,6 +59,11 @@
       FROM earner
       WHERE earner_code = #{earner_code}
       AND   worker_id   = #{worker_id}
+   </select>
+   <select id="list_occupation" resultType="java.util.Map">
+      SELECT *
+      FROM occupation
+      WHERE occupation_type = #{earner_type}
    </select>
    <!--소득자 정보 입력-->
    <insert id="earner_insert" useGeneratedKeys="true" keyProperty="earner_code">
@@ -103,13 +105,16 @@
             	deduction_amount = CAST(#{param_value} AS INTEGER)
             </when>
             <when test="param_name =='ins_reduce'">
-            	ins_reduce = CAST(#{param_value} AS DOUBLE PRECISION)
+            	ins_reduce = CAST(#{param_value} AS INTEGER)
             </when>
             <when test="param_name =='sworker_reduce'">
-            	sworker_reduce = CAST(#{param_value} AS DOUBLE PRECISION)
+            	sworker_reduce = CAST(#{param_value} AS INTEGER)
             </when>
              <when test="param_name =='workinjury_reduce'">
-            	workinjury_reduce = CAST(#{param_value} AS DOUBLE PRECISION)
+            	workinjury_reduce = CAST(#{param_value} AS INTEGER)
+            </when>
+            <when test="param_name =='rate_coefficient'">
+            	rate_coefficient = CAST(#{param_value} AS INTEGER)
             </when>
             <otherwise>
                ${param_name} = #{param_value}
@@ -145,4 +150,6 @@
       WHERE earner_code = #{earner_code}
       AND worker_id     = #{worker_id}
    </delete>
+   
+   
 </mapper>
