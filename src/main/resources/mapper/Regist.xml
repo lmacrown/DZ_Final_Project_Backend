@@ -71,6 +71,7 @@
          ,earner_name
          ,div_code
          ,div_name
+         ,div_type
          ,personal_no
          ,is_native
          ,create_date
@@ -80,6 +81,7 @@
          ,#{earner_name}
          ,#{div_code}
          ,#{div_name}
+         ,#{div_type}
          ,#{personal_no}
          ,#{is_native}
          ,now()<!--현재 날짜 추가-->
@@ -102,6 +104,12 @@
             </when>
             <when test="param_name =='ins_reduce'">
             	ins_reduce = CAST(#{param_value} AS DOUBLE PRECISION)
+            </when>
+            <when test="param_name =='sworker_reduce'">
+            	sworker_reduce = CAST(#{param_value} AS DOUBLE PRECISION)
+            </when>
+             <when test="param_name =='workinjury_reduce'">
+            	workinjury_reduce = CAST(#{param_value} AS DOUBLE PRECISION)
             </when>
             <otherwise>
                ${param_name} = #{param_value}

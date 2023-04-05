@@ -63,7 +63,7 @@ public class RegistController {
 	}
 	
 	@PostMapping(value = "/regist/get_earner")
-	public Map<String, Object> get_earner(@Valid @RequestBody GetEarnerVO getEarnerVO) {
+	public Map<String, Object> get_earner(@Valid @RequestBody GetEarnerVO getEarnerVO) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		result.put("earner_info", registService.get_earner(getEarnerVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);

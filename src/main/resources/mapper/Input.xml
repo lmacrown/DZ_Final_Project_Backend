@@ -149,7 +149,7 @@
 			 #{earner_code}
 			,#{worker_id}
 			,#{payment_ym}
-			,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.7,2) ELSE Round(0.8, 2) END
+			,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.08,2) ELSE Round(0.07, 2) END
 		)
 		RETURNING tax_id
 	</insert>

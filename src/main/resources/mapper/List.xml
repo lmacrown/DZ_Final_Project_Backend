@@ -46,7 +46,7 @@
 			,e.earner_name
 			,e.personal_no
 			,e.is_native
-			,count(*)
+			,count(et.*) as count
 			,sum(et.total_payment) as total_payment
 			,et.tax_rate as tax_rate
 			,sum(et.tax_income) as tax_income
