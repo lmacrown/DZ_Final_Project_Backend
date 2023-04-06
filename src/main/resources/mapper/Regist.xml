@@ -146,7 +146,7 @@
       AND   worker_id   = #{worker_id}
    </update>
    <!--소득자 정보 삭제-->
-   <delete id="earner_delete">
+      <delete id="earner_delete">
       DELETE FROM earner_tax
       WHERE earner_code in 
          <foreach collection="earner_codes" item="earner_code" open="(" close=")" separator="," >
@@ -175,6 +175,5 @@
          </foreach>
       AND worker_id = #{worker_id}
    </delete>
-   
    
 </mapper>
