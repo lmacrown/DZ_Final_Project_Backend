@@ -18,17 +18,15 @@ import com.douzone.entity.regist.GetEarnerVO;
 @Repository("registDAO")
 public interface RegistDAO {
 	
-	List<Map<String, Object>>list_divcode();
+	List<Map<String, Object>>list_divcode(String search_value);
 	
-	List<Map<String, Object>> list_occupation(String earner_type);
+	List<Map<String, Object>> list_occupation(HashMap<String, Object> params);
 	
 	List<Map<String, Object>> earner_list(String worker_id);
 
 	EarnerVO get_earner(GetEarnerVO get_earner);//VO가 없어요
 
 	void earner_insert(EarnerInsertVO earnerInsertVO);
-	
-	List<Map<String, Object>> list_occupation(String earner_type);
 	
 	void update_count(EarnerInsertVO earnerInsertVO);
 

@@ -52,7 +52,7 @@ public class RegistController {
 	}
 
 	@GetMapping(value = "/regist/earner_list/{worker_id}")
-	public Map<String, Object> earner_list(Model model, @PathVariable String worker_id) throws Exception {
+	public Map<String, Object> earner_list(@PathVariable String worker_id) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		result.put("earner_list", registService.earner_list(worker_id));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
@@ -87,17 +87,17 @@ public class RegistController {
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/regist/list_divcode")
-	public Map<String, Object> list_divcode() {
+	@GetMapping(value = {"/regist/list_divcode", "/regist/list_divcode/{search_value}"})
+	public Map<String, Object> list_divcode(@PathVariable(required = false) String search_value) {
 		Map<String, Object> result = new HashMap<>();
-		result.put("div_list", registService.list_divcode());
+		result.put("div_list", registService.list_divcode(search_value));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/regist/list_occupation/{earner_type}")
-	public Map<String, Object> list_occupation(@PathVariable String earner_type) {
+	@PostMapping(value = "/regist/list_occupation")
+	public Map<String, Object> list_occupation(@RequestBody HashMap<String, Object> params) {
 		Map<String, Object> result = new HashMap<>();
-		result.put("occupation_list", registService.list_occupation(earner_type));
+		result.put("occupation_list", registService.list_occupation(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 	

@@ -31,12 +31,23 @@
          ,div_name
          ,div_type
       FROM codes
+   	  <if test="search_value != null and search_value != ''">
+      	WHERE div_code ILIKE concat('%', #{search_value}, '%')
+		OR div_name ILIKE concat('%', #{search_value}, '%')
+		OR div_type ILIKE concat('%', #{search_value}, '%')
+	  </if>
    </select>
    
    <select id="list_occupation" resultType="java.util.Map">
       SELECT *
       FROM occupation
       WHERE occupation_type = #{earner_type}
+      <if test="search_value != null and search_value != ''">
+      	AND (
+            occupation_code ILIKE concat('%', #{search_value}, '%')
+            OR occupation_name ILIKE concat('%', #{search_value}, '%')
+        )
+	  </if>
    </select>
    
    <select id="get_occupation" resultType="java.util.Map">
@@ -45,6 +56,7 @@
       WHERE occupation_code = #{occupation_code}
       AND occupation_type = #{earner_type}
    </select>
+   
    <!--소득자 정보 출력-->
    <select id="earner_list" resultType="java.util.Map">
       SELECT
@@ -63,11 +75,6 @@
       FROM earner
       WHERE earner_code = #{earner_code}
       AND   worker_id   = #{worker_id}
-   </select>
-   <select id="list_occupation" resultType="java.util.Map">
-      SELECT *
-      FROM occupation
-      WHERE occupation_type = #{earner_type}
    </select>
    <!--소득자 정보 입력-->
    <insert id="earner_insert" useGeneratedKeys="true" keyProperty="earner_code">
@@ -151,8 +158,11 @@
       AND worker_id = #{worker_id};
       
       DELETE FROM work_calendar
-      WHERE earner_code = #{earner_code}
-      AND worker_id     = #{worker_id}
+      WHERE earner_code in
+         <foreach collection="earner_codes" item="earner_code" open="(" close=")" separator="," >
+            #{earner_code}
+         </foreach>
+      AND worker_id = #{worker_id}
    </delete>
    
    

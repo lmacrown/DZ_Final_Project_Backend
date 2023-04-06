@@ -41,5 +41,4 @@ public class EarnerInsertVO {
     
     private int is_default;
     
-    private String div_type;
 }

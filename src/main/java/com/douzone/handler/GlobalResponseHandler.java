@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.DataAccessException;
@@ -136,7 +137,7 @@ public class GlobalResponseHandler {
 				message);
 
 		log.error("Server Error: Status - {}, Message - {}, Details - {}", status.value(), message, e.getMessage());
-		// log.error("StackTrace:{}", ExceptionUtils.getStackTrace(e));
+		log.error("StackTrace:{}", ExceptionUtils.getStackTrace(e));
 		return new ResponseEntity<>(errorResponse, status);
 	}
 

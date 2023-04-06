@@ -24,8 +24,8 @@ public class RegistService {
 	@Autowired
 	RegistDAO registDAO;
 
-	public List<Map<String, Object>> list_divcode() {
-		return registDAO.list_divcode();
+	public List<Map<String, Object>> list_divcode(String search_value) {
+		return registDAO.list_divcode(search_value);
 	}
 
 	public List<Map<String, Object>> earner_list(String worker_id) throws Exception {
@@ -96,8 +96,8 @@ public class RegistService {
 		return registDAO.check_code(checkCodeVO);
 	}
 
-	public List<Map<String, Object>> list_occupation(String earner_type) {
-		return registDAO.list_occupation(earner_type);
+	public List<Map<String, Object>> list_occupation(HashMap<String, Object> params) {
+		return registDAO.list_occupation(params);
 	}
 
 	public Map<String, Object> get_occupation(HashMap<String, Object> params) {
