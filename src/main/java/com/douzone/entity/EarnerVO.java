@@ -39,4 +39,6 @@ public class EarnerVO {
 	private String is_artist;
 	private String artist_type;
 	private float ins_reduce;
+	
+	private String div_modified;
 }
