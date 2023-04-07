@@ -17,6 +17,7 @@
       )
       LIMIT 1;
    </select>
+   
    <!--소득자 존재확인-->
    <select id="check_code" resultType="int">
       SELECT count(*) as count<!--cnt->count--> 
@@ -24,6 +25,7 @@
       WHERE earner_code = #{custom_code} 
       AND worker_id     = #{worker_id}
    </select>
+   
    <!--업종코드-->
    <select id="list_divcode" resultType="java.util.Map">
       SELECT
@@ -72,6 +74,7 @@
       FROM earner
       WHERE worker_id = #{worker_id}
    </select>
+   
    <!--소득자 등록 정보 출력-->
    <select id="get_earner" resultType="com.douzone.entity.EarnerVO">
       SELECT *
@@ -85,6 +88,7 @@
       WHERE earner_code = #{earner_code}
       AND   worker_id   = #{worker_id}
    </select>
+   
    <!--소득자 정보 입력-->
    <insert id="earner_insert" useGeneratedKeys="true" keyProperty="earner_code">
       INSERT INTO earner (
