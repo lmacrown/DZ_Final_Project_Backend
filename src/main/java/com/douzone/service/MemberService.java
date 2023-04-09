@@ -20,10 +20,8 @@ public class MemberService {
 
 		String worker_id = (String)params.get("worker_id");
 		String worker_pw = (String)params.get("worker_pw");
-		
 		String salt = get_salt(worker_id);
 		String res = en.getEncrypt(worker_pw, salt);
-		
 		MemberVO memberVO = login(worker_id, res);
 		
 		if(memberVO != null) {

@@ -2,7 +2,6 @@ package com.douzone.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,35 +21,32 @@ public class RegistService {
 
 	@Autowired
 	RegistDAO registDAO;
-
+	
 	public List<Map<String, Object>> list_divcode() {
 		return registDAO.list_divcode();
 	}
 
 	public List<Map<String, Object>> earner_list(String worker_id) throws Exception {
 		List<Map<String, Object>> earner_list = registDAO.earner_list(worker_id);
-		for(Map<String, Object> i : earner_list) {
-			System.out.println("이거"+i.get("personal_no"));
-			Aes aes = new Aes("1234567");
-			if(i.get("personal_no") != null) {
-				String dec = aes.decrypt((String) i.get("personal_no"));
-				System.out.println("복호화 :" +dec);
-				i.put("personal_no", dec);
-			}
-		}
+		
+		EncodingService.decrypt_list(earner_list);
+		
 		return earner_list;
-//		return registDAO.earner_list(worker_id);
 	}
 
-	public EarnerVO get_earner(GetEarnerVO get_earner) {
+	public EarnerVO get_earner(GetEarnerVO get_earner) throws Exception {
 		EarnerVO result = registDAO.get_earner(get_earner);
-	    if (null == result) 
-	        throw new NoSuchElementException("No earner found with the given parameters");
-	    return result;
+
+		EncodingService.decrypt_one(result);
+		
+		return result;
 	}
 
-	public int earner_insert(EarnerInsertVO earnerInsertVO) {
-		registDAO.earner_insert(earnerInsertVO);//SRP 지킬것
+	public int earner_insert(EarnerInsertVO earnerInsertVO) throws Exception {
+		Aes aes = new Aes();
+		String key = Integer.toString(aes.create_key());
+		earnerInsertVO.setBw_key(key);
+		registDAO.earner_insert(earnerInsertVO);
 		if ((int)earnerInsertVO.getIs_default()==1) {
 			update_count(earnerInsertVO);
 			return Integer.parseInt((String) earnerInsertVO.getEarner_code());
@@ -63,15 +59,10 @@ public class RegistService {
 	}
 	
 	public void earner_update(EarnerUpdateVO earnerUpdateVO) throws Exception {
-		//System.out.println("earner_update 실행");
-		String param_name = earnerUpdateVO.getParam_name();
-		if(param_name.equals("personal_no")) {
-			String enc_target = earnerUpdateVO.getParam_value();
-			//System.out.println(enc_target);
-			Aes aes = new Aes("1234567");
-			String enc = aes.encrypt(enc_target);
-			earnerUpdateVO.setParam_value(enc);
-		}
+		String key = registDAO.get_bw_key(earnerUpdateVO);
+	
+		EncodingService.encryption(earnerUpdateVO, key);
+	
 		registDAO.earner_update(earnerUpdateVO);
 	}
 

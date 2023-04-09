@@ -20,6 +20,7 @@ public class EarnerVO {
 	private String residence_status;
 	private String is_native;
 	private String personal_no;
+	private String bw_key;
 	private String zipcode;
 	private String address;
 	private String address_detail;

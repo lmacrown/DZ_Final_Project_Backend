@@ -30,7 +30,7 @@ public interface InputDAO {
 
 	void update_taxdate( UpdateTaxDateVO updateTaxDateVO);
 
-	void update_taxinfo( Map<String, Object> params);
+	Map<String, Object> update_taxinfo( Map<String, Object> params);
 
 	void task_insert( TaskInsertVO taskInsertVO);
 

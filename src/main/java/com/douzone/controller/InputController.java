@@ -53,13 +53,14 @@ public class InputController {
 		result.put("task_count", task_list.size());
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = "/input/sum_task")
 	public Map<String, Object> sum_task(@Valid @RequestBody SumTaskVO sumTaskVO) {
 		Map<String, Object> result = new HashMap<>();
 		result.put("sum_task", inputService.sum_task(sumTaskVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
+
 	@PostMapping(value = "/input/task_insert")
 	public Map<String, Object> task_insert(@Valid @RequestBody TaskInsertVO taskInsertVO) {
 		Map<String, Object> result = new HashMap<>();
@@ -113,9 +114,7 @@ public class InputController {
 	@PatchMapping(value = "/input/update_taxinfo")
 	public Map<String, Object> update_taxinfo(@RequestBody Map<String, Object> params) throws SQLException {
 		Map<String, Object> result = new HashMap<>();
-		System.out.println(params);
 		validateInput(params);
-		System.out.println(params);
 		result.put("earner_tax", inputService.update_taxinfo(params));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
@@ -126,12 +125,11 @@ public class InputController {
 		}
 
 		int totalPayment = (int) params.get("total_payment");
-		double taxRate = (double)Double.parseDouble(params.get("tax_rate").toString());
+		double taxRate = (double) Double.parseDouble(params.get("tax_rate").toString());
 		int taxId = (int) params.get("tax_id");
 
 		if (totalPayment <= 0 || taxRate <= 0 || taxRate >= 10 || taxId <= 0) {
 			throw new IllegalArgumentException("Invalid input: Check your total_payment, tax_rate, and tax_id values");
 		}
 	}
-
 }

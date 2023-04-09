@@ -1,4 +1,5 @@
 package com.douzone.controller.input;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -10,62 +11,62 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.douzone.entity.input.GetTaskVO;
+import com.douzone.entity.input.SumTaskVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GetTaskTest {
+public class SumTaskTest {
  @Autowired
  private MockMvc mockMvc;
 
  @Test
- public void testGetTaskNormal() throws Exception {
-     GetTaskVO getTaskVO = GetTaskVO.builder()
+ public void testSumTaskNormal() throws Exception {
+     SumTaskVO getTaskVO = SumTaskVO.builder()
              .worker_id("yuchan2")
              .payment_ym(202205)
              .build();
 
-     mockMvc.perform(post("/input/get_task")
+     mockMvc.perform(post("/input/sum_task")
              .contentType(MediaType.APPLICATION_JSON)
              .content(new ObjectMapper().writeValueAsString(getTaskVO)))
              .andExpect(status().isOk())
-             .andExpect(jsonPath("$.task_list").exists());
+             .andExpect(jsonPath("$.sum_task").exists());
  }
 
  @Test
- public void testGetTaskMissingWorkerId() throws Exception {
-     GetTaskVO getTaskVO = GetTaskVO.builder()
+ public void testSumTaskMissingWorkerId() throws Exception {
+     SumTaskVO getTaskVO = SumTaskVO.builder()
              .payment_ym(202201)
              .build();
 
-     mockMvc.perform(post("/input/get_task")
+     mockMvc.perform(post("/input/sum_task")
              .contentType(MediaType.APPLICATION_JSON)
              .content(new ObjectMapper().writeValueAsString(getTaskVO)))
              .andExpect(status().isBadRequest());
  }
 
  @Test
- public void testGetTaskInvalidPaymentYm() throws Exception {
-     GetTaskVO getTaskVO = GetTaskVO.builder()
+ public void testSumTaskInvalidPaymentYm() throws Exception {
+     SumTaskVO getTaskVO = SumTaskVO.builder()
              .worker_id("yuchan2")
              .payment_ym(199999)
              .build();
 
-     mockMvc.perform(post("/input/get_task")
+     mockMvc.perform(post("/input/sum_task")
              .contentType(MediaType.APPLICATION_JSON)
              .content(new ObjectMapper().writeValueAsString(getTaskVO)))
              .andExpect(status().isBadRequest());
  }
 
  @Test
- public void testGetTaskOutOfRangePaymentYm() throws Exception {
-     GetTaskVO getTaskVO = GetTaskVO.builder()
+ public void testSumTaskOutOfRangePaymentYm() throws Exception {
+     SumTaskVO getTaskVO = SumTaskVO.builder()
              .worker_id("yuchan2")
              .payment_ym(300000)
              .build();
 
-     mockMvc.perform(post("/input/get_task")
+     mockMvc.perform(post("/input/sum_task")
              .contentType(MediaType.APPLICATION_JSON)
              .content(new ObjectMapper().writeValueAsString(getTaskVO)))
              .andExpect(status().isBadRequest());

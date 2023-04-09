@@ -34,4 +34,6 @@ public interface RegistDAO {
 	String get_count(GetCountVO getCountVO);
 
 	int check_code(CheckCodeVO checkCodeVO);
+
+	String get_bw_key(EarnerUpdateVO earnerUpdateVO);
 }

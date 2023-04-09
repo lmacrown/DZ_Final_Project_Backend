@@ -1,7 +1,7 @@
 package com.douzone.controller.input;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -17,9 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.douzone.entity.input.TaskDeleteVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TaskDeleteTest {

@@ -26,5 +26,4 @@ public class UpdateTaxDateVO {
     @NotNull(message = "tax_id is required")
     private Integer tax_id;
 
-    // Getters and setters
 }

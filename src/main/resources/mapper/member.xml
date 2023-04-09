@@ -18,9 +18,9 @@
 		AND worker_pw   = #{param2}
 	</select>
 	<update id="update_last_login" keyProperty="last_login" useGeneratedKeys="true">
-    UPDATE worker 
-    SET last_login  = now()
-    WHERE worker_id = #{worker_id}
-    RETURNING to_char(last_login, 'YYYY-MM-DD HH24:MI:SS')
+	    UPDATE worker 
+	    SET last_login  = now()
+	    WHERE worker_id = #{worker_id}
+	    RETURNING to_char(last_login, 'YYYY-MM-DD HH24:MI:SS')
 	</update>
 </mapper>
