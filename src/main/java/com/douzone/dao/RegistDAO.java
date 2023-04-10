@@ -1,10 +1,7 @@
 package com.douzone.dao;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.validation.Valid;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;

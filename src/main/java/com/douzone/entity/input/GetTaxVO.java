@@ -1,5 +1,7 @@
 package com.douzone.entity.input;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -26,7 +28,6 @@ public class GetTaxVO {
     private int payment_ym;
     
     private String[] select_dates;
-    
     private String select_date;
     
     //@Min(value = 200000, message = "accrual_ym must be a 6-digit positive number")
