@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.douzone.dao.UtilDAO" >
+
+  <select id="update_earner_code">
+  	UPDATE earner SET
+    <choose>
+      <when test="mode == 'update_sworker_other'">
+        is_sworker = 'N',        
+        occupation_code = NULL,
+        rate_coefficient = 0,
+        sworker_reduce = 0,
+        workinjury_reduce = 0,
+      </when>     
+      <when test="mode == 'update_is_artist_other'">
+        is_artist = 'N',
+        ins_reduce = 0,
+      </when>
+    </choose>
+    	div_code = #{div_code},
+    	div_name = #{div_name},
+    	div_type = #{div_type}        
+  		WHERE earner_code = #{earner_code}
+    	  and worker_id = #{worker_id};
+  
+   INSERT INTO code_history (
+   	 worker_id,
+   	 earner_code,
+   	 div_code,
+   	 div_type,
+   	 div_name,
+   	 modified_by,
+   	 modified_date
+  )VALUES (
+     #{worker_id},
+     #{earner_code},
+     #{div_code},
+     #{div_type},
+     #{div_name},
+     #{worker_id},
+     now()
+  );
+  
+	UPDATE earner SET
+  		div_modified = now()       
+  	WHERE earner_code = #{earner_code}
+      and worker_id = #{worker_id};
+  </select>
+   
+  <select id="select_code_history" resultType="com.douzone.entity.CodeHistoryVO" >
+	    SELECT  
+	      to_char(modified_date,'YYYY-MM-DD HH24:MI:SS') 
+	      	   as modified_date, modified_by
+	    FROM code_history   
+		WHERE earner_code = #{earner_code}
+	      and worker_id = #{worker_id} 
+		ORDER BY modified_date DESC 
+		LIMIT 1;
+   </select>
+
+</mapper>
+	
+
