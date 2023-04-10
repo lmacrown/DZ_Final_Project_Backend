@@ -41,4 +41,6 @@ public class EarnerVO {
 	private float ins_reduce;
 	
 	private String div_modified;
+	private String old_div_code;
+	private String old_div_name;
 }

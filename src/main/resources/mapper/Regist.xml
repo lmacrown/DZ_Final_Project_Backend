@@ -44,6 +44,9 @@
          ,div_type
          ,to_char(div_modified,'YYYY-MM-DD HH24:MI:SS') 
 	      	   as div_modified
+	     ,old_div_code
+         ,old_div_name
+	      	   
       FROM earner
       WHERE worker_id = #{worker_id}
    </select>
