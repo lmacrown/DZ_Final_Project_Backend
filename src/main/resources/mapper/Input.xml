@@ -16,9 +16,9 @@
 		LEFT JOIN input_task it 
 		ON e.earner_code = it.earner_code 
 		AND e.worker_id = it.worker_id
+		AND it.payment_ym = #{payment_ym} 
 		WHERE e.worker_id = #{worker_id}
 		AND it.earner_code IS NULL
-		AND it.payment_ym = #{payment_ym} 
 		<if test="search_value != null and search_value != ''">
 			AND (e.earner_code ILIKE concat('%', #{search_value}, '%')
 			OR e.earner_name ILIKE concat('%', #{search_value}, '%')

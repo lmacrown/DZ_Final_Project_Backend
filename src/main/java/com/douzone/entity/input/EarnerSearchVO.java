@@ -1,5 +1,7 @@
 package com.douzone.entity.input;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -20,5 +22,7 @@ public class EarnerSearchVO {
     @NotNull(message = "search_value is required")
     private String search_value;
 
-    // Getters and setters
+    @Min(value = 200000, message = "payment_ym must be a 6-digit positive number")
+    @Max(value = 299999, message = "payment_ym must be a 6-digit positive number")
+    private int payment_ym;
 }
