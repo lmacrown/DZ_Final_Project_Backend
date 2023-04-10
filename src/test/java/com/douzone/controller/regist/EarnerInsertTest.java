@@ -31,6 +31,7 @@ public class EarnerInsertTest {
         params.put("earner_name", "마성일");
         params.put("div_code", "940903");
         params.put("div_name", "학원강사");
+        params.put("div_type", "일반");
         params.put("personal_no", "1234567890");
         params.put("is_native", "내");
         params.put("is_default", 0);
@@ -50,6 +51,7 @@ public class EarnerInsertTest {
         params.put("earner_name", "마성일");
         params.put("div_code", "940903");
         params.put("div_name", "학원강사");
+        params.put("div_type", "일반");
         params.put("personal_no", "1234567890");
         params.put("is_native", "내");
         params.put("is_default", 1);
@@ -71,6 +73,7 @@ public class EarnerInsertTest {
         // earner_name
         params.put("div_code", "940903");
         params.put("div_name", "학원강사");
+        params.put("div_type", "일반");
         params.put("personal_no", "1234567890");
         params.put("is_native", "내");
         params.put("is_default", 1);
@@ -90,6 +93,7 @@ public class EarnerInsertTest {
         params.put("earner_name", "마성일");
         params.put("div_code", "940903");
         params.put("div_name", "학원강사");
+        params.put("div_type", "일반");
         params.put("personal_no", "1234567890");
         params.put("is_native", "내");
         params.put("is_default", 1);
@@ -109,6 +113,7 @@ public class EarnerInsertTest {
         params.put("earner_name", "마성일");
         params.put("div_code", "940903");
         params.put("div_name", "학원강사");
+        params.put("div_type", "일반");
         params.put("personal_no", "1234567890");
         params.put("is_native", "내");
         params.put("is_default", 1);

@@ -5,9 +5,11 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +25,10 @@ import com.douzone.entity.regist.EarnerInsertVO;
 import com.douzone.entity.regist.EarnerUpdateVO;
 import com.douzone.entity.regist.GetCountVO;
 import com.douzone.entity.regist.GetEarnerVO;
+import com.douzone.entity.regist.GetOccupationVO;
+import com.douzone.entity.regist.ListOccupationVO;
 import com.douzone.handler.GlobalResponseHandler;
+import com.douzone.handler.RequestValidator;
 import com.douzone.service.RegistService;
 
 
@@ -75,15 +80,15 @@ public class RegistController {
 	@PatchMapping(value = "/regist/earner_update")
 	public Map<String, Object> earner_update(@Valid @RequestBody EarnerUpdateVO earnerUpdateVO) throws Exception {
 		Map<String, Object> result = new HashMap<>();
-		//RequestValidator validator = new RequestValidator();
-        //Errors errors = new BeanPropertyBindingResult(earnerUpdateVO, "earnerUpdateVO");
-        //validator.validate(earnerUpdateVO, errors);
+		RequestValidator validator = new RequestValidator();
+        Errors errors = new BeanPropertyBindingResult(earnerUpdateVO, "earnerUpdateVO");
+        validator.validate(earnerUpdateVO, errors);
 
-        //if (errors.hasErrors()) {
-        //	throw new NotReadablePropertyException(RegistController.class, "earnerUpdateVO", "Invalid Update Parameter");
-        //} else {
+        if (errors.hasErrors()) {
+        	throw new NotReadablePropertyException(RegistController.class, "earnerUpdateVO", "Invalid Update Parameter");
+        } else {
         	registService.earner_update(earnerUpdateVO);
-        //}
+        }
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
@@ -95,16 +100,16 @@ public class RegistController {
 	}
 	
 	@PostMapping(value = "/regist/list_occupation")
-	public Map<String, Object> list_occupation(@RequestBody HashMap<String, Object> params) {
+	public Map<String, Object> list_occupation(@Valid @RequestBody ListOccupationVO listOccupationVO) {
 		Map<String, Object> result = new HashMap<>();
-		result.put("occupation_list", registService.list_occupation(params));
+		result.put("occupation_list", registService.list_occupation(listOccupationVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/regist/get_occupation")
-	public Map<String, Object> get_occupation(@RequestBody HashMap<String, Object> params) throws Exception {
+	public Map<String, Object> get_occupation(@Valid @RequestBody GetOccupationVO getOccupationVO) {
 		Map<String, Object> result = new HashMap<>();
-		result.put("occupation", registService.get_occupation(params));
+		result.put("occupation", registService.get_occupation(getOccupationVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 	

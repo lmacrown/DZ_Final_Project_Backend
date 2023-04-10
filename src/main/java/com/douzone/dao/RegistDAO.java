@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import com.douzone.entity.EarnerVO;
@@ -13,6 +15,8 @@ import com.douzone.entity.regist.EarnerInsertVO;
 import com.douzone.entity.regist.EarnerUpdateVO;
 import com.douzone.entity.regist.GetCountVO;
 import com.douzone.entity.regist.GetEarnerVO;
+import com.douzone.entity.regist.GetOccupationVO;
+import com.douzone.entity.regist.ListOccupationVO;
 
 @Mapper
 @Repository("registDAO")
@@ -20,7 +24,7 @@ public interface RegistDAO {
 	
 	List<Map<String, Object>>list_divcode(String search_value);
 	
-	List<Map<String, Object>> list_occupation(HashMap<String, Object> params);
+	List<Map<String, Object>> list_occupation(ListOccupationVO listOccupationVO);
 	
 	List<Map<String, Object>> earner_list(String worker_id);
 
@@ -38,7 +42,7 @@ public interface RegistDAO {
 
 	int check_code(CheckCodeVO checkCodeVO);
 
-	Map<String, Object> get_occupation(HashMap<String, Object> params);
+	Map<String, Object> get_occupation(GetOccupationVO getOccupationVO);
 
 	
 }

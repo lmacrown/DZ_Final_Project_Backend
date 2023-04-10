@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import com.douzone.entity.regist.EarnerInsertVO;
 import com.douzone.entity.regist.EarnerUpdateVO;
 import com.douzone.entity.regist.GetCountVO;
 import com.douzone.entity.regist.GetEarnerVO;
+import com.douzone.entity.regist.GetOccupationVO;
+import com.douzone.entity.regist.ListOccupationVO;
 
 @Service("registService")
 public class RegistService {
@@ -96,11 +100,11 @@ public class RegistService {
 		return registDAO.check_code(checkCodeVO);
 	}
 
-	public List<Map<String, Object>> list_occupation(HashMap<String, Object> params) {
-		return registDAO.list_occupation(params);
+	public List<Map<String, Object>> list_occupation(ListOccupationVO listOccupationVO) {
+		return registDAO.list_occupation(listOccupationVO);
 	}
 
-	public Map<String, Object> get_occupation(HashMap<String, Object> params) {
-		return registDAO.get_occupation(params);
+	public Map<String, Object> get_occupation(GetOccupationVO getOccupationVO) {
+		return registDAO.get_occupation(getOccupationVO);
 	}
 }

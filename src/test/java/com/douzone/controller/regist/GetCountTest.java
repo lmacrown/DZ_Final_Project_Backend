@@ -75,7 +75,7 @@ public class GetCountTest {
     public void testGetCountWrongType() throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("worker_id", "yuchan2");
-        params.put("code_count", "70");
+        params.put("code_count", "hi");
         log.info("start WorngType");
         mockMvc.perform(post("/regist/get_count")
                 .contentType(MediaType.APPLICATION_JSON)
