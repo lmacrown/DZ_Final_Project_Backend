@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.douzone.Aes;
 import com.douzone.dao.InputDAO;
 import com.douzone.entity.TaxInfoVO;
 import com.douzone.entity.input.EarnerSearchVO;
@@ -81,23 +80,18 @@ public class InputService {
 		return inputDAO.get_calendar(getTaxVO);
 	}
 
-	public void calendar_insert(GetTaxVO getTaxVO) {
-		String[] accrual_ym_list = getTaxVO.getSelect_dates();
-		int accrual_ym = Integer.parseInt((accrual_ym_list[0].replaceAll("-", "")).substring(0,6));
-
-		getTaxVO.setAccrual_ym(accrual_ym);
-		delete_calendar(getTaxVO);
-		for(String i : accrual_ym_list) {
-			getTaxVO.setSelect_date(i);
-			calendar_update(getTaxVO);
+	public void calendar_ins_del(GetTaxVO getTaxVO) {
+		String[] select_dates = getTaxVO.getSelect_dates();
+		String select_date = "{";
+		
+		for(String i : select_dates) {
+			select_date = select_date.concat(i+", ");
 		}
-	}
-
-	public void delete_calendar(GetTaxVO getTaxVO) {
-		inputDAO.delete_calendar(getTaxVO);
-	}
-
-	public void calendar_update(GetTaxVO getTaxVO) {
-		 inputDAO.calendar_update(getTaxVO);
+		
+		select_date = select_date.substring(0,select_date.length()-2);
+		select_date = select_date.concat("}");
+		getTaxVO.setSelect_date(select_date);
+		
+		inputDAO.calendar_ins_del(getTaxVO);
 	}
 }
