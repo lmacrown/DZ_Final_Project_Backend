@@ -4,190 +4,187 @@
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.dao.InputDAO">
-	<!--사업소득자 정보 입력 -->
-	<!--사업자 코드 도움 -->
 
 	<select id="earner_search" resultType="java.util.Map">
-		SELECT
-			 earner_code
-			,earner_name
-			,is_native
-			,personal_no
-			,div_name
-			,div_code
-		FROM earner
-		WHERE worker_id = #{worker_id}
+		SELECT e.earner_code
+		,e.earner_name
+		,e.is_native
+		,e.personal_no
+		,e.div_name
+		,e.div_code
+		FROM earner e
+		LEFT JOIN input_task it 
+		ON e.earner_code = it.earner_code 
+		AND e.worker_id = it.worker_id
+		AND it.payment_ym = #{payment_ym} 
+		WHERE e.worker_id = #{worker_id}
+		AND it.earner_code IS NULL
 		<if test="search_value != null and search_value != ''">
-			AND earner_code ILIKE concat('%', #{search_value}, '%')
-			OR earner_name ILIKE concat('%', #{search_value}, '%')
-			OR div_code ILIKE concat('%', #{search_value}, '%')
+			AND (e.earner_code ILIKE concat('%', #{search_value}, '%')
+			OR e.earner_name ILIKE concat('%', #{search_value}, '%')
+			OR e.div_code ILIKE concat('%', #{search_value}, '%'))
 		</if>
+
 	</select>
-	
+
 	<select id="get_task" resultType="java.util.Map">
 		SELECT
-			 it.earner_code
-			,it.worker_id
-			,it.payment_ym
-			,e.earner_name
-			,e.div_code
-			,e.div_name
-			,e.is_native
-			,e.personal_no
-			,e.is_tuition
-			,e.is_artist
-			,e.is_sworker
-			,e.earner_type
+		it.earner_code
+		,it.worker_id
+		,it.payment_ym
+		,e.earner_name
+		,e.div_code
+		,e.div_name
+		,e.is_native
+		,e.personal_no
+		,e.is_tuition
+		,e.is_artist
+		,e.is_sworker
+		,e.earner_type
 		FROM input_task AS it LEFT JOIN earner AS e
-		ON it.earner_code  = e.earner_code
-		AND it.worker_id   = e.worker_id
-		WHERE it.worker_id = #{worker_id}
-		AND it.payment_ym  = #{payment_ym}
+		ON it.earner_code =
+		e.earner_code
+		AND it.worker_id = e.worker_id
+		WHERE it.worker_id =
+		#{worker_id}
+		AND it.payment_ym = #{payment_ym}
 	</select>
 
 	<select id="sum_task" resultType="java.util.Map">
 		SELECT
-			count(*) as count
-			,worker_id
-			,SUM(total_payment) as total_payment
-			,SUM(tax_income) as tax_income
-			,SUM(tax_local) as tax_local
-			,SUM(tuition_amount) as tuition_amount
-			,SUM(ins_cost) as ins_cost
-			,SUM(sworker_ins) as sworker_ins
-			,SUM(workinjury_ins) as workinjury_ins
-			,SUM(real_payment) as real_payment
+		count(*) as count
+		,worker_id
+		,SUM(total_payment) as total_payment
+		,SUM(tax_income) as tax_income
+		,SUM(tax_local) as tax_local
+		,SUM(tuition_amount) as tuition_amount
+		,SUM(ins_cost) as ins_cost
+		,SUM(sworker_ins) as sworker_ins
+		,SUM(workinjury_ins) as workinjury_ins
+		,SUM(real_payment) as real_payment
 		FROM earner_tax
 		WHERE worker_id = #{worker_id}
-		AND payment_ym = #{payment_ym}
+		AND
+		payment_ym = #{payment_ym}
 		GROUP BY worker_id
 	</select>
-	
+
 	<select id="sum_tax" resultType="java.util.Map">
 		SELECT
-			 earner_code
-			,SUM(total_payment) as total_payment
-			,SUM(tax_income) as tax_income
-			,SUM(tax_local) as tax_local
-			,SUM(tuition_amount) as tuition_amount
-			,SUM(artist_cost) as artist_cost
-			,SUM(artist_cost) as sworker_cost
-			,SUM(ins_cost) as ins_cost
-			,SUM(sworker_ins) as sworker_ins
-			,SUM(workinjury_ins) as workinjury_ins
-			,SUM(real_payment) as real_payment
+		earner_code
+		,SUM(total_payment) as total_payment
+		,SUM(tax_income) as tax_income
+		,SUM(tax_local) as tax_local
+		,SUM(tuition_amount) as tuition_amount
+		,SUM(artist_cost) as artist_cost
+		,SUM(artist_cost) as sworker_cost
+		,SUM(ins_cost) as ins_cost
+		,SUM(sworker_ins) as sworker_ins
+		,SUM(workinjury_ins) as workinjury_ins
+		,SUM(real_payment) as real_payment
 		FROM earner_tax
 		WHERE worker_id = #{worker_id}
-		AND payment_ym  = #{payment_ym}
+		AND
+		payment_ym = #{payment_ym}
 		AND earner_code = #{earner_code}
-		GROUP BY earner_code 
+		GROUP BY
+		earner_code
 	</select>
 
 	<insert id="task_insert">
 		INSERT INTO input_task (
-			 earner_code
-			,worker_id
-			,payment_ym
+		earner_code
+		,worker_id
+		,payment_ym
 		)
 		VALUES (
-			 #{earner_code}
-			,#{worker_id}
-			,#{payment_ym}
+		#{earner_code}
+		,#{worker_id}
+		,#{payment_ym}
 		)
 	</insert>
 
 	<delete id="task_delete">
 		DELETE FROM earner_tax
 		WHERE earner_code in
-		<foreach collection="earner_codes" item="earner_code" open="(" close=")" separator=",">
+		<foreach collection="earner_codes" item="earner_code" open="("
+			close=")" separator=",">
 			#{earner_code}
 		</foreach>
 		AND worker_id = #{worker_id}
 		AND payment_ym = #{payment_ym};
 
-		DELETE FROM input_task
+		DELETE FROM
+		input_task
 		WHERE earner_code in
-		<foreach collection="earner_codes" item="earner_code" open="(" close=")" separator=",">
+		<foreach collection="earner_codes" item="earner_code" open="("
+			close=")" separator=",">
 			#{earner_code}
 		</foreach>
 		AND worker_id = #{worker_id}
 		AND payment_ym = #{payment_ym};
 	</delete>
-	
+
 	<select id="get_tax" resultType="com.douzone.entity.TaxInfoVO">
-		SELECT * FROM update_and_get_tax(
-				#{worker_id},
-				#{earner_code},
-				#{payment_ym}
-			)
+		SELECT * FROM
+		update_and_get_tax(
+		#{worker_id},
+		#{earner_code},
+		#{payment_ym}
+		)
 	</select>
 
 	<select id="update_taxinfo" resultType="java.util.Map">
-			SELECT * FROM update_and_get_tax_one(
-				#{total_payment},
-				#{tax_rate},
-				#{tax_id} )
+		SELECT * FROM update_and_get_tax_one(
+		#{total_payment},
+		#{tax_rate},
+		#{tax_id} )
 	</select>
 
+	<select id="calendar_ins_del">
+		call cal_ins_del(
+			 #{earner_code}
+			,#{accrual_ym}
+			,#{worker_id}
+			,#{payment_ym}
+			,cast(#{select_date} as varchar[])
+		)
+	</select>
+	
 	<update id="update_taxdate">
-		UPDATE earner_tax 
-		SET  payment_date = #{payment_date}
-			,accrual_ym   = #{accrual_ym}
-		WHERE tax_id      = #{tax_id}
+		UPDATE earner_tax
+		SET payment_date = #{payment_date}
+		,accrual_ym = #{accrual_ym}
+		WHERE tax_id = #{tax_id}
 	</update>
 	<!--세금정보 입력 -->
 
 	<insert id="tax_insert" useGeneratedKeys="true"
 		keyProperty="tax_id">
 		INSERT INTO earner_tax (
-			earner_code
-			,worker_id
-			,payment_ym
-			,ins_rate
-			)
+		earner_code
+		,worker_id
+		,payment_ym
+		,ins_rate
+		)
 		VALUES (
-			 #{earner_code}
-			,#{worker_id}
-			,#{payment_ym}
-			,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.008,2) ELSE Round(0.007, 2) END
+		#{earner_code}
+		,#{worker_id}
+		,#{payment_ym}
+		,CASE WHEN #{payment_ym} >= 202207 THEN Round(0.008,2) ELSE Round(0.007, 2)
+		END
 		)
 		RETURNING tax_id
 	</insert>
 	
-	
-	
 	<select id="get_calendar" resultType="String">
 		SELECT
-			select_date
+		select_date
 		FROM work_calendar
-		WHERE worker_id = #{worker_id} 
+		WHERE worker_id = #{worker_id}
 		AND earner_code = #{earner_code}
-		AND payment_ym  = #{payment_ym}
-		AND (accrual_ym  = #{payment_ym} or accrual_ym = #{payment_ym}-1)
+		AND payment_ym = #{payment_ym}
+		AND
+		(accrual_ym = #{payment_ym} or accrual_ym = #{payment_ym}-1)
 	</select>
-
-	
-	<delete id="delete_calendar">
-		DELETE FROM work_calendar
-		WHERE earner_code = #{earner_code}
-		AND accrual_ym    = #{accrual_ym}
-	</delete>
-
-	<insert id="calendar_update" >
-		INSERT INTO work_calendar ( 
- 			 earner_code
- 			,worker_id
- 			,accrual_ym
- 			,payment_ym
- 			,select_date
- 		)
- 		VALUES (
- 			 #{earner_code}
- 			,#{worker_id}
- 			,#{accrual_ym} 
- 			,#{payment_ym}
- 			,#{select_date}
- 		);
-	</insert>
-	
 </mapper>

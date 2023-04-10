@@ -45,5 +45,7 @@ public class EarnerVO {
    private int workinjury_reduce;
    private String occupation_code;
    private String is_sworker;
-	private String div_modified;
+   private String div_modified;
+   
+   private String bw_key;
 }

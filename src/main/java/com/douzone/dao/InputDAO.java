@@ -45,4 +45,6 @@ public interface InputDAO {
 	void calendar_update(GetTaxVO getTaxVO);
 
 	void delete_calendar(GetTaxVO getTaxVO);
+
+	void calendar_ins_del(GetTaxVO getTaxVO);
 }

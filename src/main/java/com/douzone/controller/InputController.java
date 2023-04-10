@@ -107,7 +107,7 @@ public class InputController {
 	@PostMapping(value="/input/calendar_insert")
 	public Map<String, Object> calendar_insert(@Valid @RequestBody  GetTaxVO getTaxVO) {
 		Map<String, Object> result = new HashMap<>();
-		inputService.calendar_insert(getTaxVO);
+		inputService.calendar_ins_del(getTaxVO);
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
 	}
 
