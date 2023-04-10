@@ -4,8 +4,6 @@
            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.douzone.dao.InputDAO">
-	<!--사업소득자 정보 입력 -->
-	<!--사업자 코드 도움 -->
 
 	<select id="earner_search" resultType="java.util.Map">
 		SELECT e.earner_code
@@ -143,6 +141,16 @@
 		#{tax_id} )
 	</select>
 
+	<select id="calendar_ins_del">
+		call cal_ins_del(
+			 #{earner_code}
+			,#{accrual_ym}
+			,#{worker_id}
+			,#{payment_ym}
+			,cast(#{select_date} as varchar[])
+		)
+	</select>
+	
 	<update id="update_taxdate">
 		UPDATE earner_tax
 		SET payment_date = #{payment_date}
@@ -168,9 +176,7 @@
 		)
 		RETURNING tax_id
 	</insert>
-
-
-
+	
 	<select id="get_calendar" resultType="String">
 		SELECT
 		select_date
@@ -181,30 +187,4 @@
 		AND
 		(accrual_ym = #{payment_ym} or accrual_ym = #{payment_ym}-1)
 	</select>
-
-
-	<delete id="delete_calendar">
-		DELETE FROM work_calendar
-		WHERE earner_code =
-		#{earner_code}
-		AND accrual_ym = #{accrual_ym}
-	</delete>
-
-	<insert id="calendar_update">
-		INSERT INTO work_calendar (
-		earner_code
-		,worker_id
-		,accrual_ym
-		,payment_ym
-		,select_date
-		)
-		VALUES (
-		#{earner_code}
-		,#{worker_id}
-		,#{accrual_ym}
-		,#{payment_ym}
-		,#{select_date}
-		);
-	</insert>
-
 </mapper>
