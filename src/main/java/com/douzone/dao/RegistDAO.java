@@ -45,4 +45,6 @@ public interface RegistDAO {
 	Map<String, Object> get_occupation(GetOccupationVO getOccupationVO);
 
 	
+
+	String get_bw_key(EarnerUpdateVO earnerUpdateVO);
 }

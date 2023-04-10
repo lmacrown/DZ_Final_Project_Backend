@@ -7,66 +7,26 @@
 <!--사업소득조회-->
 	<!--사업소득자별조회-->
 	<select id="search_earner_code" resultType="java.util.Map">
-		SELECT 
-			 t.tax_id
-			,e.earner_name
-			,e.personal_no
-			,e.div_code
-			,t.accrual_ym
-			,t.payment_ym
-			,t.payment_date
-			,t.total_payment
-			,t.tax_rate
-			,t.tuition_amount
-			,t.tax_income
-			,t.tax_local
-			,t.artist_cost
-			,t.ins_cost
-			,t.real_payment
-		FROM earner e left join earner_tax t 
-		ON e.earner_code = t.earner_code 
-		WHERE e.worker_id = #{worker_id} 
-		AND 
-		<choose>
-            <when test="read_by =='accrual_ym'">
-            	accrual_ym BETWEEN #{start_date} AND #{end_date}
-            </when>
-            <when test="read_by =='payment_ym'">
-            	payment_ym BETWEEN #{start_date} AND #{end_date}
-            </when>
-         </choose>   
-        <!--read_by 부분 나눠서 쿼리문 작성-->
-		AND e.earner_code LIKE concat('%',#{code_value},'%')
-		ORDER BY #{order_by};
+		select * from search_earner_code(
+			 #{worker_id}
+			,#{read_by}
+			,#{start_date}
+			,#{end_date}
+			,#{order_by}
+			,#{code_value}
+		)
 	</select>
+	
 	<!--사업소득별조회-->
 	<select id="search_div_code" resultType="java.util.Map">
-		SELECT 
-			 e.div_code
-			,e.earner_name
-			,e.personal_no
-			,e.is_native
-			,count(et.*) as count
-			,sum(et.total_payment) as total_payment
-			,et.tax_rate as tax_rate
-			,sum(et.tax_income) as tax_income
-			,sum(et.tax_local) as tax_local
-			,sum(et.artist_cost) as artist_cost
-			,sum(et.ins_cost) as ins_cost
-			,sum(et.real_payment) as real_payment
-		FROM earner e left join earner_tax et 
-		ON e.earner_code = et.earner_code
-		WHERE e.worker_id=#{worker_id}
-		AND 
-		<choose>
-            <when test="read_by =='accrual_ym'">
-            	accrual_ym BETWEEN #{start_date} AND #{end_date}
-            </when>
-            <when test="read_by =='payment_ym'">
-            	payment_ym BETWEEN #{start_date} AND #{end_date}
-            </when>
-         </choose>   
-		AND e.div_code LIKE concat('%',#{code_value},'%') 
-		GROUP BY et.tax_rate ,e.earner_code ,e.div_code ,e.earner_name ,e.personal_no ,e.is_native
+		select * from search_div_code(
+			 #{worker_id}
+			,#{read_by}
+			,#{start_date}
+			,#{end_date}
+			,#{code_value}
+		)
 	</select>
+	
+	
 </mapper>

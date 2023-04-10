@@ -1,8 +1,8 @@
 package com.douzone;
 
+import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.Random;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -19,7 +19,7 @@ public class Aes {
 	private static final String ENCODING_TYPE = "12345678abcdefgh12345678abcdefgh";
 	private static final String UTF_8 = "12345678abcdefgh";
 	private static final String INSTANCE_TYPE = "AES/CBC/PKCS5Padding";
-
+	private Random rand = SecureRandom.getInstanceStrong();
 	private SecretKeySpec secretKeySpec;
 
 	private Cipher cipher;
@@ -36,6 +36,17 @@ public class Aes {
 	  
 	    }
 
+	   public Aes() throws Exception{
+	        secretKeySpec = new SecretKeySpec(ENCODING_TYPE.getBytes(), "AES");
+	        cipher = Cipher.getInstance(INSTANCE_TYPE);
+	        ivParameterSpec = new IvParameterSpec(UTF_8.getBytes());
+	  
+	    }
+	   
+	   public int create_key() {
+		   return this.rand.nextInt();
+	   }
+	   
 	   public String encrypt(final String str) throws Exception {
 	        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
 	        byte[] encrypted = cipher.doFinal(str.getBytes("UTF-8"));
@@ -48,17 +59,6 @@ public class Aes {
 	        return new String(cipher.doFinal(decoded), "UTF-8");
 	    }
 
-//	public String encrypt(final String str) throws Exception {
-//		cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
-//		byte[] encrypted = cipher.doFinal(str.getBytes(ENCODING_TYPE));
-//		return new String(Base64.getEncoder().encode(encrypted), ENCODING_TYPE);
-//	}
-//
-//	public String decrypt(final String str) throws Exception {
-//		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
-//		byte[] decoded = Base64.getDecoder().decode(str.getBytes(ENCODING_TYPE));
-//		return new String(cipher.doFinal(decoded), ENCODING_TYPE);
-//	}
 //	자릿수 제한
 //	private void validation(final String key) {
 //		Optional.ofNullable(key)

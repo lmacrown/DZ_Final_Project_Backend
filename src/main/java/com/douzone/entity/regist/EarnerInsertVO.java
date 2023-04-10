@@ -37,6 +37,8 @@ public class EarnerInsertVO {
     
     private String personal_no;
     
+    private String bw_key;
+    
     private String is_native;
     
     private int is_default;

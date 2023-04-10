@@ -30,28 +30,17 @@ public class InputService {
 
 	public List<Map<String, Object>> earner_search(EarnerSearchVO earnerSearchVO) throws Exception  {
 		List<Map<String, Object>> earner_search = inputDAO.earner_search(earnerSearchVO);
-		for(Map<String, Object> i : earner_search) {
-			
-			Aes aes = new Aes("1234567");
-			if(i.get("personal_no") != null) {
-				String dec = aes.decrypt((String) i.get("personal_no"));
-				
-				i.put("personal_no", dec);
-			}
-		}
+		
+		EncodingService.decrypt_list(earner_search);
+		
 		return earner_search;
 	}
 
 	public List<Map<String, Object>> get_task(GetTaskVO getTaskVO) throws Exception {
 		List<Map<String, Object>> get_task = inputDAO.get_task(getTaskVO);
-		for(Map<String, Object> i : get_task) {
-			
-			Aes aes = new Aes("1234567");
-			if(i.get("personal_no") != null) {
-				String dec = aes.decrypt((String) i.get("personal_no"));
-				i.put("personal_no", dec);
-			}
-		}
+		
+		EncodingService.decrypt_list(get_task);
+		
 		return get_task;
 	}
 

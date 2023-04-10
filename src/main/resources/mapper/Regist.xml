@@ -76,6 +76,12 @@
       WHERE earner_code = #{earner_code}
       AND   worker_id   = #{worker_id}
    </select>
+    <select id="get_bw_key" resultType="String">
+      SELECT bw_key
+      FROM earner
+      WHERE earner_code = #{earner_code}
+      AND   worker_id   = #{worker_id}
+   </select>
    <!--소득자 정보 입력-->
    <insert id="earner_insert" useGeneratedKeys="true" keyProperty="earner_code">
       INSERT INTO earner (
@@ -88,6 +94,7 @@
          ,personal_no
          ,is_native
          ,create_date
+         ,bw_key
       ) VALUES (
           #{earner_code}
          ,#{worker_id}
@@ -98,6 +105,7 @@
          ,#{personal_no}
          ,#{is_native}
          ,now()<!--현재 날짜 추가-->
+         ,#{bw_key}
       )
       RETURNING earner_code
    </insert>

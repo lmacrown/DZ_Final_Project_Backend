@@ -28,7 +28,6 @@ import com.douzone.entity.regist.GetEarnerVO;
 import com.douzone.entity.regist.GetOccupationVO;
 import com.douzone.entity.regist.ListOccupationVO;
 import com.douzone.handler.GlobalResponseHandler;
-import com.douzone.handler.RequestValidator;
 import com.douzone.service.RegistService;
 
 
@@ -71,7 +70,7 @@ public class RegistController {
 	}
 
 	@PostMapping(value = "/regist/earner_insert")
-	public Map<String, Object> earner_insert(@Valid @RequestBody EarnerInsertVO earnerInsertVO) {
+	public Map<String, Object> earner_insert(@Valid @RequestBody EarnerInsertVO earnerInsertVO) throws Exception {
 		Map<String, Object> result = new HashMap<>();
 		result.put("code_count", registService.earner_insert(earnerInsertVO));
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);
@@ -80,9 +79,9 @@ public class RegistController {
 	@PatchMapping(value = "/regist/earner_update")
 	public Map<String, Object> earner_update(@Valid @RequestBody EarnerUpdateVO earnerUpdateVO) throws Exception {
 		Map<String, Object> result = new HashMap<>();
-		RequestValidator validator = new RequestValidator();
+		//RequestValidator validator = new RequestValidator();
         Errors errors = new BeanPropertyBindingResult(earnerUpdateVO, "earnerUpdateVO");
-        validator.validate(earnerUpdateVO, errors);
+        //validator.validate(earnerUpdateVO, errors);
 
         if (errors.hasErrors()) {
         	throw new NotReadablePropertyException(RegistController.class, "earnerUpdateVO", "Invalid Update Parameter");
