@@ -116,7 +116,7 @@ public class GlobalResponseHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ExceptionResponseVO> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
-		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, "ArgumentNotValid", e);
+		return buildExceptionResponseVO(HttpStatus.BAD_REQUEST, e.getBindingResult().getFieldError().getDefaultMessage(), e);
 	}
 
 	@ExceptionHandler(NoSuchElementException.class)
