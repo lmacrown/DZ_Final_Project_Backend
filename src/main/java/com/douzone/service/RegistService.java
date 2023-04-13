@@ -61,6 +61,7 @@ public class RegistService {
 	}
 	
 	public void earner_update(EarnerUpdateVO earnerUpdateVO) throws Exception {
+		System.out.println("이거");
 		String key = registDAO.get_bw_key(earnerUpdateVO);
 	
 		UtilService.encryption(earnerUpdateVO, key);

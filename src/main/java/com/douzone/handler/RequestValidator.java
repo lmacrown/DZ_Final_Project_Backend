@@ -42,6 +42,7 @@ public class RequestValidator implements Validator {
                 "deduction_amount",
                 "is_artist",
                 "earner_type",
+                "is_sworker",
                 "ins_reduce",
                 "sworker_type",
                 "occupation_code",

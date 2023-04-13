@@ -142,7 +142,7 @@
 	</select>
 
 	<select id="calendar_ins_del">
-		call cal_ins_del(
+		call calendar_ins_del(
 			 #{earner_code}
 			,#{accrual_ym}
 			,#{worker_id}
@@ -176,15 +176,21 @@
 		)
 		RETURNING tax_id
 	</insert>
-	
-	<select id="get_calendar" resultType="String">
-		SELECT
-		select_date
-		FROM work_calendar
-		WHERE worker_id = #{worker_id}
-		AND earner_code = #{earner_code}
-		AND payment_ym = #{payment_ym}
-		AND
-		(accrual_ym = #{payment_ym} or accrual_ym = #{payment_ym}-1)
-	</select>
+<select id="get_calendar" resultType="String">
+      SELECT
+         select_date
+      FROM work_calendar
+      WHERE worker_id = #{worker_id} 
+      AND earner_code = #{earner_code}
+      AND payment_ym  = #{payment_ym}
+      AND (accrual_ym  = #{payment_ym} or 
+      <choose>
+         <when  test="(payment_ym - 1) % 100 == 0">
+            accrual_ym = #{payment_ym}-89)
+         </when>
+         <otherwise>
+            accrual_ym = #{payment_ym}-1)
+         </otherwise>
+      </choose>
+   </select>
 </mapper>

@@ -89,7 +89,8 @@ public class InputService {
 			select_date = select_date.concat(i+", ");
 		}
 		
-		select_date = select_date.substring(0,select_date.length()-2);
+	      if(!select_dates.equals("{")) 
+	          select_date = select_date.substring(0,select_date.length()-2);
 		select_date = select_date.concat("}");
 		getTaxVO.setSelect_date(select_date);
 		
