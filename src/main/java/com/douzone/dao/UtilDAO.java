@@ -10,6 +10,8 @@ import com.douzone.entity.CodeHistoryVO;
 public interface UtilDAO {
 	int update_earner_code(CodeHistoryVO codeHistoryVO);
 	
+	String select_earner_div_modified(CodeHistoryVO codeHistoryVO);
+
 	int insert_code_history(CodeHistoryVO codeHistoryVO);
 	
 	CodeHistoryVO select_code_history(CodeHistoryVO codeHistoryVO);

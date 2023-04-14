@@ -11,9 +11,13 @@ public class UtilService {
 	@Autowired
 	UtilDAO utilDAO;
 	
-	public int update_earner_code(CodeHistoryVO codeHistoryVO) {	
+	public String update_earner_code(CodeHistoryVO codeHistoryVO) {	
 		 utilDAO.update_earner_code(codeHistoryVO);	
-		 return  utilDAO.insert_code_history(codeHistoryVO);	
+		 int count = utilDAO.insert_code_history(codeHistoryVO);
+		 if (count != 0) {
+			 return utilDAO.select_earner_div_modified(codeHistoryVO);
+		 } 
+		 return "";
 	}
 	
 	public CodeHistoryVO select_code_history(CodeHistoryVO codeHistoryVO) {

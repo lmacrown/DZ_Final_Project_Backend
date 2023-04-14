@@ -26,13 +26,15 @@ public class UtilController {
 	//코드변환
 	@PostMapping(value="/util/update_earner_code")
 	public Map<String, Object> update_earner_code(@RequestBody CodeHistoryVO codeHistoryVO){		
-		int count = utilService.update_earner_code(codeHistoryVO);		
+		String div_modified = utilService.update_earner_code(codeHistoryVO);		
 		Map<String, Object> result = new HashMap<>();
-		if (count != 0) {
+		if (!"".equalsIgnoreCase(div_modified)) {
 			result.put("status", true);
+			result.put("div_modified", div_modified);
 			result.put("message", "수정되었습니다.");				
 		} else {
 			result.put("status", false);
+			result.put("div_modified", "");
 			result.put("message", "오류가 발생했습니다.");
 		}		
 		return gloabalResponseHandler.handleResponse(result, HttpStatus.OK);

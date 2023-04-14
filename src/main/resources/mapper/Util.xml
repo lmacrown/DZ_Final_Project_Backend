@@ -29,6 +29,15 @@
   		WHERE earner_code = #{earner_code}
     	  and worker_id = #{worker_id};
 	</update>
+	
+	
+	<select id="select_earner_div_modified" resultType="String">
+	  	select 
+	  		to_char(div_modified,'YYYY-MM-DD HH24:MI:SS') div_modified
+	  	from earner 
+	  	WHERE earner_code = #{earner_code}
+	    and worker_id = #{worker_id};
+	</select>
   
    <insert id='insert_code_history'> 
    INSERT INTO code_history (
