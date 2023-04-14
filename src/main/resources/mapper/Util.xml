@@ -5,7 +5,7 @@
 
 <mapper namespace="com.douzone.dao.UtilDAO" >
 
-  <select id="update_earner_code">
+  <update id="update_earner_code">
   	UPDATE earner SET
     <choose>
       <when test="mode == 'update_sworker_other'">
@@ -22,10 +22,24 @@
     </choose>
     	div_code = #{div_code},
     	div_name = #{div_name},
-    	div_type = #{div_type}        
+    	div_type = #{div_type},
+    	old_div_code = #{old_div_code},
+    	old_div_name = #{old_div_name},
+    	div_modified = now()      
   		WHERE earner_code = #{earner_code}
     	  and worker_id = #{worker_id};
+	</update>
+	
+	
+	<select id="select_earner_div_modified" resultType="String">
+	  	select 
+	  		to_char(div_modified,'YYYY-MM-DD HH24:MI:SS') div_modified
+	  	from earner 
+	  	WHERE earner_code = #{earner_code}
+	    and worker_id = #{worker_id};
+	</select>
   
+   <insert id='insert_code_history'> 
    INSERT INTO code_history (
    	 worker_id,
    	 earner_code,
@@ -44,11 +58,13 @@
      now()
   );
   
+  </insert>
+<!--   
 	UPDATE earner SET
   		div_modified = now()       
   	WHERE earner_code = #{earner_code}
-      and worker_id = #{worker_id};
-  </select>
+      and worker_id = #{worker_id}; -->
+ 
    
   <select id="select_code_history" resultType="com.douzone.entity.CodeHistoryVO" >
 	    SELECT  

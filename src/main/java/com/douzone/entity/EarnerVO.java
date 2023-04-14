@@ -48,4 +48,7 @@ public class EarnerVO {
    private String div_modified;
    
    private String bw_key;
+	private String div_modified;
+	private String old_div_code;
+	private String old_div_name;
 }
