@@ -15,12 +15,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateTaxDateVO {
 
-	@Min(value = 1, message = "payment_date must be 1-31 positive number")
-    @Max(value = 31, message = "payment_ym must be 1-31 positive number")
+	@Min(value = 1, message = "지급일 입력을 다시 확인해주세요. 지급일은 1-31 사이의 양수입니다.")
+    @Max(value = 31, message = "지급일 입력을 다시 확인해주세요. 지급일은 1-31 사이의 양수입니다.")
     private int payment_date;
 
-	@Min(value = 200000, message = "accrual_ym must be a 6-digit positive number")
-    @Max(value = 299999, message = "accrual_ym must be a 6-digit positive number")
+	@Min(value = 200000, message = "귀속년월 형식을 다시 확인해주세요.")
+    @Max(value = 299999, message = "귀속년월 형식을 다시 확인해주세요.")
     private int accrual_ym;
 
     @NotNull(message = "tax_id is required")
